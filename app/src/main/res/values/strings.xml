@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">App</string>
+    <string name="result_text_default">Please focus camera to QR Code</string>
+    <string name="inv">INVALID</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="emailpassword_status_fmt">Email: %s</string>
+    <string name="firebase_status_fmt">Firebase: %s</string>
+    <string name="signed_out">Signed out</string>
+
+</resources>

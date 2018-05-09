@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "607402799751",
+    "firebase_url": "https://unlockauth-469c0.firebaseio.com",
+    "project_id": "unlockauth-469c0",
+    "storage_bucket": "unlockauth-469c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607402799751:android:3951ec14ae5fd5af",
+        "android_client_info": {
+          "package_name": "com.example.jameswinters.unlock_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607402799751-m35q3mhod4strk0d4q1d86la2mo7v84c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzhwOcWr2x7TzDNeIn2oHy2PA9qy7ncF0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607402799751:android:d152da7aa02409b2",
+        "android_client_info": {
+          "package_name": "com.example.mckeown.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607402799751-m35q3mhod4strk0d4q1d86la2mo7v84c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCzhwOcWr2x7TzDNeIn2oHy2PA9qy7ncF0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

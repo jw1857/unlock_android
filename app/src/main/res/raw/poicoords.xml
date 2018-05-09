@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<YorkPOIs>
+    <POI name = "York Minster">
+        <latitude>53.9623</latitude>
+        <longitude>-1.0819</longitude>
+        <locked value = "true"/>
+    </POI>
+    <POI name = "Jorvik Viking Centre">
+        <latitude>53.9574</latitude>
+        <longitude>-1.0803</longitude>
+        <locked value = "true"/>
+    </POI>
+    <POI name = "York Museum Gardens">
+        <latitude>53.9615</latitude>
+        <longitude>-1.0883</longitude>
+        <locked value = "true"/>
+    </POI>
+    <POI name = "University of York">
+        <latitude>53.9471</latitude>
+        <longitude>-1.0529</longitude>
+        <locked value = "true"/>
+    </POI>
+</YorkPOIs>
