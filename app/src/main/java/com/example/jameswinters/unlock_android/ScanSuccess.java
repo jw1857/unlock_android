@@ -25,6 +25,8 @@ public class ScanSuccess extends AppCompatActivity {
     String location = "null";
     private ArrayList<POI> POIList;
     private ArrayList<POI> POIListCompare;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = mAuth.getCurrentUser();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,15 @@ public class ScanSuccess extends AppCompatActivity {
                             mediaPlayerSuccess.start();
                             toast.show();
                             Toast.makeText(this, "New location discovered!", Toast.LENGTH_SHORT).show();
+                            int unlockCount =0;
+                            for (POI x:POIList) {
+                                boolean ls = x.getLockStatus();
+                                if (!ls) {
+                                    unlockCount = unlockCount + 1;
+                                }
+                            }
+                            DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+                            scoreOnDb.child(currentUser.getDisplayName()).setValue(POIList.size()-unlockCount);
                             Intent backToMain = new Intent(ScanSuccess.this, MainActivity.class);
                             Bundle bundle1 = new Bundle();
                             bundle1.putSerializable("POIList", POIList);

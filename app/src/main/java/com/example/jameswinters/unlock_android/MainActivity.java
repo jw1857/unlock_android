@@ -20,7 +20,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,23 +43,27 @@ public class MainActivity extends AppCompatActivity {
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private ArrayList<POI> POIList;
     private Intent i;
-    //FirebaseApp.initializeApp(this);
+    //String username;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("POIList").child(currentUser.getUid());
+    DatabaseReference myRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
+    TextView currentUserText;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        System.out.println(currentUser.getDisplayName());
         i = getIntent();
+        currentUserText = findViewById(R.id.currentUser);
+        currentUserText.setText(getString(R.string.currentUserID,currentUser.getDisplayName()));
         Bundle b = i.getExtras();
         if (b!=null){
             POIList = (ArrayList<POI>)b.getSerializable("POIList");
             myRef.setValue(POIList);
+
         }
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -145,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
     private void init(){
         Button button = (Button)findViewById(R.id.btnMap);
         Button button2 = (Button)findViewById(R.id.btnMap1);
+        Button button3 = (Button)findViewById(R.id.btnMap2);
 
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -166,6 +170,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        button3.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LeaderboardsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("POIList",POIList);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     public boolean isServicesOk(){
@@ -179,7 +193,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         else if(GoogleApiAvailability.getInstance().isUserResolvableError(available)){
-            //an error occurrded but we can resolve it
+            //an error occurred but we can resolve it
             Log.d(TAG, "isServicesOk: an error occurred but we can fix it");
 
             Dialog dialog = GoogleApiAvailability.getInstance().getErrorDialog(MainActivity.this, available, ERROR_DIALOG_REQUEST);
@@ -192,6 +206,7 @@ public class MainActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed(){
+
         Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
