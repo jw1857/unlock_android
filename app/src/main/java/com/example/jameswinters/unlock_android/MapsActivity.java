@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -17,6 +19,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Xml;
+import android.view.MotionEvent;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -48,12 +51,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     private static final String TAG = "MapActivity";
 
@@ -61,6 +65,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     FirebaseUser currentUser =mAuth.getCurrentUser();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
+    float zoom;
     double POIProgress;
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -68,7 +73,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     private Boolean mLocationPermissionGranted = false;
     private ArrayList<POI> POIList;
+    private ArrayList<sPOI> sPOIList;
     private GoogleMap mMap;
+    private boolean pressed = false;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LatLngBounds YORK = new LatLngBounds(
@@ -79,6 +86,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(MapsActivity.this);
+
+    }
+
+    private void zoomCheck(){
+        System.out.println(mMap.getCameraPosition().zoom);
 
     }
 
@@ -100,12 +112,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (!ls){
                         progressCount = progressCount + 1;
                     }
+
                 }
+
 
                 POIProgress = ((float)progressCount/(float)POIList.size())*pb.getMax();
                 setProgressValue(POIProgress);
             }
+
         });
+
         thread.start();
 
     }
@@ -129,6 +145,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if(task.isSuccessful()){
                             Log.d(TAG, "onComplete: found location");
                             Location currentLocation = (Location)task.getResult();
+
                             moveCamera(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()),
                                     DEFAULT_ZOOM);
                             mMap.setMyLocationEnabled(true);
@@ -146,28 +163,52 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+
+
+
     @Override
     public void onMapReady(GoogleMap googleMap) {
         ProgressBar pb = findViewById(R.id.progressBar);
+
         pb.setMax(100);
-        Toast.makeText(this, "Map Ready", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Map Ready", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
         int progressCount=0;
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style));
         mMap.setLatLngBoundsForCameraTarget(YORK);
         //Toast.makeText(this,POIList.get(0).getTitle() , Toast.LENGTH_SHORT).show();
         addPOIMarkers(POIList);
+       addsPOIMarkers(POIList, sPOIList);
+
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
             @Override
             public boolean onMarkerClick(final Marker marker) {
                 int unlockCount =0;
+                //System.out.println(mMap.getCameraPosition().zoom);
                 for (POI p : POIList){
 
                     if (marker.equals(p.marker)){
                         p.setIcon(!p.getLockStatus());
                         p.marker.showInfoWindow();
                         p.setLockStatus(!p.getLockStatus());
+                        for (sPOI s : sPOIList) {
+                            if (s.getParentName().equals(p.getTitle())) {
+
+
+                                // s.setParent(p);
+                                //s.setVisibility(mMap.getCameraPosition().zoom);
+                                if (!p.getLockStatus()) {
+                                    boolean locked = s.getLockStatus();
+                                    if (locked) {
+                                        lockedsPOI(s);
+                                    }
+                                    if (!locked) {
+                                        unlockedsPOI(s);
+                                    }
+                                }
+                            }
+                        }
 
                         //Toast.makeText(MapsActivity.this,"marker pressed", Toast.LENGTH_SHORT).show();
                     }
@@ -190,6 +231,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
         System.out.println(progressCount);
+        //System.out.println("zoom" +mMap.getCameraPosition().zoom);
         System.out.println(POIList.size());
         int size = POIList.size();
         POIProgress = (float)progressCount/(float)size;
@@ -197,6 +239,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         POIProgress = POIProgress*pb.getMax();
         System.out.println(POIProgress);
         setProgressValue(POIProgress);
+        //zoomCheck();
         if(mLocationPermissionGranted){
             getDeviceLocation();
         }
@@ -210,11 +253,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         getLocationPermission();
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
+        sPOIXMLParser sPOIXMLParser = new sPOIXMLParser(this);
+        sPOIList=sPOIXMLParser.getsPOIList();
         if (b!=null) {
             POIList = (ArrayList<POI>) b.getSerializable("POIList");
+            //sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
         }
     }
-
+    public float returnZoom(){
+        return mMap.getCameraPosition().zoom;
+    }
 
 
     @Override
@@ -257,6 +305,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    private void lockedsPOI(sPOI spoi){
+        // spoi.setPosition(poi.getLat(),poi.getLng());
+        spoi.marker =  mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(spoi.getLat(),spoi.getLng()))
+                .title(spoi.getTitle())
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.lock)));
+
+    }
+    private void unlockedsPOI(sPOI spoi){
+        // poi.setPosition(poi.getLat(),poi.getLng());
+        spoi.marker =  mMap.addMarker(new MarkerOptions()
+                .position(new LatLng(spoi.getLat(),spoi.getLng()))
+                .title(spoi.getTitle())
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.unlock)));
+
+    }
+
     private void addPOIMarkers(ArrayList<POI> poi) {
         for (POI p : poi) {
             boolean locked = p.getLockStatus();
@@ -269,6 +334,32 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         // }
     }
+
+    private void addsPOIMarkers(ArrayList<POI> poi, ArrayList<sPOI> spoi) {
+        for (sPOI s : spoi) {
+            for (POI p : poi) {
+                if (s.getParentName().equals(p.getTitle())) {
+
+                    Toast.makeText(this,p.getTitle() , Toast.LENGTH_SHORT).show();
+                    // s.setParent(p);
+                    //s.setVisibility(mMap.getCameraPosition().zoom);
+                    if (!p.getLockStatus()) {
+                        boolean locked = s.getLockStatus();
+                        if (locked) {
+                            lockedsPOI(s);
+                        }
+                        if (!locked) {
+                            unlockedsPOI(s);
+                        }
+                    }
+
+                    //}
+                }
+                // }
+            }
+        }
+    }
+
 
     //private void GPSUnlocking() {
     //  Location myLocation = mMap.getMyLocation();
@@ -286,7 +377,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
                     COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 Log.d(TAG, "getLocationPermission: Self Permission Granted");
-                Toast.makeText(this, "Self Permission Granted", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(this, "Self Permission Granted", Toast.LENGTH_SHORT).show();
                 mLocationPermissionGranted = true;
                 initMap();
             }
