@@ -106,3 +106,6 @@ public class LeaderboardsActivity extends AppCompatActivity {
     }
 
 }
+
+
+/* Adding another test comment to verify S05, test branch and master branch have been merged succesfully */
