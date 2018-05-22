@@ -60,8 +60,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser =mAuth.getCurrentUser();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("POIList").child(currentUser.getUid());
-    double progressy;
+    DatabaseReference myRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
+    double POIProgress;
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
@@ -101,8 +101,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         progressCount = progressCount + 1;
                     }
                 }
-                progressy = ((float)progressCount/(float)POIList.size())*pb.getMax();
-                setProgressValue(progressy);
+
+                POIProgress = ((float)progressCount/(float)POIList.size())*pb.getMax();
+                setProgressValue(POIProgress);
             }
         });
         thread.start();
@@ -160,15 +161,23 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
             @Override
             public boolean onMarkerClick(final Marker marker) {
-
+                int unlockCount =0;
                 for (POI p : POIList){
+
                     if (marker.equals(p.marker)){
                         p.setIcon(!p.getLockStatus());
                         p.marker.showInfoWindow();
                         p.setLockStatus(!p.getLockStatus());
+
                         //Toast.makeText(MapsActivity.this,"marker pressed", Toast.LENGTH_SHORT).show();
                     }
+                    boolean ls = p.getLockStatus();
+                    if (!ls){
+                        unlockCount = unlockCount + 1;
+                    }
                 }
+                DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+                scoreOnDb.child(currentUser.getDisplayName()).setValue(POIList.size()-unlockCount);
                 myRef.setValue(POIList);
                 return true;
             }
@@ -178,15 +187,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (!ls){
                 progressCount = progressCount + 1;
             }
+
         }
         System.out.println(progressCount);
         System.out.println(POIList.size());
         int size = POIList.size();
-        progressy = (float)progressCount/(float)size;
-        System.out.println(progressy);
-        progressy = progressy*pb.getMax();
-        System.out.println(progressy);
-        setProgressValue(progressy);
+        POIProgress = (float)progressCount/(float)size;
+        System.out.println(POIProgress);
+        POIProgress = POIProgress*pb.getMax();
+        System.out.println(POIProgress);
+        setProgressValue(POIProgress);
         if(mLocationPermissionGranted){
             getDeviceLocation();
         }
@@ -271,7 +281,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void getLocationPermission(){
         Log.d(TAG, "getLocationPermission: getting location permissions");
         String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-
         if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(),

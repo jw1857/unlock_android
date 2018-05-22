@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
     private String msg = "Android:";
     EditText emailContainer;
     EditText passwordContainer;
+    EditText usernameContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
         setContentView(R.layout.activity_create_account);
         mAuth = FirebaseAuth.getInstance();
         emailContainer = findViewById(R.id.newEmailContainer);
+        usernameContainer = findViewById(R.id.newUsernameContainer);
         passwordContainer = findViewById(R.id.newPasswordContainer);
         findViewById(R.id.createAccount).setOnClickListener(this);
 
@@ -45,27 +50,57 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d(msg, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String username = usernameContainer.getText().toString();
+                            createNewUser(user);
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(username)
+                                    .build();
+                            user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(Task<Void> task) {
 
-                            Intent i = new Intent(createAccount.this, MainActivity.class);
-                            POIXMLParser parser = new POIXMLParser(createAccount.this);
-                            ArrayList<POI> POIList = parser.getPOIList();
-                            Bundle b = new Bundle();
-                            b.putSerializable("POIList", POIList);
-                            i.putExtras(b);
-                            startActivity(i);
+                                    if(task.isSuccessful()){
+
+                                        Log.d("Profile", "User Profile Updated successfully");
+
+                                    }else {
+
+                                        Log.d("Error","error while updating profile");
+
+                                    }
+                                    Intent i = new Intent(createAccount.this, MainActivity.class);
+                                    POIXMLParser parser = new POIXMLParser(createAccount.this);
+                                    ArrayList<POI> POIList = parser.getPOIList();
+                                    String name = usernameContainer.getText().toString();
+                                    DatabaseReference initialScoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+                                    initialScoreOnDb.child(name).setValue(POIList.size());
+                                    Bundle b = new Bundle();
+                                    b.putSerializable("POIList", POIList);
+                                    i.putExtras(b);
+                                    startActivity(i);
+                                }
+                            });
+
 
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(msg, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(createAccount.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
                         }
                     }
                 });
+    }
+
+    private void createNewUser(FirebaseUser userFromRegistration) {
+        String username = usernameContainer.getText().toString();
+        Log.d(msg, "Username:"+ username);
+        String userId = userFromRegistration.getUid();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("Usernames");
+        myRef.child(userId).child("Name").setValue(username);
     }
     private boolean validateForm() {
         boolean valid = true;
@@ -84,6 +119,13 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
             valid = false;
         } else {
             passwordContainer.setError(null);
+        }
+        String username = usernameContainer.getText().toString();
+        if (TextUtils.isEmpty(username)) {
+            usernameContainer.setError("Required.");
+            valid = false;
+        } else {
+            usernameContainer.setError(null);
         }
 
         return valid;
