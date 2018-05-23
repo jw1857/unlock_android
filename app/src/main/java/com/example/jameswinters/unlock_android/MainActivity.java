@@ -41,14 +41,15 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
-    private ArrayList<POI> POIList;
-    private ArrayList<sPOI> sPOIList;
+    public ArrayList<POI> POIList = new ArrayList<>();
+    public ArrayList<sPOI> sPOIList = new ArrayList<>();
     private Intent i;
     //String username;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("POIList").child(currentUser.getDisplayName());
+    DatabaseReference myPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
+    DatabaseReference mysPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("sPOIs");
     TextView currentUserText;
 
 
@@ -63,17 +64,20 @@ public class MainActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if (b!=null){
             POIList = (ArrayList<POI>)b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>)b.getSerializable("sPOIList");
-            myRef.child("POIs").setValue(POIList);
-            myRef.child("sPOIs").setValue(sPOIList);
+            sPOIList =(ArrayList<sPOI>)b.getSerializable("sPOIList");
+            myPOIRef.setValue(POIList);
+            mysPOIRef.setValue(sPOIList);
+            checkForChangeInPOIs();
         }
-        myRef.child("POIs").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                //whenever data at this location is updated.
-                GenericTypeIndicator<ArrayList<POI>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<POI>>() {};
-                POIList = dataSnapshot.getValue(genericTypeIndicator);
+        /*myPOIRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // This method is called once with the initial value and again
+                        //whenever data at this location is updated.
+                        GenericTypeIndicator<ArrayList<POI>> genericTypeIndicator = new GenericTypeIndicator<ArrayList<POI>>() {};
+                        POIList = dataSnapshot.getValue(genericTypeIndicator);
+                        init(POIList);
+                //System.out.println("test"+ POIList.get(0).getTitle());
                 checkForChangeInPOIs();
             }
 
@@ -82,8 +86,9 @@ public class MainActivity extends AppCompatActivity {
                 // Failed to read value
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
-        });
-
+        });*/
+        System.out.println("test"+ POIList.get(0).getTitle());
+        System.out.println("test spoi"+ sPOIList.get(0).getTitle());
         signOut();
         if(isServicesOk()){
             init();
@@ -137,12 +142,12 @@ public class MainActivity extends AppCompatActivity {
         int size = POIList.size();
         while (compare.size() > size) {
             POIList.add(compare.get(size));
-            myRef.setValue(POIList);
+            myPOIRef.setValue(POIList);
             size++;
         }
         while (compare.size() < size) {
             POIList.remove(size-1);
-            myRef.setValue(POIList);
+            myPOIRef.setValue(POIList);
             size--;
         }
     }
@@ -215,5 +220,4 @@ public class MainActivity extends AppCompatActivity {
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
     }
-
 }

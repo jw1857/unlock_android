@@ -18,6 +18,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -75,9 +82,40 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(msg, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                            Intent i =new Intent(EmailPasswordActivity.this, MainActivity.class);
-                            startActivity(i);
+                            DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("POIList").child(user.getDisplayName());
+                            myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Intent i =new Intent(EmailPasswordActivity.this,MainActivity.class);
+                                    GenericTypeIndicator<ArrayList<POI>> genericTypeIndicatorPOI = new GenericTypeIndicator<ArrayList<POI>>() {};
+                                    GenericTypeIndicator<ArrayList<sPOI>> genericTypeIndicatorsPOI = new GenericTypeIndicator<ArrayList<sPOI>>() {};
+                                    ArrayList<POI> POIList=new ArrayList<>();
+                                    ArrayList<sPOI> sPOIList=new ArrayList<>();
+                                    Bundle b = new Bundle();
+                                    for(DataSnapshot d : dataSnapshot.getChildren()) {
+                                        switch (d.getKey()) {
+                                            case "POIs":
+                                                POIList = d.getValue(genericTypeIndicatorPOI);
+                                                break;
+                                            case "sPOIs":
+                                                sPOIList =d.getValue(genericTypeIndicatorsPOI);
+                                                break;
+                                        }
+                                    }
+
+                                    b.putSerializable("POIList",POIList);
+                                    b.putSerializable("sPOIList",sPOIList);
+                                    i.putExtras(b);
+                                    startActivity(i);
+                                }
+
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(msg, "signInWithEmail:failure", task.getException());
