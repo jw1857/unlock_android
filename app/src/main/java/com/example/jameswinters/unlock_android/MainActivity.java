@@ -42,12 +42,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int ERROR_DIALOG_REQUEST = 9001;
     private ArrayList<POI> POIList;
+    private ArrayList<sPOI> sPOIList;
     private Intent i;
     //String username;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
+    DatabaseReference myRef = database.getReference("POIList").child(currentUser.getDisplayName());
     TextView currentUserText;
 
 
@@ -62,10 +63,11 @@ public class MainActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if (b!=null){
             POIList = (ArrayList<POI>)b.getSerializable("POIList");
-            myRef.setValue(POIList);
-
+            sPOIList = (ArrayList<sPOI>)b.getSerializable("sPOIList");
+            myRef.child("POIs").setValue(POIList);
+            myRef.child("sPOIs").setValue(sPOIList);
         }
-        myRef.addValueEventListener(new ValueEventListener() {
+        myRef.child("POIs").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // This method is called once with the initial value and again
@@ -166,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("POIList",POIList);
+                bundle.putSerializable("sPOIList",sPOIList);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
