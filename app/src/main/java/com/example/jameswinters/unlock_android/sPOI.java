@@ -23,6 +23,10 @@ public class sPOI extends POI {
 
     public boolean getVisibility(){return this.visibility;}
 
+    public void setVisibility(boolean visibility) {
+        this.visibility = visibility;
+    }
+
     //public void setVisibility(float zoom){
         //if (parent.getLockStatus() == false){
            // if (zoom > 0){
