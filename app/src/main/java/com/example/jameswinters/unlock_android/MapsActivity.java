@@ -61,7 +61,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser =mAuth.getCurrentUser();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
-    DatabaseReference myRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
+    DatabaseReference myPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
+    DatabaseReference mysPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("sPOIs");
     double POIProgress;
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -159,18 +160,50 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setLatLngBoundsForCameraTarget(YORK);
         //Toast.makeText(this,POIList.get(0).getTitle() , Toast.LENGTH_SHORT).show();
         addPOIMarkers(POIList);
-
+        addsPOIMarkers(POIList,sPOIList);
+        mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+            @Override
+            public void onCameraMove() {
+                for (sPOI s:sPOIList){
+                    if(mMap.getCameraPosition().zoom>15){
+                        if(s.marker!=null) {
+                            s.setVisibility(true);
+                            s.marker.setVisible(s.getVisibility());
+                        }
+                    }
+                    else if (mMap.getCameraPosition().zoom<15) {
+                        if (s.marker != null) {
+                            s.setVisibility(false);
+                            s.marker.setVisible(s.getVisibility());
+                        }
+                    }
+                }
+            }
+        });
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
             @Override
             public boolean onMarkerClick(final Marker marker) {
                 int unlockCount =0;
+                for (sPOI s : sPOIList) {
+                    if ((marker.equals(s.marker)&&(s.marker.isVisible()))) {
+                        s.setIcon(!s.getLockStatus());
+                        s.marker.showInfoWindow();
+                        s.setLockStatus(!s.getLockStatus());
+                    }
+                }
+                //System.out.println(mMap.getCameraPosition().zoom);
                 for (POI p : POIList){
-
                     if (marker.equals(p.marker)){
                         p.setIcon(!p.getLockStatus());
                         p.marker.showInfoWindow();
                         p.setLockStatus(!p.getLockStatus());
-
+                        for (sPOI s : sPOIList) {
+                            if (s.getParentName().equals(p.getTitle())) {
+                                if (!p.getLockStatus()) {
+                                    addSinglesPOIMarker(s);
+                                }
+                            }
+                        }
                         //Toast.makeText(MapsActivity.this,"marker pressed", Toast.LENGTH_SHORT).show();
                     }
                     boolean ls = p.getLockStatus();
@@ -180,7 +213,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
                 scoreOnDb.child(currentUser.getDisplayName()).setValue(POIList.size()-unlockCount);
-                myRef.setValue(POIList);
+                myPOIRef.setValue(POIList);
+                mysPOIRef.setValue(sPOIList);
                 return true;
             }
         });
@@ -243,34 +277,57 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private void lockedPOI(POI poi){
-        // poi.setPosition(poi.getLat(),poi.getLng());
-        poi.marker =  mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(poi.getLat(),poi.getLng()))
-                .title(poi.getTitle())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.lock)));
+//    private void lockedPOI(POI poi){
+//       // poi.setPosition(poi.getLat(),poi.getLng());
+//        poi.marker =  mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(poi.getLat(),poi.getLng()))
+//                .title(poi.getTitle())
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.lock)));
+//
+//    }
+//    private void unlockedPOI(POI poi){
+//       // poi.setPosition(poi.getLat(),poi.getLng());
+//        poi.marker =  mMap.addMarker(new MarkerOptions()
+//                .position(new LatLng(poi.getLat(),poi.getLng()))
+//                .title(poi.getTitle())
+//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.unlock)));
+//
+//    }
 
+    private void addSinglesPOIMarker(sPOI s){
+        s.marker =  mMap.addMarker(new MarkerOptions()
+                .visible(s.getVisibility())
+                .position(new LatLng(s.getLat(),s.getLng()))
+                .title(s.getTitle()));
+        s.setIcon(s.getLockStatus());
     }
-    private void unlockedPOI(POI poi){
-        // poi.setPosition(poi.getLat(),poi.getLng());
-        poi.marker =  mMap.addMarker(new MarkerOptions()
-                .position(new LatLng(poi.getLat(),poi.getLng()))
-                .title(poi.getTitle())
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.unlock)));
 
-    }
+   /* private void removeSinglesPOIMarker(sPOI s){
+        s.marker.remove();
+    }*/
 
     private void addPOIMarkers(ArrayList<POI> poi) {
         for (POI p : poi) {
-            boolean locked = p.getLockStatus();
-            if (locked) {
-                lockedPOI(p);
-            }
-            if (!locked) {
-                unlockedPOI(p);
+            p.marker =  mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(p.getLat(),p.getLng()))
+                    .title(p.getTitle()));
+            p.setIcon(p.getLockStatus());
+        }
+    }
+    private void addsPOIMarkers(ArrayList<POI> poi, ArrayList<sPOI> spoi) {
+        for (sPOI s : spoi) {
+            for (POI p : poi) {
+                if (s.getParentName().equals(p.getTitle())) {
+                    if (!p.getLockStatus()) {
+                        s.marker =  mMap.addMarker(new MarkerOptions()
+                                .visible(s.getVisibility())
+                                .position(new LatLng(s.getLat(),s.getLng()))
+                                .title(s.getTitle()));
+                        s.setIcon(s.getLockStatus());
+                    }
+                }
             }
         }
-        // }
     }
 
     //private void GPSUnlocking() {
