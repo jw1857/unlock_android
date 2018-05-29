@@ -7,8 +7,12 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
-public class POIPresentationActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class POIPresentationActivity extends AppCompatActivity {
+    private ArrayList<POI> POIList;
+    private ArrayList<sPOI> sPOIList;
+    private ArrayList<hPOI> hPOIList;
     ImageView iv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +24,22 @@ public class POIPresentationActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if (b != null) {
             poi = (POI) b.getSerializable("POI");
+            POIList = (ArrayList<POI>) b.getSerializable("POIList");
+            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
+            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
             String imageString = poi.getMainImageLink();
             Picasso.with(this).load(imageString).into(iv);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = new Intent(this, MapsActivity.class);
+        Bundle b = new Bundle();
+        b.putSerializable("POIList", POIList);
+        b.putSerializable("sPOIList", sPOIList);
+        b.putSerializable("hPOIList", hPOIList);
+        i.putExtras(b);
+        startActivity(i);
     }
 }

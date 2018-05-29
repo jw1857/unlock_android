@@ -219,16 +219,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if ((marker.equals(s.marker)&&(s.marker.isVisible()))) {
                         s.setIcon(!s.getLockStatus());
                         s.marker.showInfoWindow();
-                        s.setLockStatus(!s.getLockStatus());
+                       // s.setLockStatus(!s.getLockStatus());
                     }
                 }
                 //System.out.println(mMap.getCameraPosition().zoom);
                 for (POI p : POIList){
                     if (marker.equals(p.marker)){
                         if (p.getLockStatus()) {
-                            p.setIcon(!p.getLockStatus());
+                            //p.setIcon(!p.getLockStatus());
                             p.marker.showInfoWindow();
-                            p.setLockStatus(!p.getLockStatus());
+                            //p.setLockStatus(!p.getLockStatus());
                             for (sPOI s : sPOIList) {
                                 if (s.getParentName().equals(p.getTitle())) {
                                     if (!p.getLockStatus()) {
@@ -240,6 +240,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if(!p.getLockStatus()){
                             Intent i = new Intent(MapsActivity.this,POIPresentationActivity.class);
                             Bundle b= new Bundle();
+                            b.putSerializable("POIList",POIList);
+                            b.putSerializable("sPOIList",sPOIList);
+                            b.putSerializable("hPOIList",hPOIList);
                             b.putSerializable("POI",p);
                             i.putExtras(b);
                             startActivity(i);

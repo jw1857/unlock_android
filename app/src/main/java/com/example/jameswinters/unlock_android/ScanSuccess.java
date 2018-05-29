@@ -37,7 +37,7 @@ public class ScanSuccess extends AppCompatActivity {
         POIXMLParser parser = new POIXMLParser(this);
         POIListCompare = parser.getPOIList();
         Intent intent = getIntent();
-        boolean is_hPOI =false;
+        boolean is_hPOI = false;
         Bundle b = intent.getExtras();
         final MediaPlayer mediaPlayerSuccess = MediaPlayer.create(this, R.raw.unlock_success);
         final MediaPlayer mediaPlayerFailure = MediaPlayer.create(this, R.raw.unlock_failure);
@@ -54,28 +54,25 @@ public class ScanSuccess extends AppCompatActivity {
         toast.setView(layout);
 
 
-
-
         setContentView(R.layout.activity_scan_success);
         TextView tv = findViewById(R.id.scan_text);
-        if (b!=null) {
+        if (b != null) {
             location = b.getString("Location");
-            POIList = (ArrayList<POI>)b.getSerializable("POIList");
-            sPOIList =  (ArrayList<sPOI>)b.getSerializable("sPOIList");
-            hPOIList = (ArrayList<hPOI>)b.getSerializable("hPOIList");
-        }
-        else location = "invalid";
-        for (hPOI h : hPOIList){
-            if ((location.equals(h.getTitle()))&&(!h.getVisibility())){
+            POIList = (ArrayList<POI>) b.getSerializable("POIList");
+            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
+            hPOIList = (ArrayList<hPOI>) b.getSerializable("hPOIList");
+        } else location = "invalid";
+        for (hPOI h : hPOIList) {
+            if ((location.equals(h.getTitle())) && (!h.getVisibility())) {
                 h.setVisibility(true);
-                Intent i= new Intent(ScanSuccess.this, MapsActivity.class);
+                Intent i = new Intent(ScanSuccess.this, MapsActivity.class);
                 Bundle bun = new Bundle();
                 mediaPlayerSuccess.start();
                 Toast.makeText(this, "Hidden location discovered!", Toast.LENGTH_SHORT).show();
-                bun.putSerializable("POIList",POIList);
-                bun.putSerializable("sPOIList",sPOIList);
-                bun.putSerializable("hPOIList",hPOIList);
-                is_hPOI= true;
+                bun.putSerializable("POIList", POIList);
+                bun.putSerializable("sPOIList", sPOIList);
+                bun.putSerializable("hPOIList", hPOIList);
+                is_hPOI = true;
                 i.putExtras(bun);
                 startActivity(i);
             }
@@ -109,8 +106,9 @@ public class ScanSuccess extends AppCompatActivity {
                                 }
                                 DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
                                 scoreOnDb.child(currentUser.getDisplayName()).setValue(POIList.size() - unlockCount);
-                                Intent backToMain = new Intent(ScanSuccess.this, MapsActivity.class);
+                                Intent backToMain = new Intent(ScanSuccess.this, POIPresentationActivity.class);
                                 Bundle bundle1 = new Bundle();
+                                bundle1.putSerializable("POI",poi);
                                 bundle1.putSerializable("POIList", POIList);
                                 bundle1.putSerializable("sPOIList", sPOIList);
                                 bundle1.putSerializable("hPOIList", hPOIList);
@@ -163,14 +161,13 @@ public class ScanSuccess extends AppCompatActivity {
     //}
 
 
-
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
         Intent i = new Intent(this, QRActivity.class);
-        Bundle b =new Bundle();
-        b.putSerializable("POIList",POIList);
-        b.putSerializable("sPOIList",sPOIList);
-        b.putSerializable("hPOIList",hPOIList);
+        Bundle b = new Bundle();
+        b.putSerializable("POIList", POIList);
+        b.putSerializable("sPOIList", sPOIList);
+        b.putSerializable("hPOIList", hPOIList);
         i.putExtras(b);
         startActivity(i);
     }
