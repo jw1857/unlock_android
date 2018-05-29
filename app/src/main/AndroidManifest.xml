@@ -44,7 +44,8 @@
         <activity android:name=".ScanSuccess" />
         <activity android:name=".MainActivity" />
         <activity android:name=".createAccount" />
-        <activity android:name=".LeaderboardsActivity"></activity>
+        <activity android:name=".LeaderboardsActivity" />
+        <activity android:name=".POIPresentationActivity"></activity>
     </application>
 
 </manifest>

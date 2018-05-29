@@ -24,7 +24,8 @@ import javax.xml.datatype.Duration;
 public class LeaderboardsActivity extends AppCompatActivity {
     // ArrayList<UnlockUser> UserList = new ArrayList<>();
     private ArrayList<POI> POIList;
-
+    private ArrayList<sPOI> sPOIList;
+    private ArrayList<hPOI> hPOIList;
     TableLayout tbl;
 
 
@@ -40,6 +41,8 @@ public class LeaderboardsActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if (b!=null) {
             POIList = (ArrayList<POI>) b.getSerializable("POIList");
+            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
+            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
         }
         tbl= findViewById(R.id.leaderboard);
         DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference().child("Scores");

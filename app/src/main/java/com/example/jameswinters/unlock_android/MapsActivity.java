@@ -71,6 +71,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Boolean mLocationPermissionGranted = false;
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
+    private ArrayList<hPOI> hPOIList;
     private GoogleMap mMap;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -122,7 +123,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(TAG, "getDeviceLocation: getting the device location");
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
         try{
             if(mLocationPermissionGranted){
                 Task location = mFusedLocationProviderClient.getLastLocation();
@@ -161,6 +161,30 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         //Toast.makeText(this,POIList.get(0).getTitle() , Toast.LENGTH_SHORT).show();
         addPOIMarkers(POIList);
         addsPOIMarkers(POIList,sPOIList);
+        addhPOIMarkers(hPOIList);
+     /*   mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
+            @Override
+            public void onMyLocationChange(Location location) {
+                for (POI p:POIList){
+                    Location pLoc = new Location("");
+
+                    pLoc.setLatitude(p.getLat());
+                    pLoc.setLongitude(p.getLng());
+                    LatLng ll = new LatLng(pLoc.getLatitude()-0.001,pLoc.getLongitude()-0.001);
+                    LatLng ll2 = new LatLng(pLoc.getLatitude()+0.001,pLoc.getLongitude()+0.001);
+                    LatLngBounds latLngBounds = new LatLngBounds(ll,ll2);
+                    LatLng loc = new LatLng(location.getLatitude(),location.getLongitude());
+                    if ((loc.latitude<= latLngBounds.northeast.latitude)&&(loc.latitude>=latLngBounds.southwest.latitude)){
+                       if ((loc.longitude<= latLngBounds.northeast.longitude)&&(loc.longitude>=latLngBounds.southwest.longitude)){
+                           if (p.getLockStatus()){
+                               p.setLockStatus(false);
+                           }
+                       }
+                    }
+
+                }
+            }
+        });*/
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
@@ -184,6 +208,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public boolean onMarkerClick(final Marker marker) {
                 int unlockCount =0;
+                for (hPOI h : hPOIList) {
+                    if ((marker.equals(h.marker)&&(h.marker.isVisible()))) {
+                        //s.setIcon(!s.getLockStatus());
+                        h.marker.showInfoWindow();
+                        //s.setLockStatus(!s.getLockStatus());
+                    }
+                }
                 for (sPOI s : sPOIList) {
                     if ((marker.equals(s.marker)&&(s.marker.isVisible()))) {
                         s.setIcon(!s.getLockStatus());
@@ -194,15 +225,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 //System.out.println(mMap.getCameraPosition().zoom);
                 for (POI p : POIList){
                     if (marker.equals(p.marker)){
-                        p.setIcon(!p.getLockStatus());
-                        p.marker.showInfoWindow();
-                        p.setLockStatus(!p.getLockStatus());
-                        for (sPOI s : sPOIList) {
-                            if (s.getParentName().equals(p.getTitle())) {
-                                if (!p.getLockStatus()) {
-                                    addSinglesPOIMarker(s);
+                        if (p.getLockStatus()) {
+                            p.setIcon(!p.getLockStatus());
+                            p.marker.showInfoWindow();
+                            p.setLockStatus(!p.getLockStatus());
+                            for (sPOI s : sPOIList) {
+                                if (s.getParentName().equals(p.getTitle())) {
+                                    if (!p.getLockStatus()) {
+                                        addSinglesPOIMarker(s);
+                                    }
                                 }
                             }
+                        }
+                        if(!p.getLockStatus()){
+                            Intent i = new Intent(MapsActivity.this,POIPresentationActivity.class);
+                            Bundle b= new Bundle();
+                            b.putSerializable("POI",p);
+                            i.putExtras(b);
+                            startActivity(i);
                         }
                         //Toast.makeText(MapsActivity.this,"marker pressed", Toast.LENGTH_SHORT).show();
                     }
@@ -249,6 +289,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (b!=null) {
             POIList = (ArrayList<POI>) b.getSerializable("POIList");
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
+            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
         }
     }
 
@@ -314,6 +355,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             p.setIcon(p.getLockStatus());
         }
     }
+
+    private void addhPOIMarkers(ArrayList<hPOI> hpoi){
+        for (hPOI h: hpoi){
+            if (h.getVisibility()){
+                h.marker =  mMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(h.getLat(),h.getLng()))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.hpoi))
+                        .title(h.getTitle()));
+            }
+        }
+    }
     private void addsPOIMarkers(ArrayList<POI> poi, ArrayList<sPOI> spoi) {
         for (sPOI s : spoi) {
             for (POI p : poi) {
@@ -367,6 +419,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Bundle bundle = new Bundle();
         bundle.putSerializable("POIList",POIList);
         bundle.putSerializable("sPOIList",sPOIList);
+        bundle.putSerializable("hPOIList",hPOIList);
         //bundle.putInt("From_Activity",1);
         i.putExtras(bundle);
         startActivity(i);

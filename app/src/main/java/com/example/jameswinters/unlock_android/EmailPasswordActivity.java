@@ -89,8 +89,10 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                     Intent i =new Intent(EmailPasswordActivity.this,MainActivity.class);
                                     GenericTypeIndicator<ArrayList<POI>> genericTypeIndicatorPOI = new GenericTypeIndicator<ArrayList<POI>>() {};
                                     GenericTypeIndicator<ArrayList<sPOI>> genericTypeIndicatorsPOI = new GenericTypeIndicator<ArrayList<sPOI>>() {};
+                                    GenericTypeIndicator<ArrayList<hPOI>> genericTypeIndicatorhPOI = new GenericTypeIndicator<ArrayList<hPOI>>() {};
                                     ArrayList<POI> POIList=new ArrayList<>();
                                     ArrayList<sPOI> sPOIList=new ArrayList<>();
+                                    ArrayList<hPOI> hPOIList=new ArrayList<>();
                                     Bundle b = new Bundle();
                                     for(DataSnapshot d : dataSnapshot.getChildren()) {
                                         switch (d.getKey()) {
@@ -100,11 +102,16 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                             case "sPOIs":
                                                 sPOIList =d.getValue(genericTypeIndicatorsPOI);
                                                 break;
+                                            case "hPOIs":
+                                                hPOIList = d.getValue(genericTypeIndicatorhPOI);
+
+
                                         }
                                     }
 
                                     b.putSerializable("POIList",POIList);
                                     b.putSerializable("sPOIList",sPOIList);
+                                    b.putSerializable("hPOIList",hPOIList);
                                     i.putExtras(b);
                                     startActivity(i);
                                 }
@@ -221,5 +228,6 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
+
     }
 }

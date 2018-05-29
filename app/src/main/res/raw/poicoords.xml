@@ -4,20 +4,70 @@
         <latitude>53.9623</latitude>
         <longitude>-1.0819</longitude>
         <locked value = "true"/>
+        <video name ="vidtest"/>
+        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlockauth-469c0.appspot.com/o/yorkminstermain.jpg?alt=media&amp;token=9bc3a7da-315b-40ce-b3e1-ac42b111ddaa"/>
+        <image
+            number = "2"
+            name = "image1"
+            name2 = "image2">
+        </image>
+        <audio name = "audiotest"/>
+        <text text = "York Minster is a minster in York."/>
     </POI>
     <POI name = "Jorvik Viking Centre">
         <latitude>53.9574</latitude>
         <longitude>-1.0803</longitude>
         <locked value = "true"/>
+        <video name ="vidtest"/>
+        <mainImage name ="maintest"/>
+        <image
+            number = "2"
+            name = "image1"
+            name2 = "image2">
+        </image>
+        <audio name = "audiotest"/>
+        <text text = "York Minster is a minster in York."/>
     </POI>
     <POI name = "York Museum Gardens">
         <latitude>53.9615</latitude>
         <longitude>-1.0883</longitude>
         <locked value = "true"/>
+        <video name ="vidtest"/>
+        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlockauth-469c0.appspot.com/o/yorkmuseumgardens.jpg?alt=media&amp;token=af3748a4-9287-430c-bed0-6103415ead55"/>
+        <image
+            number = "2"
+            name = "image1"
+            name2 = "image2">
+        </image>
+        <audio name = "audiotest"/>
+        <text text = "York Minster is a minster in York."/>
     </POI>
     <POI name = "University of York">
         <latitude>53.9471</latitude>
         <longitude>-1.0529</longitude>
         <locked value = "true"/>
+        <video name ="vidtest"/>
+        <mainImage name ="maintest"/>
+        <image
+            number = "2"
+            name = "image1"
+            name2 = "image2">
+        </image>
+        <audio name = "audiotest"/>
+        <text text = "York Minster is a minster in York."/>
+    </POI>
+    <POI name = "Clifford's Tower">
+        <latitude>53.9558</latitude>
+        <longitude>-1.0799</longitude>
+        <locked value = "true"/>
+        <video name ="vidtest"/>
+        <mainImage name ="maintest"/>
+        <image
+            number = "2"
+            name = "image1"
+            name2 = "image2">
+        </image>
+        <audio name = "audiotest"/>
+        <text text = "York Minster is a minster in York."/>
     </POI>
 </YorkPOIs>
