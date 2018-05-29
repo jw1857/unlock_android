@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<YorkhPOIs>
+    <hPOI name = "Whip-Ma-Whop-Ma-Gate">
+        <latitude>53.9591</latitude>
+        <longitude>-1.0796</longitude>
+        <visibility value = "false"/>
+    </hPOI>
+</YorkhPOIs>

@@ -6,14 +6,21 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class POI implements Serializable{
     private double lat;
     private double lng;
     private boolean lockStatus;
+    private String username;
     //private transient LatLng position;
     public transient Marker marker;
     private String title;
+    private String videoLink;
+    private String mainImageLink;
+    private String audioLink;
+    private String text;
+    private ArrayList<String> imageLinks =new ArrayList<>();
 
     public POI(){
     }
@@ -25,6 +32,45 @@ public class POI implements Serializable{
 
     }
 
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setAudioLink(String audioLink) {
+        this.audioLink = audioLink;
+    }
+
+    public void setMainImageLink(String mainImageLink) {
+        this.mainImageLink = mainImageLink;
+    }
+
+    public void setVideoLink(String videoLink) {
+        this.videoLink = videoLink;
+    }
+
+    public void setImageLinks(ArrayList<String> imageLinks) {
+        this.imageLinks = imageLinks;
+    }
+
+    public String getAudioLink() {
+        return audioLink;
+    }
+
+    public String getMainImageLink() {
+        return mainImageLink;
+    }
+
+    public ArrayList<String> getImageLinks() {
+        return imageLinks;
+    }
+
+    public String getVideoLink() {
+        return videoLink;
+    }
 
     public double getLat(){
         return this.lat;
@@ -69,6 +115,8 @@ public class POI implements Serializable{
             this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.unlock));
         }
     }
+
+
 
     public void setTitle(String newTitle){
         this.title = newTitle;

@@ -17,27 +17,25 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 
-
-public class POIXMLParser extends DefaultHandler{
-    public POI currentPOI;
+public class hPOIXMLParser extends DefaultHandler {
+    public hPOI currenthPOI;
     public String currentSubElement;
-    public  ArrayList<String> imagesList;
-    public static ArrayList<POI> POIList;
+    public static ArrayList<hPOI> hPOIList;
     public Context context;
-    POIXMLParser(Context c){
+    hPOIXMLParser(Context c){
         this.context = c;
     }
 
     public static void main(String[] args) {
 
     }
-    public  ArrayList<POI> getPOIList() {
-        DefaultHandler handler = new POIXMLParser(context);
-        //System.out.println(context.getResources().get(R.raw.pois));
+    public  ArrayList<hPOI> gethPOIList() {
+        DefaultHandler handler = new hPOIXMLParser(context);
+        //System.out.println(context.getResources().get(R.raw.hPOIs));
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
-            saxParser.parse(context.getResources().openRawResource(R.raw.poicoords),handler);
+            saxParser.parse(context.getResources().openRawResource(R.raw.hpois),handler);
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         } catch (SAXException saxe) {
@@ -45,18 +43,17 @@ public class POIXMLParser extends DefaultHandler{
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-        return POIList;
+        return hPOIList;
     }
 
     public void startElement(String uri, String localName, String qName, Attributes attrs) throws SAXException{
         String elementName = localName;
-        imagesList = new ArrayList<>();
         if ("".equals(elementName)) {
             elementName = qName;
         }
         switch (elementName) {
-            case "POI":
-                currentPOI = new POI();
+            case "hPOI":
+                currenthPOI = new hPOI();
                 break;
             case "latitude":
                 currentSubElement = "latitude";
@@ -66,22 +63,8 @@ public class POIXMLParser extends DefaultHandler{
                 break;
             case "locked":
                 currentSubElement = "locked";
-                break;
-            case "video":
-                currentSubElement = "video";
-                break;
-            case "mainImage":
-                currentSubElement = "mainImage";
-                break;
-            case "image":
-                currentSubElement = "image";
-                break;
-            case "audio":
-                currentSubElement ="audio";
-                break;
-            case "text":
-                currentSubElement ="text";
-                break;
+            case "parentName":
+                currentSubElement = "parentName";
             default:
                 currentSubElement = "none";
                 break;
@@ -93,31 +76,11 @@ public class POIXMLParser extends DefaultHandler{
             }
             String attributeValue = attrs.getValue(0);
             switch (elementName) {
-                case "POI":
-                    currentPOI.setTitle((attributeValue));
+                case "hPOI":
+                    currenthPOI.setTitle((attributeValue));
                     break;
-                case "locked":
-                    currentPOI.setLockStatus(Boolean.parseBoolean(attributeValue));
-                    break;
-                case "video":
-                    currentPOI.setVideoLink(attributeValue);
-                    break;
-                case "mainImage":
-                    currentPOI.setMainImageLink(attributeValue);
-                    break;
-                case "audio":
-                    currentPOI.setAudioLink(attributeValue);
-                    break;
-                case "text":
-                    currentPOI.setText(attributeValue);
-                    break;
-                case "image":
-                    int number = Integer.parseInt(attributeValue);
-                    for (int i=1;i<=number;i++) {
-                        imagesList.add(attrs.getValue(i));
-                    }
-                    currentPOI.setImageLinks(imagesList);
-                    break;
+                case "visibility":
+                    currenthPOI.setVisibility(Boolean.parseBoolean(attributeValue));
                 default:
                     break;
             }
@@ -130,10 +93,9 @@ public class POIXMLParser extends DefaultHandler{
         if ("".equals(elementName)) {
             elementName = qName;
         }
-        if (elementName.equals("POI")) {
-
-            POIList.add(currentPOI);
-            currentPOI = null;
+        if (elementName.equals("hPOI")) {
+            hPOIList.add(currenthPOI);
+            currenthPOI = null;
         }
     }
 
@@ -141,10 +103,10 @@ public class POIXMLParser extends DefaultHandler{
         String newContent = new String(ch, start, length);
         switch (currentSubElement) {
             case "latitude":
-                currentPOI.setLat(Double.parseDouble(newContent));
+                currenthPOI.setLat(Double.parseDouble(newContent));
                 break;
             case "longitude":
-                currentPOI.setLng(Double.parseDouble(newContent));
+                currenthPOI.setLng(Double.parseDouble(newContent));
                 break;
             default:
                 break;
@@ -153,18 +115,18 @@ public class POIXMLParser extends DefaultHandler{
 
 
     public void startDocument() throws SAXException{
-        POIList = new ArrayList<>();
+        hPOIList = new ArrayList<>();
     }
 
     public void endDocument() throws SAXException{
-        System.out.println("Finished parsing, stored " + POIList.size() + " POIs.");
-        for (POI p : POIList) {
-            System.out.println("Name: " + p.getTitle());
-            System.out.println("Lat: " + p.getLat());
-            System.out.println("Lng: " + p.getLng());
-            System.out.println("Locked: " + p.getLockStatus());
+        System.out.println("Finished parsing, stored " + hPOIList.size() + " hPOIs.");
+        for (hPOI thisStudent : hPOIList) {
+            System.out.println("Name: " + thisStudent.getTitle());
+            System.out.println("Lat: " + thisStudent.getLat());
+            System.out.println("Lng: " + thisStudent.getLng());
         }
     }
+
 
 
 }

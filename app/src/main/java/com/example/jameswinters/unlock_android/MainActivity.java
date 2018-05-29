@@ -43,12 +43,14 @@ public class MainActivity extends AppCompatActivity {
     private static final int ERROR_DIALOG_REQUEST = 9001;
     public ArrayList<POI> POIList = new ArrayList<>();
     public ArrayList<sPOI> sPOIList = new ArrayList<>();
+    public ArrayList<hPOI> hPOIList = new ArrayList<>();
     private Intent i;
     //String username;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
+    DatabaseReference myhPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("hPOIs");
     DatabaseReference mysPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("sPOIs");
     TextView currentUserText;
 
@@ -65,8 +67,10 @@ public class MainActivity extends AppCompatActivity {
         if (b!=null){
             POIList = (ArrayList<POI>)b.getSerializable("POIList");
             sPOIList =(ArrayList<sPOI>)b.getSerializable("sPOIList");
+            hPOIList =(ArrayList<hPOI>)b.getSerializable("hPOIList");
             myPOIRef.setValue(POIList);
             mysPOIRef.setValue(sPOIList);
+            myhPOIRef.setValue(hPOIList);
             checkForChangeInPOIs();
         }
         /*myPOIRef.addValueEventListener(new ValueEventListener() {
@@ -87,14 +91,16 @@ public class MainActivity extends AppCompatActivity {
                 Log.w(TAG, "Failed to read value.", error.toException());
             }
         });*/
-        System.out.println("test"+ POIList.get(0).getTitle());
-        System.out.println("test spoi"+ sPOIList.get(0).getTitle());
+//        System.out.println("test"+ POIList.get(0).getTitle());
+        //      System.out.println("test spoi"+ sPOIList.get(0).getTitle());
         signOut();
         if(isServicesOk()){
             init();
             statusCheck();
         }
     }
+
+
 
     public void signOut(){
         Button signOut = findViewById(R.id.signOutMain);
@@ -163,6 +169,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, QRActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("POIList",POIList);
+                bundle.putSerializable("sPOIList",sPOIList);
+                bundle.putSerializable("hPOIList",hPOIList);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -174,6 +182,7 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("POIList",POIList);
                 bundle.putSerializable("sPOIList",sPOIList);
+                bundle.putSerializable("hPOIList",hPOIList);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -184,6 +193,8 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, LeaderboardsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("POIList",POIList);
+                bundle.putSerializable("sPOIList",sPOIList);
+                bundle.putSerializable("hPOIList",hPOIList);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -220,4 +231,5 @@ public class MainActivity extends AppCompatActivity {
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(a);
     }
+
 }
