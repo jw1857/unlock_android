@@ -2,6 +2,8 @@ package com.example.jameswinters.unlock_android;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Window;
@@ -12,7 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ImageActivity extends AppCompatActivity {
+public class ImageActivity extends AppCompatActivity{
     POI poi;
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
@@ -38,15 +40,15 @@ public class ImageActivity extends AppCompatActivity {
 
         imageLinkArray = poi.getImageLinks();
         numImages = imageLinkArray.size();
-        String imagelink = imageLinkArray.get(0);
-        Uri uri = Uri.parse(imagelink);
+        //String imagelink = imageLinkArray.get(0);
+        //Uri uri = Uri.parse(imagelink);
         /*for (int j=0; j<numImages; j++){
             String imagelink = imageArray.get(j);
             Uri uri = Uri.parse(imagelink);
         }*/
-        ImageView imageview = findViewById(R.id.image_view);
-        imageview.setImageURI(uri);
-        Picasso.with(this).load(imagelink).into(imageview);
-
+        //ImageView imageview = findViewById(R.id.image_view);
+        //imageview.setImageURI(uri);
+        //Picasso.with(this).load(imagelink).into(imageview);
+        ViewPager viewPager = findViewById(R.id.view_pager);
     }
 }
