@@ -231,8 +231,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 for (sPOI s : sPOIList) {
                     if ((marker.equals(s.marker)&&(s.marker.isVisible()))) {
-                        s.setIcon(!s.getLockStatus());
-                        s.setLockStatus(!s.getLockStatus());
+                       // s.setIcon(!s.getLockStatus());
+                       // s.setLockStatus(!s.getLockStatus());
                         s.marker.showInfoWindow();
                        // s.setLockStatus(!s.getLockStatus());
                     }
@@ -416,6 +416,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         for (sPOI s : spoi) {
             for (POI p : poi) {
                 if (s.getParentName().equals(p.getTitle())) {
+                    s.setParent(p);
                     if (!p.getLockStatus()) {
                         s.marker =  mMap.addMarker(new MarkerOptions()
                                 .visible(s.getVisibility())

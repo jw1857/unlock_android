@@ -38,6 +38,7 @@ public class ScanSuccess extends AppCompatActivity {
         POIListCompare = parser.getPOIList();
         Intent intent = getIntent();
         boolean is_hPOI = false;
+        boolean is_sPOI = false;
         Bundle b = intent.getExtras();
         final MediaPlayer mediaPlayerSuccess = MediaPlayer.create(this, R.raw.unlock_success);
         final MediaPlayer mediaPlayerFailure = MediaPlayer.create(this, R.raw.unlock_failure);
@@ -56,19 +57,27 @@ public class ScanSuccess extends AppCompatActivity {
 
         setContentView(R.layout.activity_scan_success);
         TextView tv = findViewById(R.id.scan_text);
+
         if (b != null) {
             location = b.getString("Location");
             POIList = (ArrayList<POI>) b.getSerializable("POIList");
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
             hPOIList = (ArrayList<hPOI>) b.getSerializable("hPOIList");
         } else location = "invalid";
+        for (sPOI s : sPOIList) {
+            for (POI p : POIList) {
+                if (s.getParentName().equals(p.getTitle())) {
+                    s.setParent(p);
+                }
+            }
+        }
         for (hPOI h : hPOIList) {
             if ((location.equals(h.getTitle())) && (!h.getVisibility())) {
                 h.setVisibility(true);
                 Intent i = new Intent(ScanSuccess.this, MapsActivity.class);
                 Bundle bun = new Bundle();
                 mediaPlayerSuccess.start();
-                Toast.makeText(this, "Hidden location discovered!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Sub Location!", Toast.LENGTH_SHORT).show();
                 bun.putSerializable("POIList", POIList);
                 bun.putSerializable("sPOIList", sPOIList);
                 bun.putSerializable("hPOIList", hPOIList);
@@ -76,8 +85,35 @@ public class ScanSuccess extends AppCompatActivity {
                 i.putExtras(bun);
                 startActivity(i);
             }
+            else if ((location.equals(h.getTitle())) && (h.getVisibility())){
+                Toast.makeText(this, "Unlock Parent POI First! ", Toast.LENGTH_SHORT).show();
+                mediaPlayerFailure.start();
+                Intent i = new Intent(this, MainActivity.class);
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("POIList", POIList);
+                bundle1.putSerializable("sPOIList", sPOIList);
+                bundle1.putSerializable("hPOIList", hPOIList);
+                i.putExtras(bundle1);
+                startActivity(i);
+            }
         }
-        if (!is_hPOI) {
+        for (sPOI s : sPOIList) {
+            POI parent = s.getParent();
+            if ((location.equals(s.getTitle())) && (!parent.getLockStatus())) {
+                s.setLockStatus(false);
+                Intent i = new Intent(ScanSuccess.this, MapsActivity.class);
+                Bundle bun = new Bundle();
+                mediaPlayerSuccess.start();
+                Toast.makeText(this, "Hidden location discovered!", Toast.LENGTH_SHORT).show();
+                bun.putSerializable("POIList", POIList);
+                bun.putSerializable("sPOIList", sPOIList);
+                bun.putSerializable("hPOIList", hPOIList);
+                is_sPOI = true;
+                i.putExtras(bun);
+                startActivity(i);
+            }
+        }
+        if ((!is_hPOI)&&(!is_sPOI)) {
             for (POI p : POIListCompare) {
                 if (location.equals(p.getTitle())) {
                     for (POI poi : POIList) {
