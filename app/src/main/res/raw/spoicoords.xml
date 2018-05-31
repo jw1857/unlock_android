@@ -2,7 +2,7 @@
 <YorksPOIs>
     <sPOI name = "JB Morrell Library">
         <latitude>53.9489</latitude>
-        <longitude>-1.05</longitude>
+        <longitude>-1.0500</longitude>
         <locked value = "true"/>
         <parentName name = "University of York"/>
     </sPOI>

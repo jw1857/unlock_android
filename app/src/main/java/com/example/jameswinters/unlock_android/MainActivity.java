@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button)findViewById(R.id.btnMap);
         Button button2 = (Button)findViewById(R.id.btnMap1);
         Button button3 = (Button)findViewById(R.id.btnMap2);
+        Button button4 = (Button)findViewById(R.id.presentationButton);
 
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -198,7 +199,9 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
+
         });
+
     }
 
     public boolean isServicesOk(){
