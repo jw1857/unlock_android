@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -33,7 +34,7 @@ public class POIPresentationActivity extends AppCompatActivity {
             String imageString = poi.getMainImageLink();
             Picasso.with(this).load(imageString).into(iv);
         }
-        Button videoButton = findViewById(R.id.videobutton);
+        /*Button videoButton = findViewById(R.id.videobutton);
         videoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,6 +76,7 @@ public class POIPresentationActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
+        */
     }
 
     @Override

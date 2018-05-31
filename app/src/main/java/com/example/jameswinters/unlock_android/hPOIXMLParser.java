@@ -21,6 +21,7 @@ public class hPOIXMLParser extends DefaultHandler {
     public hPOI currenthPOI;
     public String currentSubElement;
     public static ArrayList<hPOI> hPOIList;
+    public ArrayList<String> imagesList;
     public Context context;
     hPOIXMLParser(Context c){
         this.context = c;
@@ -63,8 +64,25 @@ public class hPOIXMLParser extends DefaultHandler {
                 break;
             case "locked":
                 currentSubElement = "locked";
+                break;
             case "parentName":
                 currentSubElement = "parentName";
+                break;
+            case "video":
+                currentSubElement = "video";
+                break;
+            case "mainImage":
+                currentSubElement = "mainImage";
+                break;
+            case "image":
+                currentSubElement = "image";
+                break;
+            case "audio":
+                currentSubElement ="audio";
+                break;
+            case "text":
+                currentSubElement ="text";
+                break;
             default:
                 currentSubElement = "none";
                 break;
@@ -81,6 +99,26 @@ public class hPOIXMLParser extends DefaultHandler {
                     break;
                 case "visibility":
                     currenthPOI.setVisibility(Boolean.parseBoolean(attributeValue));
+                    break;
+                case "video":
+                    currenthPOI.setVideoLink(attributeValue);
+                    break;
+                case "mainImage":
+                    currenthPOI.setMainImageLink(attributeValue);
+                    break;
+                case "audio":
+                    currenthPOI.setAudioLink(attributeValue);
+                    break;
+                case "text":
+                    currenthPOI.setText(attributeValue);
+                    break;
+                case "image":
+                    int number = Integer.parseInt(attributeValue);
+                    for (int i=1;i<=number;i++) {
+                        imagesList.add(attrs.getValue(i));
+                    }
+                    currenthPOI.setImageLinks(imagesList);
+                    break;
                 default:
                     break;
             }
