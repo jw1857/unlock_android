@@ -22,6 +22,7 @@ public class sPOIXMLParser extends DefaultHandler {
     public sPOI currentsPOI;
     public String currentSubElement;
     public static ArrayList<sPOI> sPOIList;
+    public ArrayList<String> imagesList;
     public Context context;
     sPOIXMLParser(Context c){
         this.context = c;
@@ -64,8 +65,25 @@ public class sPOIXMLParser extends DefaultHandler {
                 break;
             case "locked":
                 currentSubElement = "locked";
+                break;
             case "parentName":
                 currentSubElement = "parentName";
+                break;
+            case "video":
+                currentSubElement = "video";
+                break;
+            case "mainImage":
+                currentSubElement = "mainImage";
+                break;
+            case "image":
+                currentSubElement = "image";
+                break;
+            case "audio":
+                currentSubElement ="audio";
+                break;
+            case "text":
+                currentSubElement ="text";
+                break;
             default:
                 currentSubElement = "none";
                 break;
@@ -84,6 +102,25 @@ public class sPOIXMLParser extends DefaultHandler {
                     currentsPOI.setLockStatus(Boolean.parseBoolean(attributeValue));
                 case "parentName":
                     currentsPOI.setParentName(attributeValue);
+                case "video":
+                    currentsPOI.setVideoLink(attributeValue);
+                    break;
+                case "mainImage":
+                    currentsPOI.setMainImageLink(attributeValue);
+                    break;
+                case "audio":
+                    currentsPOI.setAudioLink(attributeValue);
+                    break;
+                case "text":
+                    currentsPOI.setText(attributeValue);
+                    break;
+                case "image":
+                    int number = Integer.parseInt(attributeValue);
+                    for (int i=1;i<=number;i++) {
+                        imagesList.add(attrs.getValue(i));
+                    }
+                    currentsPOI.setImageLinks(imagesList);
+                    break;
                 default:
                     break;
             }

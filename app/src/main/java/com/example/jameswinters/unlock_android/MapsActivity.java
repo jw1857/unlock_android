@@ -63,6 +63,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     FirebaseDatabase database = FirebaseDatabase.getInstance();
     DatabaseReference myPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
     DatabaseReference mysPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("sPOIs");
+    DatabaseReference myhPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("hPOIs");
     double POIProgress;
     private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
@@ -89,6 +90,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void setProgressValue(double progress){
         ProgressBar pb = findViewById(R.id.progressBar);
         pb.setProgress((int)progress);
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -99,14 +101,26 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                for (POI p : POIList){
-                    boolean ls = p.getLockStatus();
-                    if (!ls){
+                for (POI p:POIList) {
+                    boolean lsp = p.getLockStatus();
+                    if (!lsp) {
                         progressCount = progressCount + 1;
                     }
                 }
-
-                POIProgress = ((float)progressCount/(float)POIList.size())*pb.getMax();
+                for (sPOI s:sPOIList) {
+                    boolean lss = s.getLockStatus();
+                    if (!lss) {
+                        progressCount = progressCount + 1;
+                    }
+                }
+                for (hPOI h:hPOIList){
+                    boolean lsh = h.getVisibility();
+                    if (lsh){
+                        progressCount = progressCount +1;
+                    }
+                }
+               int  size = POIList.size()+hPOIList.size()+sPOIList.size();
+                POIProgress = ((float)progressCount/(float)size*pb.getMax());
                 setProgressValue(POIProgress);
             }
         });
@@ -218,6 +232,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 for (sPOI s : sPOIList) {
                     if ((marker.equals(s.marker)&&(s.marker.isVisible()))) {
                         s.setIcon(!s.getLockStatus());
+                        s.setLockStatus(!s.getLockStatus());
                         s.marker.showInfoWindow();
                        // s.setLockStatus(!s.getLockStatus());
                     }
@@ -249,28 +264,56 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                         //Toast.makeText(MapsActivity.this,"marker pressed", Toast.LENGTH_SHORT).show();
                     }
-                    boolean ls = p.getLockStatus();
-                    if (!ls){
+
+                }
+                for (POI p:POIList) {
+                    boolean lsp = p.getLockStatus();
+                    if (!lsp) {
                         unlockCount = unlockCount + 1;
                     }
                 }
-                DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-                scoreOnDb.child(currentUser.getDisplayName()).setValue(POIList.size()-unlockCount);
+                for (sPOI s:sPOIList) {
+                    boolean lss = s.getLockStatus();
+                    if (!lss) {
+                        unlockCount = unlockCount + 1;
+                    }
+                }
+                for (hPOI h:hPOIList){
+                    boolean lsh = h.getVisibility();
+                    if (lsh){
+                        unlockCount = unlockCount +1;
+                    }
+                }
                 myPOIRef.setValue(POIList);
                 mysPOIRef.setValue(sPOIList);
+                myhPOIRef.setValue(hPOIList);
                 return true;
             }
         });
-        for (POI p : POIList){
-            boolean ls = p.getLockStatus();
-            if (!ls){
+        for (POI p:POIList) {
+            boolean lsp = p.getLockStatus();
+            if (!lsp) {
                 progressCount = progressCount + 1;
             }
-
         }
+        for (sPOI s:sPOIList) {
+            boolean lss = s.getLockStatus();
+            if (!lss) {
+                progressCount = progressCount + 1;
+            }
+        }
+            for (hPOI h:hPOIList){
+            boolean lsh = h.getVisibility();
+            if (lsh){
+                progressCount = progressCount +1;
+                }
+        }
+
+        DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+        scoreOnDb.child(currentUser.getDisplayName()).setValue(POIList.size()+sPOIList.size()+hPOIList.size()-progressCount);
         System.out.println(progressCount);
         System.out.println(POIList.size());
-        int size = POIList.size();
+        int size = POIList.size()+sPOIList.size()+hPOIList.size();
         POIProgress = (float)progressCount/(float)size;
         System.out.println(POIProgress);
         POIProgress = POIProgress*pb.getMax();

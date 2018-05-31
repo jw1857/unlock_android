@@ -98,8 +98,12 @@ public class LeaderboardsActivity extends AppCompatActivity {
         un.setText(username);
         un.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         TextView pu = new TextView(LeaderboardsActivity.this);
-        String poisunlocked = Integer.toString(POIList.size()-score);
-        pu.setText(poisunlocked);
+        int size = POIList.size()+hPOIList.size()+sPOIList.size();
+        int poisunlocked = size-score;
+        float poisunlockedpercent = ((float)poisunlocked/(float)size)*100;
+        int poisint = (int)poisunlockedpercent;
+        String poiout = Integer.toString(poisint);
+        pu.setText(poiout);
         pu.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         tr.addView(un);
         tr.addView(pu);
