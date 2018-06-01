@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button)findViewById(R.id.btnMap);
         Button button2 = (Button)findViewById(R.id.btnMap1);
         Button button3 = (Button)findViewById(R.id.btnMap2);
+        Button button5 = (Button)findViewById(R.id.button_settings);
 
 
         button.setOnClickListener(new View.OnClickListener(){

@@ -25,6 +25,7 @@ public class POIPresentationActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if (b != null) {
             poi = (POI) b.getSerializable("POI");
+
             String imageString = poi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }

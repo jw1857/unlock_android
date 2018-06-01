@@ -14,20 +14,19 @@ import java.util.ArrayList;
 
 public class hPOIPresentationActivity extends AppCompatActivity {
     hPOI hpoi;
+
     ImageView iv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hpoipresentation);
 
-        iv = findViewById(R.id.poiMainImage);
+        iv = findViewById(R.id.poiMainImage); // need to change
         Intent i = getIntent();
         Bundle b = i.getExtras();
         if (b != null) {
             hpoi = (hPOI) b.getSerializable("hPOI");
-           // POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            //sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            //hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
+
             String imageString = hpoi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }
@@ -49,6 +48,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 Intent i = new Intent(hPOIPresentationActivity.this, ImageActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("hPOI", hpoi);
+
                 i.putExtras(b);
                 startActivity(i);
             }
