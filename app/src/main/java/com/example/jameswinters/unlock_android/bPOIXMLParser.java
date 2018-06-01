@@ -32,12 +32,12 @@ public class bPOIXMLParser extends DefaultHandler{
 
     }
     public  ArrayList<bPOI> getbPOIList() {
-        DefaultHandler handler = new POIXMLParser(context);
+        DefaultHandler handler = new bPOIXMLParser(context);
         //System.out.println(context.getResources().get(R.raw.pois));
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
-            saxParser.parse(context.getResources().openRawResource(R.raw.poicoords),handler);
+            saxParser.parse(context.getResources().openRawResource(R.raw.bpois),handler);
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         } catch (SAXException saxe) {
@@ -97,7 +97,7 @@ public class bPOIXMLParser extends DefaultHandler{
                     currentbPOI.setTitle((attributeValue));
                     break;
                 case "businesstype":
-                    currentbPOI.setBusinessIconType(attributeValue);
+                    currentbPOI.setType(attributeValue);
                     break;
                 case "video":
                     currentbPOI.setVideoLink(attributeValue);

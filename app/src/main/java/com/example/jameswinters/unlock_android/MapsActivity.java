@@ -331,6 +331,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         POIList = MainActivity.readPOIsFromSD(POIList,currentUser);
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = MainActivity.readhPOIsFromSD(hPOIList,currentUser);
+        bPOIList =MainActivity.readbPOIsFromSD(bPOIList,currentUser);
 
     }
 
@@ -358,7 +359,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             b.marker =  mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(b.getLat(),b.getLng()))
                     .title(b.getTitle()));
-
+            b.setBusinessIconType(b.getType());
         }
     }
 

@@ -86,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
         POIList = readPOIsFromSD(POIList,currentUser);
         sPOIList = readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = readhPOIsFromSD(hPOIList,currentUser);
-        bPOIList=readbPOIsFromSD(bPOIList,currentUser);
+        bPOIList= readbPOIsFromSD(bPOIList,currentUser);
+       // Toast.makeText(this,bPOIList.get(0).getTitle(),Toast.LENGTH_SHORT).show();
         myPOIRef.setValue(POIList);
         mysPOIRef.setValue(sPOIList);
         myhPOIRef.setValue(hPOIList);
