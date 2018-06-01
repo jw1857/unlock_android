@@ -193,6 +193,14 @@ public class ScanSuccess extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MainActivity.savePOIListToSD(POIList,currentUser);
+        MainActivity.savehPOIListToSD(hPOIList,currentUser);
+        MainActivity.savesPOIListToSD(sPOIList,currentUser);
+    }
+
     private void checkPOI(String loc, MediaPlayer mp ,Toast toast){
         boolean unlocked =false;
         for (POI p:POIList){

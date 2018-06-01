@@ -53,6 +53,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.jameswinters.unlock_android.MainActivity.savePOIListToSD;
+
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -479,6 +481,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MainActivity.savePOIListToSD(POIList,currentUser);
+        MainActivity.savehPOIListToSD(hPOIList,currentUser);
+        MainActivity.savesPOIListToSD(sPOIList,currentUser);
     }
     @Override
     public void onBackPressed(){
