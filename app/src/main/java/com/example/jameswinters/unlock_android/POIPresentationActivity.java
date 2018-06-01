@@ -32,9 +32,9 @@ public class POIPresentationActivity extends AppCompatActivity {
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
             hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
             String imageString = poi.getMainImageLink();
-            Picasso.with(this).load(imageString).into(iv);
+            Picasso.get().load(imageString).into(iv);
         }
-        /*Button videoButton = findViewById(R.id.videobutton);
+        Button videoButton = findViewById(R.id.videobutton);
         videoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +76,7 @@ public class POIPresentationActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        */
+
     }
 
     @Override

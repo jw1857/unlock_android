@@ -20,6 +20,7 @@ public class ImageActivity extends AppCompatActivity{
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
     private ArrayList<String> imageLinkArray;
+
     private int numImages;
 
     @Override
@@ -49,6 +50,12 @@ public class ImageActivity extends AppCompatActivity{
         //ImageView imageview = findViewById(R.id.image_view);
         //imageview.setImageURI(uri);
         //Picasso.with(this).load(imagelink).into(imageview);
+
+        String[] imageUriStringArray = new String[numImages];
+        imageUriStringArray = imageLinkArray.toArray(imageUriStringArray);
         ViewPager viewPager = findViewById(R.id.view_pager);
+        ViewPagerAdapter adapter = new ViewPagerAdapter(this, imageUriStringArray);
+        viewPager.setAdapter(adapter);
+        
     }
 }
