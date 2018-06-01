@@ -230,6 +230,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         h.marker.showInfoWindow();
                         //s.setLockStatus(!s.getLockStatus());
                     }
+                    if(!h.getLockStatus()){
+                        Intent i = new Intent(MapsActivity.this,hPOIPresentationActivity.class);
+                        Bundle b= new Bundle();
+                        b.putSerializable("POIList",POIList);
+                        b.putSerializable("sPOIList",sPOIList);
+                        b.putSerializable("hPOIList",hPOIList);
+                        b.putSerializable("hPOI",h);
+                        i.putExtras(b);
+                        startActivity(i);
+                    }
                 }
                 for (sPOI s : sPOIList) {
                     if ((marker.equals(s.marker)&&(s.marker.isVisible()))) {
@@ -237,6 +247,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                        // s.setLockStatus(!s.getLockStatus());
                         s.marker.showInfoWindow();
                        // s.setLockStatus(!s.getLockStatus());
+                    }
+                    if(!s.getLockStatus()){
+                        Intent i = new Intent(MapsActivity.this,sPOIPresentationActivity.class);
+                        Bundle b= new Bundle();
+                        b.putSerializable("POIList",POIList);
+                        b.putSerializable("sPOIList",sPOIList);
+                        b.putSerializable("hPOIList",hPOIList);
+                        b.putSerializable("sPOI",s);
+                        i.putExtras(b);
+                        startActivity(i);
                     }
                 }
                 //System.out.println(mMap.getCameraPosition().zoom);
