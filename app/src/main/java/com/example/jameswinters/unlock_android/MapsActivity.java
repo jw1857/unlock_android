@@ -174,6 +174,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         addPOIMarkers(POIList);
         addsPOIMarkers(POIList,sPOIList);
         addhPOIMarkers(hPOIList);
+        //addbPOIMarkers();
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
@@ -338,6 +339,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .position(new LatLng(p.getLat(),p.getLng()))
                     .title(p.getTitle()));
             p.setIcon(p.getLockStatus());
+        }
+    }
+
+    private void addbPOIMarkers(ArrayList<bPOI> bpoi) {
+        for (bPOI b : bpoi) {
+            b.marker =  mMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(b.getLat(),b.getLng()))
+                    .title(b.getTitle()));
+
         }
     }
 

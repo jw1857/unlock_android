@@ -27,8 +27,8 @@ public class hPOIPresentationActivity extends AppCompatActivity {
         if (b != null) {
             hpoi = (hPOI) b.getSerializable("hPOI");
 
-            String imageString = hpoi.getMainImageLink();
-            Picasso.get().load(imageString).into(iv);
+            //String imageString = hpoi.getMainImageLink();
+           // Picasso.get().load(imageString).into(iv);
         }
         Button videoButton = findViewById(R.id.videobutton_hpoi);
         videoButton.setOnClickListener(new View.OnClickListener() {
@@ -54,16 +54,23 @@ public class hPOIPresentationActivity extends AppCompatActivity {
             }
         });
         Button audioButton = findViewById(R.id.audiobutton_hpoi);
-        audioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(hPOIPresentationActivity.this, AudioActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("hPOI", hpoi);
-                i.putExtras(b);
-                startActivity(i);
-            }
-        });
+        if(hpoi.getAudioLink() == null){
+            audioButton.setVisibility(View.INVISIBLE);
+        }
+        else if(!(hpoi.getAudioLink() == null)){
+            audioButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(hPOIPresentationActivity.this, AudioActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("hPOI", hpoi);
+                    i.putExtras(b);
+                    startActivity(i);
+                }
+            });
+        }
+
+
 
     }
 

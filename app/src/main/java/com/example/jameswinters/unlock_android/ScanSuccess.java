@@ -104,8 +104,10 @@ public class ScanSuccess extends AppCompatActivity {
                 int size = POIList.size() + hPOIList.size() + hPOIList.size();
                 DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
                 scoreOnDb.child(currentUser.getDisplayName()).setValue(size - unlockCount);
-                Intent i = new Intent(ScanSuccess.this, MapsActivity.class);
+                Intent i = new Intent(ScanSuccess.this, hPOIPresentationActivity.class);
                 Bundle bun = new Bundle();
+                bun.putSerializable("hPOI",h);
+                i.putExtras(bun);
                 mp.start();
                 toast.show();
                 Toast.makeText(this, "Hidden location discovered!", Toast.LENGTH_SHORT).show();
@@ -113,12 +115,12 @@ public class ScanSuccess extends AppCompatActivity {
             }
             if ((loc.equals(h.getTitle())) && (h.getVisibility()) && (h.getLockStatus()) && (!unlocked)){
                 Toast.makeText(this, "Location already discovered!", Toast.LENGTH_SHORT).show();
-                Intent backToMain = new Intent(ScanSuccess.this, MainActivity.class);
+                Intent i = new Intent(ScanSuccess.this, hPOIPresentationActivity.class);
                 Bundle bundle = new Bundle();
-                //bundle.putSerializable("POI",p);
+                bundle.putSerializable("hPOI",h);
 
-                backToMain.putExtras(bundle);
-                startActivity(backToMain);
+                i.putExtras(bundle);
+                startActivity(i);
             }
 
         }

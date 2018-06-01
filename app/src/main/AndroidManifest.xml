@@ -78,6 +78,10 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".bPOIPresentationActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".VideoActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="landscape" />
