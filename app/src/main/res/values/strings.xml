@@ -7,5 +7,7 @@
     <string name="currentUserID">Signed in as: %s</string>
     <string name="firebase_status_fmt">Firebase: %s</string>
     <string name="signed_out">Signed out</string>
+    <string name="username">Username</string>
+    <string name="total_completion">Total Completion(%)</string>
 
 </resources>

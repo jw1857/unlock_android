@@ -79,7 +79,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                                     ArrayList<hPOI> hPOIList = hparser.gethPOIList();
                                     String name = usernameContainer.getText().toString();
                                     DatabaseReference initialScoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-                                    initialScoreOnDb.child(name).setValue(POIList.size());
+                                    initialScoreOnDb.child(name).setValue(POIList.size()+hPOIList.size()+sPOIList.size());
                                     Bundle b = new Bundle();
                                     b.putSerializable("POIList", POIList);
                                     b.putSerializable("sPOIList",sPOIList);
