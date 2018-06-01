@@ -1,8 +1,12 @@
 package com.example.jameswinters.unlock_android;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -31,6 +35,9 @@ import java.util.ArrayList;
 public class EmailPasswordActivity extends AppCompatActivity implements Button.OnClickListener {
     private FirebaseAuth mAuth;
     private String msg = "Android:";
+    private static final String WRITE_DATA = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    private static final int REQUEST_CODE = 1234;
+    private boolean mWriteStorage =false;
     EditText emailContainer ;
     EditText passwordContainer ;
     TextView mStatusTextView ;
@@ -42,6 +49,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_password);
+        getStoragePermissions();
         emailContainer = findViewById(R.id.emailContainer);
         passwordContainer = findViewById(R.id.passwordContainer);
         mStatusTextView = findViewById(R.id.mStatusTextView);
@@ -111,10 +119,10 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                     MainActivity.savePOIListToSD(POIList,user);
                                     MainActivity.savesPOIListToSD(sPOIList,user);
                                     MainActivity.savehPOIListToSD(hPOIList,user);
-                                    b.putSerializable("POIList",POIList);
+                                    /*b.putSerializable("POIList",POIList);
                                     b.putSerializable("sPOIList",sPOIList);
                                     b.putSerializable("hPOIList",hPOIList);
-                                    i.putExtras(b);
+                                    i.putExtras(b);*/
                                     startActivity(i);
                                 }
 
@@ -157,6 +165,26 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
             // findViewById(R.id.email_password_buttons).setVisibility(View.VISIBLE);
             //findViewById(R.id.email_password_fields).setVisibility(View.VISIBLE);
             //findViewById(R.id.signed_in_buttons).setVisibility(View.GONE);
+        }
+    }
+    public void getStoragePermissions(){
+        Log.d("Android", "getLocationPermission: getting location permissions");
+
+        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                WRITE_DATA) == PackageManager.PERMISSION_GRANTED){
+            mWriteStorage = true;
+        }
+        else{
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
+        }
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
+            Log.v("Android","Permission: "+permissions[0]+ "was "+grantResults[0]);
+            //resume tasks needing this permission
         }
     }
     private boolean validateForm() {

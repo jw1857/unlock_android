@@ -40,7 +40,7 @@ import javax.xml.datatype.Duration;
 
 public class LeaderboardsActivity extends AppCompatActivity {
     // ArrayList<UnlockUser> UserList = new ArrayList<>();
-    private ArrayList<POI> POIList = new ArrayList<POI>();
+    private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -59,61 +59,39 @@ public class LeaderboardsActivity extends AppCompatActivity {
         Intent i;
         i = getIntent();
         Bundle b = i.getExtras();
-        POIList = MainActivity.readPOIsFromSD(POIList,currentUser);
-        sPOIList = MainActivity.readsPOIsFromSD(sPOIList,currentUser);
-        hPOIList = MainActivity.readhPOIsFromSD(hPOIList,currentUser);
-        if (b!=null) {
+        POIList = MainActivity.readPOIsFromSD(POIList, currentUser);
+        sPOIList = MainActivity.readsPOIsFromSD(sPOIList, currentUser);
+        hPOIList = MainActivity.readhPOIsFromSD(hPOIList, currentUser);
+       /* if (b!=null) {
            // POIList = (ArrayList<POI>) b.getSerializable("POIList");
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
             hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
-        }
+        }*/
         DatabaseReference scoresRef;
-        tbl= findViewById(R.id.leaderboard);
+        tbl = findViewById(R.id.leaderboard);
         scoresRef = FirebaseDatabase.getInstance().getReference().child("Scores");
         scoresRef.orderByValue().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                MakeTable(dataSnapshot.getKey(),dataSnapshot.getValue(Integer.class));
+                MakeTable(dataSnapshot.getKey(), dataSnapshot.getValue(Integer.class));
             }
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {}
 
             @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildChanged(DataSnapshot dataSnapshot, String prevChildKey) {
+            }
 
             @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String prevChildKey) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
         });
-        /*DatabaseReference fbDb;
-        fbDb = FirebaseDatabase.getInstance().getReference().child("Usernames");
-        fbDb.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                            UserList.add(new UnlockUser(snapshot.child("Name").getValue(String.class)));
-                        }
-                        for (final UnlockUser u:UserList){
-                            System.out.println(u.getUsername());
-                            DatabaseReference lockdb = FirebaseDatabase.getInstance().getReference().child("POIList").child(u.getUsername());
-                            lockdb.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    u.setUnlockCount(dataSnapshot.child("Score").getValue(Integer.class));
-                                    MakeTable(u);
-                                }
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                }
-                            });
-                        }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                    }
-                });*/
     }
 
     void MakeTable(String username, int score){
@@ -143,6 +121,3 @@ public class LeaderboardsActivity extends AppCompatActivity {
     }
 
 }
-
-
-/* Adding another test comment to verify S05, test branch and master branch have been merged succesfully */

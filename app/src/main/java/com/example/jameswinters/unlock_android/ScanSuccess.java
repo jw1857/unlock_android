@@ -60,10 +60,13 @@ public class ScanSuccess extends AppCompatActivity {
 
         if (b != null) {
             location = b.getString("Location");
-            POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            hPOIList = (ArrayList<hPOI>) b.getSerializable("hPOIList");
+            //POIList = (ArrayList<POI>) b.getSerializable("POIList");
+            //sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
+            //hPOIList = (ArrayList<hPOI>) b.getSerializable("hPOIList");
         } else location = "invalid";
+        POIList = MainActivity.readPOIsFromSD(POIList,currentUser);
+        sPOIList = MainActivity.readsPOIsFromSD(sPOIList,currentUser);
+        hPOIList = MainActivity.readhPOIsFromSD(hPOIList,currentUser);
         for (sPOI s : sPOIList) {
             for (POI p : POIList) {
                 if (s.getParentName().equals(p.getTitle())) {
