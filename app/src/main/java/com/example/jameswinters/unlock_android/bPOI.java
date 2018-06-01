@@ -10,4 +10,27 @@ public class bPOI extends POI {
         this.setLockStatus(false);
     }
 
+    public void setBusinessIconType(String type){
+        switch(type) {
+            case "Cafe":
+                this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.cafe));
+                break;
+
+            case "Restaurant":
+                this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant));
+                break;
+
+            case "Pub":
+                this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.bar));
+                break;
+
+            case "Hotel":
+                this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.hotel));
+                break;
+
+            case "Shop":
+                this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.shop));
+                break;
+        }
+    }
 }
