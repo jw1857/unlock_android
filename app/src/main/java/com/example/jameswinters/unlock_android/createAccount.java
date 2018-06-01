@@ -51,7 +51,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             Log.d(msg, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            final FirebaseUser user = mAuth.getCurrentUser();
                             String username = usernameContainer.getText().toString();
                             createNewUser(user);
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -77,6 +77,9 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                                     ArrayList<POI> POIList = parser.getPOIList();
                                     ArrayList<sPOI> sPOIList = sparser.getsPOIList();
                                     ArrayList<hPOI> hPOIList = hparser.gethPOIList();
+                                    MainActivity.savePOIListToSD(POIList,user);
+                                    MainActivity.savesPOIListToSD(sPOIList,user);
+                                    MainActivity.savehPOIListToSD(hPOIList,user);
                                     String name = usernameContainer.getText().toString();
                                     DatabaseReference initialScoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
                                     initialScoreOnDb.child(name).setValue(POIList.size()+hPOIList.size()+sPOIList.size());
@@ -99,6 +102,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                     }
                 });
     }
+
 
     private void createNewUser(FirebaseUser userFromRegistration) {
         String username = usernameContainer.getText().toString();

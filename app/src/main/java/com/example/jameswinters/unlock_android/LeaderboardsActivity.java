@@ -1,6 +1,9 @@
 package com.example.jameswinters.unlock_android;
 
 import android.content.Intent;
+import android.os.Build;
+import android.os.Environment;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -10,6 +13,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,17 +22,31 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import javax.xml.datatype.Duration;
 
 public class LeaderboardsActivity extends AppCompatActivity {
     // ArrayList<UnlockUser> UserList = new ArrayList<>();
-    private ArrayList<POI> POIList;
+    private ArrayList<POI> POIList = new ArrayList<POI>();
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseUser currentUser = mAuth.getCurrentUser();
     TableLayout tbl;
+
 
 
 
@@ -40,13 +59,17 @@ public class LeaderboardsActivity extends AppCompatActivity {
         Intent i;
         i = getIntent();
         Bundle b = i.getExtras();
+        POIList = MainActivity.readPOIsFromSD(POIList,currentUser);
+        sPOIList = MainActivity.readsPOIsFromSD(sPOIList,currentUser);
+        hPOIList = MainActivity.readhPOIsFromSD(hPOIList,currentUser);
         if (b!=null) {
-            POIList = (ArrayList<POI>) b.getSerializable("POIList");
+           // POIList = (ArrayList<POI>) b.getSerializable("POIList");
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
             hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
         }
+        DatabaseReference scoresRef;
         tbl= findViewById(R.id.leaderboard);
-        DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference().child("Scores");
+        scoresRef = FirebaseDatabase.getInstance().getReference().child("Scores");
         scoresRef.orderByValue().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {

@@ -84,6 +84,9 @@ public class sPOIXMLParser extends DefaultHandler {
             case "text":
                 currentSubElement ="text";
                 break;
+            case "visibility":
+                currentSubElement = "visibility";
+                break;
             default:
                 currentSubElement = "none";
                 break;
@@ -113,6 +116,8 @@ public class sPOIXMLParser extends DefaultHandler {
                     break;
                 case "text":
                     currentsPOI.setText(attributeValue);
+                case "visibility":
+                    currentsPOI.setVisibility(Boolean.parseBoolean(attributeValue));
                     break;
                 case "image":
                     int number = Integer.parseInt(attributeValue);

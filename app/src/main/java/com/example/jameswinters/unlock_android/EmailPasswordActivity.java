@@ -81,7 +81,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(msg, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            final FirebaseUser user = mAuth.getCurrentUser();
                             DatabaseReference myRef = FirebaseDatabase.getInstance().getReference().child("POIList").child(user.getDisplayName());
                             myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
@@ -108,7 +108,9 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
 
                                         }
                                     }
-
+                                    MainActivity.savePOIListToSD(POIList,user);
+                                    MainActivity.savesPOIListToSD(sPOIList,user);
+                                    MainActivity.savehPOIListToSD(hPOIList,user);
                                     b.putSerializable("POIList",POIList);
                                     b.putSerializable("sPOIList",sPOIList);
                                     b.putSerializable("hPOIList",hPOIList);
