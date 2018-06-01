@@ -15,6 +15,8 @@ import android.widget.MediaController;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
+
 public class AudioActivity extends AppCompatActivity {
     POI poi;
     private ArrayList<POI> POIList;
@@ -22,8 +24,11 @@ public class AudioActivity extends AppCompatActivity {
     private ArrayList<hPOI> hPOIList;
     private ArrayList<String> audioLinkArray;
     //private MediaController mediaController;
-    private MediaPlayer mediaPlayer = new MediaPlayer();
+    //private MediaPlayer mediaPlayer = new MediaPlayer();
     private Handler handler = new Handler();
+    public boolean isPlaying;
+    public boolean isPaused;
+    public int length;
     String audioLinkTest;
     Uri uri;
 
@@ -39,49 +44,61 @@ public class AudioActivity extends AppCompatActivity {
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
             hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
         }
-
+        final MediaPlayer mediaPlayer = new MediaPlayer();
         /*audioLinkArray = poi.getAudioLinks();
         numAudios = audioLinkArray.size();
         String imagelink = imageArray.get(0);
         Uri uri = Uri.parse(imagelink); */
         audioLinkTest = poi.getAudioLink();
         uri = Uri.parse(audioLinkTest);
-        Button audioButton = findViewById(R.id.playbutton);
-        audioButton.setOnClickListener(new View.OnClickListener() {
+        Button audioPlayButton = findViewById(R.id.playbutton);
+        audioPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    //MediaPlayer mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    mediaPlayer.setDataSource(getApplicationContext(), uri);
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                } catch(Exception e){
+                    if (!isPlaying && !isPaused) {
+                        //MediaPlayer mediaPlayer = new MediaPlayer();
+                        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+                        mediaPlayer.setDataSource(getApplicationContext(), uri);
+                        mediaPlayer.prepare();
+                        mediaPlayer.start();
+                        isPlaying = true;
+                        isPaused = false;
+                    }
 
-                }
+                    else if (isPaused){
+                        mediaPlayer.seekTo(length);
+                        mediaPlayer.start();
+                        isPlaying = true;
+                        isPaused = false;
+                    }
+                    } catch(Exception e){
+
+                    }
+
             }
         });
-        /*try {
-                MediaPlayer mediaPlayer = new MediaPlayer();
-                MediaController mediaController = new MediaController(this);
-                mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                mediaPlayer.setDataSource(getApplicationContext(), uri);
-                mediaPlayer.prepare();
-            } catch(Exception e){
 
-            }*/
-    }
-    @Override
-    public boolean onTouchEvent(MotionEvent event){
-        //mediaController.show();
-        return false;
-    }
+        Button audioStopButton = findViewById(R.id.stopbutton);
+        audioStopButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                mediaPlayer.reset();
+                isPlaying = false;
+                isPaused = false;
+            }
+        });
 
-    public void start(){
-       // mediaPlayer.start();
-    }
+        Button audioPauseButton = findViewById(R.id.pausebutton);
+        audioPauseButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
 
-    public void pause(){
-       // mediaPlayer.pause();
+                mediaPlayer.pause();
+                length = mediaPlayer.getCurrentPosition();
+                isPaused = true;
+
+            }
+        });
     }
 }
