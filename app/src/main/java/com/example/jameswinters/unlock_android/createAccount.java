@@ -29,11 +29,6 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
 
     private FirebaseAuth mAuth;
     private String msg = "Android:";
-    private static final String WRITE_DATA = Manifest.permission.WRITE_EXTERNAL_STORAGE;
-    private static final int REQUEST_CODE = 1234;
-    private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
     EditText emailContainer;
     EditText passwordContainer;
     EditText usernameContainer;
@@ -42,8 +37,6 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
-        getStoragePermissions();
-        getLocationPermission();
         mAuth = FirebaseAuth.getInstance();
         emailContainer = findViewById(R.id.newEmailContainer);
         usernameContainer = findViewById(R.id.newUsernameContainer);
@@ -118,26 +111,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
         DatabaseReference myRef = database.getReference("Usernames");
         myRef.child(userId).child("Name").setValue(username);
     }
-    public void getStoragePermissions(){
-        Log.d("Android", "getLocationPermission: getting location permissions");
 
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                WRITE_DATA) == PackageManager.PERMISSION_GRANTED){
-            //mWriteStorage = true;
-        }
-        else{
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-        }
-
-    }
-   /* @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            Log.v("Android","Permission: "+permissions[0]+ "was "+grantResults[0]);
-            //resume tasks needing this permission
-        }
-    }*/
     private boolean validateForm() {
         boolean valid = true;
 
@@ -172,52 +146,6 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
             createAccount(emailContainer.getText().toString(),passwordContainer.getText().toString());
         }
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(msg, "onRequestPermissionsResult: called.");
-        //mLocationPermissionGranted = false;
-        switch(requestCode){
-            case LOCATION_PERMISSION_REQUEST_CODE:{
-                if(grantResults.length > 0){
-                    for(int i = 0; i < grantResults.length; i++){
-                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                           // mLocationPermissionGranted = false;
-                            Log.d(msg, "onRequestPermissionsResult: permission failed");
-                            return;
-                        }
-                    }
-                    Log.d(msg, "onRequestPermissionsResult: permission granted");
-                   // mLocationPermissionGranted = true;
-                    // Initialize map
-                   // initMap();
-                }
-            }
-        }
-    }
-    private void getLocationPermission(){
-        Log.d(msg, "getLocationPermission: getting location permissions");
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                    COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                Log.d(msg, "getLocationPermission: Self Permission Granted");
-                //Toast.makeText(this, "Self Permission Granted", Toast.LENGTH_SHORT).show();
-                //mLocationPermissionGranted = true;
-
-            }
-            else{
-                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-            }
-
-        }
-        else{
-            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-        }
-
-
-    }
-
 
     @Override
     public void onBackPressed() {

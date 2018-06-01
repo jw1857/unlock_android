@@ -271,7 +271,36 @@ public class MainActivity extends AppCompatActivity {
                 oos = new ObjectOutputStream(fos);
                 oos.writeObject(sPOIs);
                 oos.close();
-               // Toast.makeText(context,"Written to SD", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(context,"Written to SD", Toast.LENGTH_SHORT).show();
+            } catch(Exception ex) {
+                ex.printStackTrace();
+                System.out.println(ex.getMessage());
+
+            }
+        }
+    }
+
+    static public void savebPOIListToSD(ArrayList<bPOI> bPOIs, FirebaseUser currentUser)
+    {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/lists/" + currentUser.getDisplayName();
+            try {
+                File dir = new File(path);
+                if(!dir.exists())
+                {
+                    dir.mkdirs();
+                }
+                OutputStream fos = null;
+                ObjectOutputStream oos = null;
+                File file = new File(path, "/bPOIList.dat");
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                fos = new FileOutputStream(file);
+                oos = new ObjectOutputStream(fos);
+                oos.writeObject(bPOIs);
+                oos.close();
+                // Toast.makeText(context,"Written to SD", Toast.LENGTH_SHORT).show();
             } catch(Exception ex) {
                 ex.printStackTrace();
                 System.out.println(ex.getMessage());
@@ -361,6 +390,25 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         return hPOIs;
+    }
+
+    static public ArrayList<bPOI> readbPOIsFromSD(ArrayList<bPOI> bPOIs, FirebaseUser currentUser){
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/lists/" + currentUser.getDisplayName();
+        try (FileInputStream fis = new FileInputStream(new File(path, "bPOIList.dat"))) {
+            try (ObjectInputStream ios = new ObjectInputStream(fis)) {
+                bPOIs = (ArrayList<bPOI>)ios.readObject();
+                //Toast.makeText(this,POIList.get(0).getTitle(),Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bPOIs;
     }
 
 
