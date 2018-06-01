@@ -62,11 +62,6 @@ public class LeaderboardsActivity extends AppCompatActivity {
         POIList = MainActivity.readPOIsFromSD(POIList, currentUser);
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList, currentUser);
         hPOIList = MainActivity.readhPOIsFromSD(hPOIList, currentUser);
-       /* if (b!=null) {
-           // POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
-        }*/
         DatabaseReference scoresRef;
         tbl = findViewById(R.id.leaderboard);
         scoresRef = FirebaseDatabase.getInstance().getReference().child("Scores");

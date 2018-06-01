@@ -119,10 +119,6 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                     MainActivity.savePOIListToSD(POIList,user);
                                     MainActivity.savesPOIListToSD(sPOIList,user);
                                     MainActivity.savehPOIListToSD(hPOIList,user);
-                                    /*b.putSerializable("POIList",POIList);
-                                    b.putSerializable("sPOIList",sPOIList);
-                                    b.putSerializable("hPOIList",hPOIList);
-                                    i.putExtras(b);*/
                                     startActivity(i);
                                 }
 

@@ -13,10 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class POIPresentationActivity extends AppCompatActivity {
-    private ArrayList<POI> POIList;
-    private ArrayList<sPOI> sPOIList;
     POI poi;
-    private ArrayList<hPOI> hPOIList;
     ImageView iv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,9 +67,6 @@ public class POIPresentationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent i = new Intent(this, MapsActivity.class);
-        //Bundle b = new Bundle();
-
-        //i.putExtras(b);
         startActivity(i);
     }
 

@@ -14,9 +14,6 @@ import java.util.ArrayList;
 
 public class VideoActivity extends AppCompatActivity {
     POI poi;
-    private ArrayList<POI> POIList;
-    private ArrayList<sPOI> sPOIList;
-    private ArrayList<hPOI> hPOIList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -30,9 +27,6 @@ public class VideoActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if(b!=null){
             poi = (POI)b.getSerializable("POI");
-            POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
         }
 
         String str = poi.getVideoLink();
@@ -51,9 +45,6 @@ public class VideoActivity extends AppCompatActivity {
         Intent i = new Intent(VideoActivity.this, POIPresentationActivity.class);
         Bundle b = new Bundle();
         b.putSerializable("POI", poi);
-        b.putSerializable("POIList", POIList);
-        b.putSerializable("sPOIList", sPOIList);
-        b.putSerializable("hPOIList", hPOIList);
         i.putExtras(b);
         startActivity(i);
     }

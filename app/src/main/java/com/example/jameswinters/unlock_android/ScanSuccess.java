@@ -33,12 +33,7 @@ public class ScanSuccess extends AppCompatActivity {
     @Override @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //int failCount = 0;
-       // POIXMLParser parser = new POIXMLParser(this);
-        //POIListCompare = parser.getPOIList();
         Intent intent = getIntent();
-       // boolean is_hPOI = false;
-        //boolean is_sPOI = false;
         Bundle b = intent.getExtras();
         final MediaPlayer mediaPlayerSuccess = MediaPlayer.create(this, R.raw.unlock_success);
         final MediaPlayer mediaPlayerFailure = MediaPlayer.create(this, R.raw.unlock_failure);
@@ -60,9 +55,6 @@ public class ScanSuccess extends AppCompatActivity {
 
         if (b != null) {
             location = b.getString("Location");
-            //POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            //sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            //hPOIList = (ArrayList<hPOI>) b.getSerializable("hPOIList");
         } else location = "invalid";
         POIList = MainActivity.readPOIsFromSD(POIList,currentUser);
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList,currentUser);
@@ -92,11 +84,6 @@ public class ScanSuccess extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent i = new Intent(this, QRActivity.class);
-        Bundle b = new Bundle();
-        b.putSerializable("POIList", POIList);
-        b.putSerializable("sPOIList", sPOIList);
-        b.putSerializable("hPOIList", hPOIList);
-        i.putExtras(b);
         startActivity(i);
     }
 
@@ -122,10 +109,6 @@ public class ScanSuccess extends AppCompatActivity {
                 mp.start();
                 toast.show();
                 Toast.makeText(this, "Hidden location discovered!", Toast.LENGTH_SHORT).show();
-                bun.putSerializable("POIList", POIList);
-                bun.putSerializable("sPOIList", sPOIList);
-                bun.putSerializable("hPOIList", hPOIList);
-                i.putExtras(bun);
                 startActivity(i);
             }
             if ((loc.equals(h.getTitle())) && (h.getVisibility()) && (h.getLockStatus()) && (!unlocked)){
@@ -133,9 +116,7 @@ public class ScanSuccess extends AppCompatActivity {
                 Intent backToMain = new Intent(ScanSuccess.this, MainActivity.class);
                 Bundle bundle = new Bundle();
                 //bundle.putSerializable("POI",p);
-                bundle.putSerializable("POIList", POIList);
-                bundle.putSerializable("sPOIList", sPOIList);
-                bundle.putSerializable("hPOIList", hPOIList);
+
                 backToMain.putExtras(bundle);
                 startActivity(backToMain);
             }
@@ -165,9 +146,7 @@ public class ScanSuccess extends AppCompatActivity {
                 mp.start();
                 toast.show();
                 Toast.makeText(this, "Sub-location unlocked!", Toast.LENGTH_SHORT).show();
-                bundle.putSerializable("POIList", POIList);
-                bundle.putSerializable("sPOIList", sPOIList);
-                bundle.putSerializable("hPOIList", hPOIList);
+
                // is_sPOI = true;
                 intent.putExtras(bundle);
                 startActivity(intent);
@@ -175,22 +154,11 @@ public class ScanSuccess extends AppCompatActivity {
             else if ((loc.equals(s.getTitle()))&&(parent.getLockStatus())){
                 Toast.makeText(this, "Unlock Parent POI First! ", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(this, MainActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("POIList", POIList);
-                b.putSerializable("sPOIList", sPOIList);
-                b.putSerializable("hPOIList", hPOIList);
-                i.putExtras(b);
                 startActivity(i);
             }
             if ((loc.equals(s.getTitle()))&&(!s.getLockStatus())&&(!parent.getLockStatus())&&(!unlocked)) {
                 Toast.makeText(this, "Location already discovered!", Toast.LENGTH_SHORT).show();
                 Intent backToMain = new Intent(ScanSuccess.this, MainActivity.class);
-                Bundle bundle = new Bundle();
-               //bundle.putSerializable("POI",p);
-                bundle.putSerializable("POIList", POIList);
-                bundle.putSerializable("sPOIList", sPOIList);
-                bundle.putSerializable("hPOIList", hPOIList);
-                backToMain.putExtras(bundle);
                 startActivity(backToMain);
             }
         }
@@ -226,9 +194,6 @@ public class ScanSuccess extends AppCompatActivity {
                 Intent i = new Intent(ScanSuccess.this, POIPresentationActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("POI",p);
-                b.putSerializable("POIList", POIList);
-                b.putSerializable("sPOIList", sPOIList);
-                b.putSerializable("hPOIList", hPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -237,9 +202,6 @@ public class ScanSuccess extends AppCompatActivity {
                 Intent backToMain = new Intent(ScanSuccess.this, POIPresentationActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("POI",p);
-                bundle.putSerializable("POIList", POIList);
-                bundle.putSerializable("sPOIList", sPOIList);
-                bundle.putSerializable("hPOIList", hPOIList);
                 backToMain.putExtras(bundle);
                 startActivity(backToMain);
             }
@@ -258,11 +220,6 @@ public class ScanSuccess extends AppCompatActivity {
             Toast.makeText(this, "Invalid QR Code", Toast.LENGTH_SHORT).show();
             mp.start();
             Intent i = new Intent(this, MainActivity.class);
-            Bundle b = new Bundle();
-            b.putSerializable("POIList", POIList);
-            b.putSerializable("sPOIList", sPOIList);
-            b.putSerializable("hPOIList", hPOIList);
-            i.putExtras(b);
             startActivity(i);
         }
     }

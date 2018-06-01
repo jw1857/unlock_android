@@ -129,9 +129,6 @@ public class QRActivity extends AppCompatActivity {
     public void sendText(String text){
         b.putString("Location",text);
         Intent i = new Intent(this, ScanSuccess.class);
-        //b.putSerializable("POIList",POIList);
-        //b.putSerializable("sPOIList",sPOIList);
-        //b.putSerializable("hPOIList",hPOIList);
         i.putExtras(b);
         startActivity(i);
     }

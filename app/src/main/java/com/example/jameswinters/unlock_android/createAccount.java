@@ -94,11 +94,6 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                                     String name = usernameContainer.getText().toString();
                                     DatabaseReference initialScoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
                                     initialScoreOnDb.child(name).setValue(POIList.size()+hPOIList.size()+sPOIList.size());
-                                  /*  Bundle b = new Bundle();
-                                    b.putSerializable("POIList", POIList);
-                                    b.putSerializable("sPOIList",sPOIList);
-                                    b.putSerializable("hPOIList",hPOIList);
-                                    i.putExtras(b);*/
                                     startActivity(i);
                                 }
                             });

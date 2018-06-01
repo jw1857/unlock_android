@@ -83,15 +83,10 @@ public class MainActivity extends AppCompatActivity {
         POIList = readPOIsFromSD(POIList,currentUser);
         sPOIList = readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = readhPOIsFromSD(hPOIList,currentUser);
-       // if (b!=null){
-         //   POIList = (ArrayList<POI>)b.getSerializable("POIList");
-           // sPOIList =(ArrayList<sPOI>)b.getSerializable("sPOIList");
-            //hPOIList =(ArrayList<hPOI>)b.getSerializable("hPOIList");
-            myPOIRef.setValue(POIList);
-            mysPOIRef.setValue(sPOIList);
-            myhPOIRef.setValue(hPOIList);
-            checkForChangeInPOIs();
-        //}
+        myPOIRef.setValue(POIList);
+        mysPOIRef.setValue(sPOIList);
+        myhPOIRef.setValue(hPOIList);
+        checkForChangeInPOIs();
         signOut();
         if(isServicesOk()){
             init();
@@ -161,18 +156,12 @@ public class MainActivity extends AppCompatActivity {
         Button button = (Button)findViewById(R.id.btnMap);
         Button button2 = (Button)findViewById(R.id.btnMap1);
         Button button3 = (Button)findViewById(R.id.btnMap2);
-        Button button4 = (Button)findViewById(R.id.presentationButton);
-        Button button5 = (Button)findViewById(R.id.presentationButton);
+
 
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, QRActivity.class);
-                Bundle bundle = new Bundle();
-                //bundle.putSerializable("POIList",POIList);
-                //bundle.putSerializable("sPOIList",sPOIList);
-                //bundle.putSerializable("hPOIList",hPOIList);
-                //intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -180,11 +169,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                Bundle bundle = new Bundle();
-                //bundle.putSerializable("POIList",POIList);
-                //bundle.putSerializable("sPOIList",sPOIList);
-                //bundle.putSerializable("hPOIList",hPOIList);
-                //intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -192,24 +176,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, LeaderboardsActivity.class);
-                Bundle bundle = new Bundle();
-                //bundle.putSerializable("POIList",POIList);
-                //bundle.putSerializable("sPOIList",sPOIList);
-                //bundle.putSerializable("hPOIList",hPOIList);
-                //intent.putExtras(bundle);
-                startActivity(intent);
-            }
-
-        });
-        button5.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("POIList",POIList);
-                bundle.putSerializable("sPOIList",sPOIList);
-                bundle.putSerializable("hPOIList",hPOIList);
-                intent.putExtras(bundle);
                 startActivity(intent);
             }
 

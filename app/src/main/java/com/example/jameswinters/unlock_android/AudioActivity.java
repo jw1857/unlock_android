@@ -40,9 +40,6 @@ public class AudioActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if(b!=null){
             poi = (POI)b.getSerializable("POI");
-            //POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            //sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            //hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
         }
         final MediaPlayer mediaPlayer = new MediaPlayer();
         /*audioLinkArray = poi.getAudioLinks();
