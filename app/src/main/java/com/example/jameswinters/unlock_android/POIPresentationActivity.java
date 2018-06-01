@@ -17,6 +17,7 @@ public class POIPresentationActivity extends AppCompatActivity {
     private ArrayList<sPOI> sPOIList;
     POI poi;
     private ArrayList<hPOI> hPOIList;
+    private ArrayList<bPOI> bPOIList;
     ImageView iv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class POIPresentationActivity extends AppCompatActivity {
             POIList = (ArrayList<POI>) b.getSerializable("POIList");
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
             hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
+            bPOIList=(ArrayList<bPOI>) b.getSerializable("bPOIList");
             String imageString = poi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }
@@ -44,6 +46,7 @@ public class POIPresentationActivity extends AppCompatActivity {
                 b.putSerializable("POIList", POIList);
                 b.putSerializable("sPOIList", sPOIList);
                 b.putSerializable("hPOIList", hPOIList);
+                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -58,6 +61,7 @@ public class POIPresentationActivity extends AppCompatActivity {
                 b.putSerializable("POIList", POIList);
                 b.putSerializable("sPOIList", sPOIList);
                 b.putSerializable("hPOIList", hPOIList);
+                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -72,6 +76,7 @@ public class POIPresentationActivity extends AppCompatActivity {
                 b.putSerializable("POIList", POIList);
                 b.putSerializable("sPOIList", sPOIList);
                 b.putSerializable("hPOIList", hPOIList);
+                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -86,6 +91,7 @@ public class POIPresentationActivity extends AppCompatActivity {
         b.putSerializable("POIList", POIList);
         b.putSerializable("sPOIList", sPOIList);
         b.putSerializable("hPOIList", hPOIList);
+        b.putSerializable("bPOIList", bPOIList);
         i.putExtras(b);
         startActivity(i);
     }

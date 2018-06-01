@@ -17,13 +17,14 @@ public class hPOIPresentationActivity extends AppCompatActivity {
     private ArrayList<sPOI> sPOIList;
     hPOI hpoi;
     private ArrayList<hPOI> hPOIList;
+    private ArrayList<bPOI> bPOIList;
     ImageView iv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hpoipresentation);
 
-        iv = findViewById(R.id.poiMainImage);
+        iv = findViewById(R.id.poiMainImage); // need to change
         Intent i = getIntent();
         Bundle b = i.getExtras();
         if (b != null) {
@@ -31,6 +32,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
             POIList = (ArrayList<POI>) b.getSerializable("POIList");
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
             hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
+            bPOIList=(ArrayList<bPOI>) b.getSerializable("bPOIList");
             String imageString = hpoi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }
@@ -44,6 +46,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 b.putSerializable("POIList", POIList);
                 b.putSerializable("sPOIList", sPOIList);
                 b.putSerializable("hPOIList", hPOIList);
+                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -58,6 +61,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 b.putSerializable("POIList", POIList);
                 b.putSerializable("sPOIList", sPOIList);
                 b.putSerializable("hPOIList", hPOIList);
+                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -72,6 +76,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 b.putSerializable("POIList", POIList);
                 b.putSerializable("sPOIList", sPOIList);
                 b.putSerializable("hPOIList", hPOIList);
+                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -86,6 +91,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
         b.putSerializable("POIList", POIList);
         b.putSerializable("sPOIList", sPOIList);
         b.putSerializable("hPOIList", hPOIList);
+        b.putSerializable("bPOIList", bPOIList);
         i.putExtras(b);
         startActivity(i);
     }

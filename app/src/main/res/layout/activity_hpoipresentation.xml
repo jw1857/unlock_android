@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".hPOIPresentationActivity">
     <ImageView
-        android:id="@+id/poiMainImage"
+        android:id="@+id/hpoiMainImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         />
@@ -24,8 +24,8 @@
         android:text="Video"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/poiMainImage"
-        app:layout_constraintTop_toTopOf="@+id/poiMainImage" />
+        app:layout_constraintStart_toStartOf="@+id/hpoiMainImage"
+        app:layout_constraintTop_toTopOf="@+id/hpoiMainImage" />
 
     <Button
         android:id="@+id/imagebutton_hpoi"
