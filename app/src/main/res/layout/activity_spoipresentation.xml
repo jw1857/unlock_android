@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".POIPresentationActivity">
+    tools:context=".sPOIPresentationActivity">
     <ImageView
         android:id="@+id/poiMainImage"
         android:layout_width="match_parent"
@@ -12,7 +12,7 @@
         />
 
     <Button
-        android:id="@+id/videobutton_poi"
+        android:id="@+id/videobutton_spoi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="@+id/poiMainImage" />
 
     <Button
-        android:id="@+id/imagebutton_poi"
+        android:id="@+id/imagebutton_spoi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -45,7 +45,7 @@
         app:layout_constraintVertical_bias="0.648" />
 
     <Button
-        android:id="@+id/audiobutton_poi"
+        android:id="@+id/audiobutton_spoi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

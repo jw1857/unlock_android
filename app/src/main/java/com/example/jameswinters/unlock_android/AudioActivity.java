@@ -93,7 +93,6 @@ public class AudioActivity extends AppCompatActivity {
         audioPauseButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
                 mediaPlayer.pause();
                 length = mediaPlayer.getCurrentPosition();
                 isPaused = true;

@@ -163,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         Button button2 = (Button)findViewById(R.id.btnMap1);
         Button button3 = (Button)findViewById(R.id.btnMap2);
         Button button4 = (Button)findViewById(R.id.presentationButton);
+        Button button5 = (Button)findViewById(R.id.presentationButton);
 
         button.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -192,6 +193,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, LeaderboardsActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("POIList",POIList);
+                bundle.putSerializable("sPOIList",sPOIList);
+                bundle.putSerializable("hPOIList",hPOIList);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+
+        });
+        button5.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("POIList",POIList);
                 bundle.putSerializable("sPOIList",sPOIList);

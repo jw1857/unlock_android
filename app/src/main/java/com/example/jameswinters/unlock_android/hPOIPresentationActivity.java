@@ -12,35 +12,35 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class POIPresentationActivity extends AppCompatActivity {
+public class hPOIPresentationActivity extends AppCompatActivity {
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
-    POI poi;
+    hPOI hpoi;
     private ArrayList<hPOI> hPOIList;
     ImageView iv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_poipresentation);
+        setContentView(R.layout.activity_hpoipresentation);
 
         iv = findViewById(R.id.poiMainImage);
         Intent i = getIntent();
         Bundle b = i.getExtras();
         if (b != null) {
-            poi = (POI) b.getSerializable("POI");
+            hpoi = (hPOI) b.getSerializable("hPOI");
             POIList = (ArrayList<POI>) b.getSerializable("POIList");
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
             hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
-            String imageString = poi.getMainImageLink();
+            String imageString = hpoi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }
-        Button videoButton = findViewById(R.id.videobutton_poi);
+        Button videoButton = findViewById(R.id.videobutton_hpoi);
         videoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(POIPresentationActivity.this, VideoActivity.class);
+                Intent i = new Intent(hPOIPresentationActivity.this, VideoActivity.class);
                 Bundle b = new Bundle();
-                b.putSerializable("POI", poi);
+                b.putSerializable("hPOI", hpoi);
                 b.putSerializable("POIList", POIList);
                 b.putSerializable("sPOIList", sPOIList);
                 b.putSerializable("hPOIList", hPOIList);
@@ -48,13 +48,13 @@ public class POIPresentationActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        Button imageButton = findViewById(R.id.imagebutton_poi);
+        Button imageButton = findViewById(R.id.imagebutton_hpoi);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(POIPresentationActivity.this, ImageActivity.class);
+                Intent i = new Intent(hPOIPresentationActivity.this, ImageActivity.class);
                 Bundle b = new Bundle();
-                b.putSerializable("POI", poi);
+                b.putSerializable("hPOI", hpoi);
                 b.putSerializable("POIList", POIList);
                 b.putSerializable("sPOIList", sPOIList);
                 b.putSerializable("hPOIList", hPOIList);
@@ -62,13 +62,13 @@ public class POIPresentationActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        Button audioButton = findViewById(R.id.audiobutton_poi);
+        Button audioButton = findViewById(R.id.audiobutton_hpoi);
         audioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(POIPresentationActivity.this, AudioActivity.class);
+                Intent i = new Intent(hPOIPresentationActivity.this, AudioActivity.class);
                 Bundle b = new Bundle();
-                b.putSerializable("POI", poi);
+                b.putSerializable("hPOI", hpoi);
                 b.putSerializable("POIList", POIList);
                 b.putSerializable("sPOIList", sPOIList);
                 b.putSerializable("hPOIList", hPOIList);

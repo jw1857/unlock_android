@@ -64,6 +64,14 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".sPOIPresentationActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".hPOIPresentationActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".VideoActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="landscape" />
