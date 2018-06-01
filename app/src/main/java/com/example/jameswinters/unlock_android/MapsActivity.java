@@ -73,6 +73,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
+    private ArrayList<bPOI> bPOIList;
     private GoogleMap mMap;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -174,7 +175,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         addPOIMarkers(POIList);
         addsPOIMarkers(POIList,sPOIList);
         addhPOIMarkers(hPOIList);
-        //addbPOIMarkers();
+        addbPOIMarkers(bPOIList);
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
@@ -207,6 +208,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Bundle b= new Bundle();
                         b.putSerializable("hPOI",h);
                         i.putExtras(b);
+                        startActivity(i);
+                    }
+                }
+                for (bPOI b : bPOIList) {
+                    if (marker.equals(b.marker)) {
+
+                        Intent i = new Intent(MapsActivity.this,bPOIPresentationActivity.class);
+                        Bundle x= new Bundle();
+                        x.putSerializable("bPOI",b);
+                        i.putExtras(x);
                         startActivity(i);
                     }
                 }
@@ -386,6 +397,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MainActivity.savePOIListToSD(POIList,currentUser);
         MainActivity.savehPOIListToSD(hPOIList,currentUser);
         MainActivity.savesPOIListToSD(sPOIList,currentUser);
+        MainActivity.savebPOIListToSD(bPOIList,currentUser);
     }
     @Override
     public void onBackPressed(){

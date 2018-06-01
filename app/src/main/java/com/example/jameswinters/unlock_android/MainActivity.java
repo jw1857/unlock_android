@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<POI> POIList = new ArrayList<>();
     public ArrayList<sPOI> sPOIList = new ArrayList<>();
     public ArrayList<hPOI> hPOIList = new ArrayList<>();
+    public ArrayList<bPOI> bPOIList = new ArrayList<>();
     private Intent i;
     //String username;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
     DatabaseReference myhPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("hPOIs");
     DatabaseReference mysPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("sPOIs");
+    DatabaseReference mybPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("bPOIs");
+
     TextView currentUserText;
 
 
@@ -83,9 +86,11 @@ public class MainActivity extends AppCompatActivity {
         POIList = readPOIsFromSD(POIList,currentUser);
         sPOIList = readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = readhPOIsFromSD(hPOIList,currentUser);
+        bPOIList=readbPOIsFromSD(bPOIList,currentUser);
         myPOIRef.setValue(POIList);
         mysPOIRef.setValue(sPOIList);
         myhPOIRef.setValue(hPOIList);
+        mybPOIRef.setValue(bPOIList);
         checkForChangeInPOIs();
         signOut();
         if(isServicesOk()){
@@ -190,6 +195,7 @@ public class MainActivity extends AppCompatActivity {
         savePOIListToSD(POIList,currentUser);
         savehPOIListToSD(hPOIList,currentUser);
         savesPOIListToSD(sPOIList,currentUser);
+        savebPOIListToSD(bPOIList,currentUser);
     }
 
     static public void savePOIListToSD(ArrayList<POI> POIs, FirebaseUser currentUser)

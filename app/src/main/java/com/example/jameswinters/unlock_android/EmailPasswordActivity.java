@@ -103,10 +103,11 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                     GenericTypeIndicator<ArrayList<POI>> genericTypeIndicatorPOI = new GenericTypeIndicator<ArrayList<POI>>() {};
                                     GenericTypeIndicator<ArrayList<sPOI>> genericTypeIndicatorsPOI = new GenericTypeIndicator<ArrayList<sPOI>>() {};
                                     GenericTypeIndicator<ArrayList<hPOI>> genericTypeIndicatorhPOI = new GenericTypeIndicator<ArrayList<hPOI>>() {};
+                                    GenericTypeIndicator<ArrayList<bPOI>> genericTypeIndicatorbPOI = new GenericTypeIndicator<ArrayList<bPOI>>() {};
                                     ArrayList<POI> POIList=new ArrayList<>();
                                     ArrayList<sPOI> sPOIList=new ArrayList<>();
                                     ArrayList<hPOI> hPOIList=new ArrayList<>();
-                                    Bundle b = new Bundle();
+                                    ArrayList<bPOI> bPOIList=new ArrayList<>();
                                     for(DataSnapshot d : dataSnapshot.getChildren()) {
                                         switch (d.getKey()) {
                                             case "POIs":
@@ -117,6 +118,9 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                                 break;
                                             case "hPOIs":
                                                 hPOIList = d.getValue(genericTypeIndicatorhPOI);
+                                                break;
+                                            case "bPOIs":
+                                                bPOIList = d.getValue(genericTypeIndicatorbPOI);
 
 
                                         }
@@ -124,6 +128,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                     MainActivity.savePOIListToSD(POIList,user);
                                     MainActivity.savesPOIListToSD(sPOIList,user);
                                     MainActivity.savehPOIListToSD(hPOIList,user);
+                                    MainActivity.savebPOIListToSD(bPOIList,user);
                                     startActivity(i);
                                 }
 

@@ -78,12 +78,15 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                                     POIXMLParser parser = new POIXMLParser(createAccount.this);
                                     sPOIXMLParser sparser = new sPOIXMLParser(createAccount.this);
                                     hPOIXMLParser hparser = new hPOIXMLParser(createAccount.this);
+                                    bPOIXMLParser bparser = new bPOIXMLParser(createAccount.this);
                                     ArrayList<POI> POIList = parser.getPOIList();
                                     ArrayList<sPOI> sPOIList = sparser.getsPOIList();
                                     ArrayList<hPOI> hPOIList = hparser.gethPOIList();
+                                    ArrayList<bPOI> bPOIList = bparser.getbPOIList();
                                     MainActivity.savePOIListToSD(POIList,user);
                                     MainActivity.savesPOIListToSD(sPOIList,user);
                                     MainActivity.savehPOIListToSD(hPOIList,user);
+                                    MainActivity.savebPOIListToSD(bPOIList,user);
                                     String name = usernameContainer.getText().toString();
                                     DatabaseReference initialScoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
                                     initialScoreOnDb.child(name).setValue(POIList.size()+hPOIList.size()+sPOIList.size());
