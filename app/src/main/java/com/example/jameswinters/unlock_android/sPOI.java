@@ -38,8 +38,7 @@ public class sPOI extends POI {
        // }
 
         public sPOI(){
-        //this.parent = parent;
-        this.visibility = false;
+
     }
 
 }
