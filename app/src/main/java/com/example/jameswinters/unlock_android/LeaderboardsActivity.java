@@ -3,6 +3,7 @@ package com.example.jameswinters.unlock_android;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -95,6 +96,9 @@ public class LeaderboardsActivity extends AppCompatActivity {
     void MakeTable(String username, int score){
         TableRow tr = new TableRow(LeaderboardsActivity.this);
         TextView un = new TextView(LeaderboardsActivity.this);
+        un.setWidth(100);
+        un.setHeight(50);
+        un.setGravity(Gravity.CENTER);
         un.setText(username);
         un.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         TextView pu = new TextView(LeaderboardsActivity.this);
@@ -103,6 +107,9 @@ public class LeaderboardsActivity extends AppCompatActivity {
         float poisunlockedpercent = ((float)poisunlocked/(float)size)*100;
         int poisint = (int)poisunlockedpercent;
         String poiout = Integer.toString(poisint);
+        pu.setWidth(100);
+        pu.setGravity(Gravity.CENTER);
+        pu.setHeight(50);
         pu.setText(poiout);
         pu.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         tr.addView(un);
