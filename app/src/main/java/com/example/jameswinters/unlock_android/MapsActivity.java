@@ -337,7 +337,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         System.out.println(POIProgress);
         POIProgress = POIProgress*pb.getMax();
         System.out.println(POIProgress);
-        setProgressValue(POIProgress);
+        setProgressValue(POIProgress);//
         //if(mLocationPermissionGranted){
             getDeviceLocation();
         //}
