@@ -28,9 +28,6 @@ public class QRActivity extends AppCompatActivity {
     TextView txtResult;
     BarcodeDetector barcodeDetector;
     CameraSource cameraSource;
-    private ArrayList<POI> POIList;
-    private ArrayList<sPOI> sPOIList;
-    private ArrayList<hPOI> hPOIList;
     final int RequestCameraPermissionID = 1001;
     Bundle b = new Bundle();
 
@@ -60,13 +57,9 @@ public class QRActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr);
-        Intent intent = getIntent();
-        b = intent.getExtras();
-        if (b!=null){
-            POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
-        }
+        //Intent intent = getIntent();
+        //b = intent.getExtras();
+
         cameraPreview = findViewById(R.id.cameraPreview);
         txtResult = findViewById(R.id.txtResult);
 
@@ -136,9 +129,6 @@ public class QRActivity extends AppCompatActivity {
     public void sendText(String text){
         b.putString("Location",text);
         Intent i = new Intent(this, ScanSuccess.class);
-        b.putSerializable("POIList",POIList);
-        b.putSerializable("sPOIList",sPOIList);
-        b.putSerializable("hPOIList",hPOIList);
         i.putExtras(b);
         startActivity(i);
     }
@@ -146,10 +136,10 @@ public class QRActivity extends AppCompatActivity {
     @Override
     public void onBackPressed(){
         Intent i = new Intent(this, MainActivity.class);
-        b.putSerializable("POIList",POIList);
-        b.putSerializable("sPOIList",sPOIList);
-        b.putSerializable("hPOIList",hPOIList);
-        i.putExtras(b);
+       // b.putSerializable("POIList",POIList);
+        //b.putSerializable("sPOIList",sPOIList);
+        //b.putSerializable("hPOIList",hPOIList);
+       // i.putExtras(b);
         startActivity(i);
     }
 

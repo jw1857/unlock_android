@@ -43,12 +43,7 @@ public class AudioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_audio);
         Intent i = getIntent();
         Bundle b = i.getExtras();
-       /* if(b!=null){
-            poi = (POI)b.getSerializable("POI");
-            POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
-        } */
+       
        if(b!=null){
 
            poi = (POI)b.getSerializable("POI");
@@ -69,9 +64,7 @@ public class AudioActivity extends AppCompatActivity {
                is_POI = false;
                is_sPOI = false;
            }
-           POIList = (ArrayList<POI>) b.getSerializable("POIList");
-           sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-           hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
+          
        }
         final MediaPlayer mediaPlayer = new MediaPlayer();
 

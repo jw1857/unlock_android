@@ -13,11 +13,8 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class hPOIPresentationActivity extends AppCompatActivity {
-    private ArrayList<POI> POIList;
-    private ArrayList<sPOI> sPOIList;
     hPOI hpoi;
-    private ArrayList<hPOI> hPOIList;
-    private ArrayList<bPOI> bPOIList;
+
     ImageView iv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +26,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if (b != null) {
             hpoi = (hPOI) b.getSerializable("hPOI");
-            POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
-            bPOIList=(ArrayList<bPOI>) b.getSerializable("bPOIList");
+
             String imageString = hpoi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }
@@ -43,10 +37,6 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 Intent i = new Intent(hPOIPresentationActivity.this, VideoActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("hPOI", hpoi);
-                b.putSerializable("POIList", POIList);
-                b.putSerializable("sPOIList", sPOIList);
-                b.putSerializable("hPOIList", hPOIList);
-                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -58,10 +48,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 Intent i = new Intent(hPOIPresentationActivity.this, ImageActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("hPOI", hpoi);
-                b.putSerializable("POIList", POIList);
-                b.putSerializable("sPOIList", sPOIList);
-                b.putSerializable("hPOIList", hPOIList);
-                b.putSerializable("bPOIList", bPOIList);
+
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -73,10 +60,6 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 Intent i = new Intent(hPOIPresentationActivity.this, AudioActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("hPOI", hpoi);
-                b.putSerializable("POIList", POIList);
-                b.putSerializable("sPOIList", sPOIList);
-                b.putSerializable("hPOIList", hPOIList);
-                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -87,12 +70,6 @@ public class hPOIPresentationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent i = new Intent(this, MapsActivity.class);
-        Bundle b = new Bundle();
-        b.putSerializable("POIList", POIList);
-        b.putSerializable("sPOIList", sPOIList);
-        b.putSerializable("hPOIList", hPOIList);
-        b.putSerializable("bPOIList", bPOIList);
-        i.putExtras(b);
         startActivity(i);
     }
 

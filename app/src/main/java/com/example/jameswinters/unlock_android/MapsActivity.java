@@ -67,11 +67,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     DatabaseReference mysPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("sPOIs");
     DatabaseReference myhPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("hPOIs");
     double POIProgress;
-    private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
-    private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
-    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
 
-    private Boolean mLocationPermissionGranted = false;
+
+   // private Boolean mLocationPermissionGranted = false;
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
@@ -140,7 +138,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try{
-            if(mLocationPermissionGranted){
+           // if(mLocationPermissionGranted){
                 Task location = mFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
@@ -158,7 +156,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     }
                 });
-            }
+            //}
 
         }catch (SecurityException e){
             Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
@@ -169,38 +167,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         ProgressBar pb = findViewById(R.id.progressBar);
         pb.setMax(100);
-        //Toast.makeText(this, "Map Ready", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
         int progressCount=0;
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style));
         mMap.setLatLngBoundsForCameraTarget(YORK);
-        //Toast.makeText(this,POIList.get(0).getTitle() , Toast.LENGTH_SHORT).show();
         addPOIMarkers(POIList);
         addsPOIMarkers(POIList,sPOIList);
         addhPOIMarkers(hPOIList);
-     /*   mMap.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
-            @Override
-            public void onMyLocationChange(Location location) {
-                for (POI p:POIList){
-                    Location pLoc = new Location("");
-
-                    pLoc.setLatitude(p.getLat());
-                    pLoc.setLongitude(p.getLng());
-                    LatLng ll = new LatLng(pLoc.getLatitude()-0.001,pLoc.getLongitude()-0.001);
-                    LatLng ll2 = new LatLng(pLoc.getLatitude()+0.001,pLoc.getLongitude()+0.001);
-                    LatLngBounds latLngBounds = new LatLngBounds(ll,ll2);
-                    LatLng loc = new LatLng(location.getLatitude(),location.getLongitude());
-                    if ((loc.latitude<= latLngBounds.northeast.latitude)&&(loc.latitude>=latLngBounds.southwest.latitude)){
-                       if ((loc.longitude<= latLngBounds.northeast.longitude)&&(loc.longitude>=latLngBounds.southwest.longitude)){
-                           if (p.getLockStatus()){
-                               p.setLockStatus(false);
-                           }
-                       }
-                    }
-
-                }
-            }
-        });*/
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
@@ -226,16 +199,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 int unlockCount =0;
                 for (hPOI h : hPOIList) {
                     if ((marker.equals(h.marker)&&(h.marker.isVisible()))) {
-                        //s.setIcon(!s.getLockStatus());
                         h.marker.showInfoWindow();
-                        //s.setLockStatus(!s.getLockStatus());
                     }
                     if(!h.getLockStatus()){
                         Intent i = new Intent(MapsActivity.this,hPOIPresentationActivity.class);
                         Bundle b= new Bundle();
-                        b.putSerializable("POIList",POIList);
-                        b.putSerializable("sPOIList",sPOIList);
-                        b.putSerializable("hPOIList",hPOIList);
                         b.putSerializable("hPOI",h);
                         i.putExtras(b);
                         startActivity(i);
@@ -251,9 +219,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if(!s.getLockStatus()){
                         Intent i = new Intent(MapsActivity.this,sPOIPresentationActivity.class);
                         Bundle b= new Bundle();
-                        b.putSerializable("POIList",POIList);
-                        b.putSerializable("sPOIList",sPOIList);
-                        b.putSerializable("hPOIList",hPOIList);
                         b.putSerializable("sPOI",s);
                         i.putExtras(b);
                         startActivity(i);
@@ -277,9 +242,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         if(!p.getLockStatus()){
                             Intent i = new Intent(MapsActivity.this,POIPresentationActivity.class);
                             Bundle b= new Bundle();
-                            b.putSerializable("POIList",POIList);
-                            b.putSerializable("sPOIList",sPOIList);
-                            b.putSerializable("hPOIList",hPOIList);
                             b.putSerializable("POI",p);
                             i.putExtras(b);
                             startActivity(i);
@@ -330,7 +292,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 progressCount = progressCount +1;
                 }
         }
-
         DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
         scoreOnDb.child(currentUser.getDisplayName()).setValue(POIList.size()+sPOIList.size()+hPOIList.size()-progressCount);
         System.out.println(progressCount);
@@ -340,10 +301,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         System.out.println(POIProgress);
         POIProgress = POIProgress*pb.getMax();
         System.out.println(POIProgress);
-        setProgressValue(POIProgress);
-        if(mLocationPermissionGranted){
+        setProgressValue(POIProgress);//
+        //if(mLocationPermissionGranted){
             getDeviceLocation();
-        }
+        //}
     }
 
 
@@ -351,57 +312,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
-        getLocationPermission();
+        //getLocationPermission();
+        initMap();
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
-        if (b!=null) {
-            POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
-        }
+        POIList = MainActivity.readPOIsFromSD(POIList,currentUser);
+        sPOIList = MainActivity.readsPOIsFromSD(sPOIList,currentUser);
+        hPOIList = MainActivity.readhPOIsFromSD(hPOIList,currentUser);
+
     }
-
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult: called.");
-        mLocationPermissionGranted = false;
-        switch(requestCode){
-            case LOCATION_PERMISSION_REQUEST_CODE:{
-                if(grantResults.length > 0){
-                    for(int i = 0; i < grantResults.length; i++){
-                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            mLocationPermissionGranted = false;
-                            Log.d(TAG, "onRequestPermissionsResult: permission failed");
-                            return;
-                        }
-                    }
-                    Log.d(TAG, "onRequestPermissionsResult: permission granted");
-                    mLocationPermissionGranted = true;
-                    // Initialize map
-                    initMap();
-                }
-            }
-        }
-    }
-
-//    private void lockedPOI(POI poi){
-//       // poi.setPosition(poi.getLat(),poi.getLng());
-//        poi.marker =  mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(poi.getLat(),poi.getLng()))
-//                .title(poi.getTitle())
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.lock)));
-//
-//    }
-//    private void unlockedPOI(POI poi){
-//       // poi.setPosition(poi.getLat(),poi.getLng());
-//        poi.marker =  mMap.addMarker(new MarkerOptions()
-//                .position(new LatLng(poi.getLat(),poi.getLng()))
-//                .title(poi.getTitle())
-//                .icon(BitmapDescriptorFactory.fromResource(R.drawable.unlock)));
-//
-//    }
 
     private void addSinglesPOIMarker(sPOI s){
         s.marker =  mMap.addMarker(new MarkerOptions()
@@ -411,9 +330,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         s.setIcon(s.getLockStatus());
     }
 
-   /* private void removeSinglesPOIMarker(sPOI s){
-        s.marker.remove();
-    }*/
+
 
     private void addPOIMarkers(ArrayList<POI> poi) {
         for (POI p : poi) {
@@ -451,37 +368,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    //private void GPSUnlocking() {
-    //  Location myLocation = mMap.getMyLocation();
-    //if ((myLocation.getLatitude()) <= (minsterLat + 0.0003) || (myLocation.getLatitude()) >= (minsterLat - 0.0009)
-    //      && (myLocation.getLongitude()) <= (minsterLong + 0.0013) || (myLocation.getLongitude()) >= (minsterLong - 0.0014)){
-    //minster.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.unlock));
-    //}
-    //}
 
-    private void getLocationPermission(){
-        Log.d(TAG, "getLocationPermission: getting location permissions");
-        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                    COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                Log.d(TAG, "getLocationPermission: Self Permission Granted");
-                //Toast.makeText(this, "Self Permission Granted", Toast.LENGTH_SHORT).show();
-                mLocationPermissionGranted = true;
-                initMap();
-            }
-            else{
-                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-            }
-
-        }
-        else{
-            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
-        }
-
-
-    }
 
     @Override
     protected void onPause() {
@@ -493,12 +380,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onBackPressed(){
         Intent i = new Intent(this, MainActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("POIList",POIList);
-        bundle.putSerializable("sPOIList",sPOIList);
-        bundle.putSerializable("hPOIList",hPOIList);
-        //bundle.putInt("From_Activity",1);
-        i.putExtras(bundle);
+
         startActivity(i);
     }
 

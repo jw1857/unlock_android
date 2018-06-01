@@ -13,11 +13,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class POIPresentationActivity extends AppCompatActivity {
-    private ArrayList<POI> POIList;
-    private ArrayList<sPOI> sPOIList;
     POI poi;
-    private ArrayList<hPOI> hPOIList;
-    private ArrayList<bPOI> bPOIList;
     ImageView iv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,10 +25,7 @@ public class POIPresentationActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if (b != null) {
             poi = (POI) b.getSerializable("POI");
-            POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
-            bPOIList=(ArrayList<bPOI>) b.getSerializable("bPOIList");
+
             String imageString = poi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }
@@ -43,10 +36,6 @@ public class POIPresentationActivity extends AppCompatActivity {
                 Intent i = new Intent(POIPresentationActivity.this, VideoActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("POI", poi);
-                b.putSerializable("POIList", POIList);
-                b.putSerializable("sPOIList", sPOIList);
-                b.putSerializable("hPOIList", hPOIList);
-                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -58,10 +47,6 @@ public class POIPresentationActivity extends AppCompatActivity {
                 Intent i = new Intent(POIPresentationActivity.this, ImageActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("POI", poi);
-                b.putSerializable("POIList", POIList);
-                b.putSerializable("sPOIList", sPOIList);
-                b.putSerializable("hPOIList", hPOIList);
-                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -73,10 +58,6 @@ public class POIPresentationActivity extends AppCompatActivity {
                 Intent i = new Intent(POIPresentationActivity.this, AudioActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("POI", poi);
-                b.putSerializable("POIList", POIList);
-                b.putSerializable("sPOIList", sPOIList);
-                b.putSerializable("hPOIList", hPOIList);
-                b.putSerializable("bPOIList", bPOIList);
                 i.putExtras(b);
                 startActivity(i);
             }
@@ -87,12 +68,6 @@ public class POIPresentationActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent i = new Intent(this, MapsActivity.class);
-        Bundle b = new Bundle();
-        b.putSerializable("POIList", POIList);
-        b.putSerializable("sPOIList", sPOIList);
-        b.putSerializable("hPOIList", hPOIList);
-        b.putSerializable("bPOIList", bPOIList);
-        i.putExtras(b);
         startActivity(i);
     }
 

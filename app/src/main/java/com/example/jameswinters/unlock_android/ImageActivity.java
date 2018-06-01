@@ -15,12 +15,11 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class ImageActivity extends AppCompatActivity{
+
     private POI poi;
     private sPOI spoi;
     private hPOI hpoi;
-    private ArrayList<POI> POIList;
-    private ArrayList<sPOI> sPOIList;
-    private ArrayList<hPOI> hPOIList;
+   
     private ArrayList<String> imageLinkArray;
     private boolean is_sPOI = false;
     private boolean is_hPOI = false;
@@ -40,6 +39,7 @@ public class ImageActivity extends AppCompatActivity{
         if(b!=null){
 
             poi = (POI)b.getSerializable("POI");
+
             spoi = (sPOI)b.getSerializable("sPOI");
             hpoi = (hPOI)b.getSerializable("hPOI");
             if(!(poi == null)){
@@ -57,9 +57,8 @@ public class ImageActivity extends AppCompatActivity{
                 is_POI = false;
                 is_sPOI = false;
             }
-            POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
+            
+
         }
 
         //imageLinkArray = poi.getImageLinks();
@@ -75,7 +74,6 @@ public class ImageActivity extends AppCompatActivity{
 
 
         numImages = imageLinkArray.size();
-
 
         String[] imageUriStringArray = new String[numImages];
         imageUriStringArray = imageLinkArray.toArray(imageUriStringArray);

@@ -54,11 +54,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private static final String WRITE_DATA = Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
-    private static final int REQUEST_CODE = 1234;
-
-    private Boolean mWriteStorage = false;
     private static final int ERROR_DIALOG_REQUEST = 9001;
     public ArrayList<POI> POIList = new ArrayList<>();
     public ArrayList<sPOI> sPOIList = new ArrayList<>();
@@ -79,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getStoragePermissions();
+        //getStoragePermissions();
         System.out.println(currentUser.getDisplayName());
         i = getIntent();
         currentUserText = findViewById(R.id.currentUser);
@@ -88,15 +83,10 @@ public class MainActivity extends AppCompatActivity {
         POIList = readPOIsFromSD(POIList,currentUser);
         sPOIList = readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = readhPOIsFromSD(hPOIList,currentUser);
-        if (b!=null){
-            POIList = (ArrayList<POI>)b.getSerializable("POIList");
-            sPOIList =(ArrayList<sPOI>)b.getSerializable("sPOIList");
-            hPOIList =(ArrayList<hPOI>)b.getSerializable("hPOIList");
-            myPOIRef.setValue(POIList);
-            mysPOIRef.setValue(sPOIList);
-            myhPOIRef.setValue(hPOIList);
-            checkForChangeInPOIs();
-        }
+        myPOIRef.setValue(POIList);
+        mysPOIRef.setValue(sPOIList);
+        myhPOIRef.setValue(hPOIList);
+        checkForChangeInPOIs();
         signOut();
         if(isServicesOk()){
             init();
@@ -104,26 +94,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void getStoragePermissions(){
-        Log.d(TAG, "getLocationPermission: getting location permissions");
 
-        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                WRITE_DATA) == PackageManager.PERMISSION_GRANTED){
-            mWriteStorage = true;
-        }
-        else{
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE);
-        }
-
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            Log.v(TAG,"Permission: "+permissions[0]+ "was "+grantResults[0]);
-            //resume tasks needing this permission
-        }
-    }
 
     public void signOut(){
         Button signOut = findViewById(R.id.signOutMain);
@@ -187,15 +158,11 @@ public class MainActivity extends AppCompatActivity {
         Button button3 = (Button)findViewById(R.id.btnMap2);
         Button button5 = (Button)findViewById(R.id.button_settings);
 
+
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, QRActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("POIList",POIList);
-                bundle.putSerializable("sPOIList",sPOIList);
-                bundle.putSerializable("hPOIList",hPOIList);
-                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -203,11 +170,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("POIList",POIList);
-                bundle.putSerializable("sPOIList",sPOIList);
-                bundle.putSerializable("hPOIList",hPOIList);
-                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -215,24 +177,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, LeaderboardsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("POIList",POIList);
-                bundle.putSerializable("sPOIList",sPOIList);
-                bundle.putSerializable("hPOIList",hPOIList);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            }
-
-        });
-        button5.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("POIList",POIList);
-                bundle.putSerializable("sPOIList",sPOIList);
-                bundle.putSerializable("hPOIList",hPOIList);
-                intent.putExtras(bundle);
                 startActivity(intent);
             }
 
@@ -267,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
                 fos = new FileOutputStream(file);
                 oos = new ObjectOutputStream(fos);
                 oos.writeObject(POIs);
+                System.out.println("Storing data");
                 oos.close();
                 //Toast.makeText(context,"Written to SD", Toast.LENGTH_SHORT).show();
             } catch(Exception ex) {
@@ -381,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
 
     static public ArrayList<sPOI> readsPOIsFromSD(ArrayList<sPOI> sPOIs, FirebaseUser currentUser){
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/lists/" + currentUser.getDisplayName();
-        try (FileInputStream fis = new FileInputStream(new File(path, "POIList.dat"))) {
+        try (FileInputStream fis = new FileInputStream(new File(path, "sPOIList.dat"))) {
             try (ObjectInputStream ios = new ObjectInputStream(fis)) {
                sPOIs = (ArrayList<sPOI>)ios.readObject();
                 //Toast.makeText(this,POIList.get(0).getTitle(),Toast.LENGTH_SHORT).show();
@@ -401,7 +346,7 @@ public class MainActivity extends AppCompatActivity {
 
     static public ArrayList<hPOI> readhPOIsFromSD(ArrayList<hPOI> hPOIs, FirebaseUser currentUser){
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/lists/" + currentUser.getDisplayName();
-        try (FileInputStream fis = new FileInputStream(new File(path, "POIList.dat"))) {
+        try (FileInputStream fis = new FileInputStream(new File(path, "hPOIList.dat"))) {
             try (ObjectInputStream ios = new ObjectInputStream(fis)) {
                 hPOIs = (ArrayList<hPOI>)ios.readObject();
                 //Toast.makeText(this,POIList.get(0).getTitle(),Toast.LENGTH_SHORT).show();

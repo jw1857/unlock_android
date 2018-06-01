@@ -13,16 +13,16 @@ import android.widget.VideoView;
 import java.util.ArrayList;
 
 public class VideoActivity extends AppCompatActivity {
+
     private POI poi;
     private sPOI spoi;
     private hPOI hpoi;
-    private ArrayList<POI> POIList;
-    private ArrayList<sPOI> sPOIList;
-    private ArrayList<hPOI> hPOIList;
+    
     private boolean is_sPOI = false;
     private boolean is_hPOI = false;
     private boolean is_POI = false;
     String str;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -54,9 +54,7 @@ public class VideoActivity extends AppCompatActivity {
                 is_POI = false;
                 is_sPOI = false;
             }
-            POIList = (ArrayList<POI>) b.getSerializable("POIList");
-            sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
-            hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
+     
         }
 
 
@@ -86,9 +84,6 @@ public class VideoActivity extends AppCompatActivity {
         Intent i = new Intent(VideoActivity.this, POIPresentationActivity.class);
         Bundle b = new Bundle();
         b.putSerializable("POI", poi);
-        b.putSerializable("POIList", POIList);
-        b.putSerializable("sPOIList", sPOIList);
-        b.putSerializable("hPOIList", hPOIList);
         i.putExtras(b);
         startActivity(i);
     }
