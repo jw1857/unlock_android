@@ -18,7 +18,9 @@ import java.util.ArrayList;
 
 
 public class AudioActivity extends AppCompatActivity {
-    POI poi;
+    private POI poi;
+    private sPOI spoi;
+    private hPOI hpoi;
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
@@ -29,6 +31,9 @@ public class AudioActivity extends AppCompatActivity {
     public boolean isPlaying;
     public boolean isPaused;
     public int length;
+    private boolean is_sPOI = false;
+    private boolean is_hPOI = false;
+    private boolean is_POI = false;
     String audioLinkTest;
     Uri uri;
 
@@ -38,18 +43,47 @@ public class AudioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_audio);
         Intent i = getIntent();
         Bundle b = i.getExtras();
-        if(b!=null){
+       /* if(b!=null){
             poi = (POI)b.getSerializable("POI");
             POIList = (ArrayList<POI>) b.getSerializable("POIList");
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
             hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
-        }
+        } */
+       if(b!=null){
+
+           poi = (POI)b.getSerializable("POI");
+           spoi = (sPOI)b.getSerializable("sPOI");
+           hpoi = (hPOI)b.getSerializable("hPOI");
+           if(!(poi == null)){
+               is_POI = true;
+               is_sPOI = false;
+               is_hPOI = false;
+           }
+           else if(!(spoi == null)){
+               is_sPOI = true;
+               is_POI = false;
+               is_hPOI = false;
+           }
+           else if (!(hpoi == null)){
+               is_hPOI = true;
+               is_POI = false;
+               is_sPOI = false;
+           }
+           POIList = (ArrayList<POI>) b.getSerializable("POIList");
+           sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
+           hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
+       }
         final MediaPlayer mediaPlayer = new MediaPlayer();
-        /*audioLinkArray = poi.getAudioLinks();
-        numAudios = audioLinkArray.size();
-        String imagelink = imageArray.get(0);
-        Uri uri = Uri.parse(imagelink); */
-        audioLinkTest = poi.getAudioLink();
+
+        if(is_POI){
+            audioLinkTest = poi.getAudioLink();
+        }
+        else if(is_sPOI){
+            audioLinkTest = spoi.getAudioLink();
+        }
+        else if(is_hPOI){
+            audioLinkTest = hpoi.getAudioLink();
+        }
         uri = Uri.parse(audioLinkTest);
         Button audioPlayButton = findViewById(R.id.playbutton);
         audioPlayButton.setOnClickListener(new View.OnClickListener() {

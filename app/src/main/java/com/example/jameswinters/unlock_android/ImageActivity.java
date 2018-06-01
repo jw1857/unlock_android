@@ -15,11 +15,16 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class ImageActivity extends AppCompatActivity{
-    POI poi;
+    private POI poi;
+    private sPOI spoi;
+    private hPOI hpoi;
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
     private ArrayList<String> imageLinkArray;
+    private boolean is_sPOI = false;
+    private boolean is_hPOI = false;
+    private boolean is_POI = false;
 
     private int numImages;
 
@@ -33,23 +38,44 @@ public class ImageActivity extends AppCompatActivity{
         Intent i = getIntent();
         Bundle b = i.getExtras();
         if(b!=null){
+
             poi = (POI)b.getSerializable("POI");
+            spoi = (sPOI)b.getSerializable("sPOI");
+            hpoi = (hPOI)b.getSerializable("hPOI");
+            if(!(poi == null)){
+                is_POI = true;
+                is_sPOI = false;
+                is_hPOI = false;
+            }
+            else if(!(spoi == null)){
+                is_sPOI = true;
+                is_POI = false;
+                is_hPOI = false;
+            }
+            else if (!(hpoi == null)){
+                is_hPOI = true;
+                is_POI = false;
+                is_sPOI = false;
+            }
             POIList = (ArrayList<POI>) b.getSerializable("POIList");
             sPOIList = (ArrayList<sPOI>) b.getSerializable("sPOIList");
             hPOIList=(ArrayList<hPOI>) b.getSerializable("hPOIList");
         }
 
-        imageLinkArray = poi.getImageLinks();
+        //imageLinkArray = poi.getImageLinks();
+        if(is_POI){
+            imageLinkArray = poi.getImageLinks();
+        }
+        else if(is_sPOI){
+            imageLinkArray = spoi.getImageLinks();
+        }
+        else if(is_hPOI){
+            imageLinkArray = hpoi.getImageLinks();
+        }
+
+
         numImages = imageLinkArray.size();
-        //String imagelink = imageLinkArray.get(0);
-        //Uri uri = Uri.parse(imagelink);
-        /*for (int j=0; j<numImages; j++){
-            String imagelink = imageArray.get(j);
-            Uri uri = Uri.parse(imagelink);
-        }*/
-        //ImageView imageview = findViewById(R.id.image_view);
-        //imageview.setImageURI(uri);
-        //Picasso.with(this).load(imagelink).into(imageview);
+
 
         String[] imageUriStringArray = new String[numImages];
         imageUriStringArray = imageLinkArray.toArray(imageUriStringArray);
