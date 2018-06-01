@@ -167,7 +167,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         ProgressBar pb = findViewById(R.id.progressBar);
         pb.setMax(100);
-        Toast.makeText(this, "Map Ready", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Map Ready", Toast.LENGTH_SHORT).show();
         mMap = googleMap;
         int progressCount=0;
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style));
@@ -445,7 +445,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
                     COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 Log.d(TAG, "getLocationPermission: Self Permission Granted");
-                Toast.makeText(this, "Self Permission Granted", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this, "Self Permission Granted", Toast.LENGTH_SHORT).show();
                 mLocationPermissionGranted = true;
                 initMap();
             }
