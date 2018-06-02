@@ -129,8 +129,9 @@ public class ScanSuccess extends AppCompatActivity {
             if ((loc.equals(s.getTitle())) && (!parent.getLockStatus()) && (s.getLockStatus())) {
                 s.setLockStatus(false);
                 unlocked = true;
-                Intent intent = new Intent(ScanSuccess.this, MapsActivity.class);
+                Intent intent = new Intent(ScanSuccess.this, sPOIPresentationActivity.class);
                 Bundle bundle = new Bundle();
+                bundle.putSerializable("sPOI",s);
                 mp.start();
                 disableAnimations(toast);
                 Toast.makeText(this, "Sub-location unlocked!", Toast.LENGTH_SHORT).show();
@@ -144,7 +145,9 @@ public class ScanSuccess extends AppCompatActivity {
             }
             if ((loc.equals(s.getTitle()))&&(!s.getLockStatus())&&(!parent.getLockStatus())&&(!unlocked)) {
                 Toast.makeText(this, "Location already discovered!", Toast.LENGTH_SHORT).show();
-                Intent backToMain = new Intent(ScanSuccess.this, MainActivity.class);
+                Intent backToMain = new Intent(ScanSuccess.this, sPOIPresentationActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("sPOI",s);
                 startActivity(backToMain);
             }
         }
