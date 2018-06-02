@@ -20,7 +20,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_spoipresentation);
 
-        iv = findViewById(R.id.poiMainImage); // need to change
+        iv = findViewById(R.id.spoiMainImage); // need to change
         Intent i = getIntent();
         Bundle b = i.getExtras();
         if (b != null) {

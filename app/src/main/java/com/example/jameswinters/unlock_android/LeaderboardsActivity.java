@@ -38,6 +38,12 @@ import java.util.Scanner;
 
 import javax.xml.datatype.Duration;
 
+import de.codecrafters.tableview.TableDataAdapter;
+import de.codecrafters.tableview.TableHeaderAdapter;
+import de.codecrafters.tableview.TableView;
+import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
+import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
+
 public class LeaderboardsActivity extends AppCompatActivity {
     // ArrayList<UnlockUser> UserList = new ArrayList<>();
     private ArrayList<POI> POIList;
@@ -47,23 +53,33 @@ public class LeaderboardsActivity extends AppCompatActivity {
     FirebaseUser currentUser = mAuth.getCurrentUser();
     TableLayout tbl;
 
-
-
-
+    //TableDataAdapter<String[]> myDataAdapter;
+    TableView<String[]> table;
+    TableDataAdapter<String[]> myDataAdapter;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_leaderboards);
         Intent i;
         i = getIntent();
         Bundle b = i.getExtras();
+        String[][] myData = new String[][]  {{"", ""}};
         POIList = MainActivity.readPOIsFromSD(POIList, currentUser);
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList, currentUser);
         hPOIList = MainActivity.readhPOIsFromSD(hPOIList, currentUser);
         DatabaseReference scoresRef;
-        tbl = findViewById(R.id.leaderboard);
+        table = findViewById(R.id.leaderboard);
+        myDataAdapter =
+                new SimpleTableDataAdapter(this,myData);
+        TableHeaderAdapter myHeaderAdapter =
+                new SimpleTableHeaderAdapter(this, "Username", "Unlock Progress (%)");
+        table.setDataAdapter(myDataAdapter);
+        table.setHeaderAdapter(myHeaderAdapter);
+       // myDataAdapter.add(new String[]{"test","test"});
+        //tbl = findViewById(R.id.leaderboard);
         scoresRef = FirebaseDatabase.getInstance().getReference().child("Scores");
         scoresRef.orderByValue().addChildEventListener(new ChildEventListener() {
             @Override
@@ -90,8 +106,15 @@ public class LeaderboardsActivity extends AppCompatActivity {
     }
 
     void MakeTable(String username, int score){
-        TableRow tr = new TableRow(LeaderboardsActivity.this);
-        TextView un = new TextView(LeaderboardsActivity.this);
+        int size = POIList.size()+hPOIList.size()+sPOIList.size();
+        int poisunlocked = size-score;
+        float poisunlockedpercent = ((float)poisunlocked/(float)size)*100;
+        int poisint = (int)poisunlockedpercent;
+        String poiout = Integer.toString(poisint);
+        myDataAdapter.add(new String[]{username, poiout});
+       /*// TableRow tr = new TableRow(LeaderboardsActivity.this);
+        //TextView un = new TextView(LeaderboardsActivity.this);
+
         un.setWidth(100);
         un.setHeight(50);
         un.setGravity(Gravity.CENTER);
@@ -110,7 +133,7 @@ public class LeaderboardsActivity extends AppCompatActivity {
         pu.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
         tr.addView(un);
         tr.addView(pu);
-        tbl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT,TableLayout.LayoutParams.WRAP_CONTENT));
+        tbl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT,TableLayout.LayoutParams.WRAP_CONTENT));*/
 
 
     }
