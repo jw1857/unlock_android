@@ -173,7 +173,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         pb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent i = new Intent(MapsActivity.this, ProgressTableActivity.class);
+                startActivity(i);
             }
         });
 

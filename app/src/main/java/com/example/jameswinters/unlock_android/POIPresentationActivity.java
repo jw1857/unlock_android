@@ -5,10 +5,13 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.TextToSpeech.OnInitListener;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -24,6 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 import static android.graphics.Color.BLACK;
@@ -36,7 +40,11 @@ public class POIPresentationActivity extends AppCompatActivity {
     private boolean is_sPOI = false;
     private boolean is_hPOI = false;
     private boolean is_POI = false;
+    private int MY_DATA_CHECK_CODE = 0;
+
+    TextToSpeech tts;
     String str;
+    String text;
     ImageView iv;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     @Override
@@ -97,14 +105,14 @@ public class POIPresentationActivity extends AppCompatActivity {
         });
         Button audioButton = findViewById(R.id.audiobutton_poi);
         audioButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(POIPresentationActivity.this, AudioActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("POI", poi);
-                i.putExtras(b);
-                startActivity(i);
-            }
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(POIPresentationActivity.this, AudioActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("POI", poi);
+                    i.putExtras(b);
+                    startActivity(i);
+                }
         });
 
         if(is_POI){
@@ -125,7 +133,7 @@ public class POIPresentationActivity extends AppCompatActivity {
         txtRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
             public void onSuccess(byte[] bytes) {
-                String text = new String(bytes);
+                text = new String(bytes);
                 textView.setText(text);
                 textView.setTextColor(WHITE);
                 //textView.setTextSize();
@@ -137,6 +145,34 @@ public class POIPresentationActivity extends AppCompatActivity {
             }
         });
 
+        Button textToSpeechButton = findViewById(R.id.button_texttospeech);
+        textToSpeechButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ConvertTextToSpeech();
+            }
+        });
+        Button stopTextToSpeechButton = findViewById(R.id.button_stoptexttospeech);
+        stopTextToSpeechButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tts.stop();
+                tts.shutdown();
+            }
+        });
+
+        tts=new TextToSpeech(POIPresentationActivity.this, new TextToSpeech.OnInitListener() {
+
+            @Override
+            public void onInit(int status) {
+                if(status == TextToSpeech.SUCCESS){
+                    int result=tts.setLanguage(Locale.UK);
+                }
+                else
+                    Log.e("error", "Initilization Failed!");
+            }
+        });
+
     }
 
     @Override
@@ -145,5 +181,37 @@ public class POIPresentationActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    @Override
+    protected void onPause() {
+        // TODO Auto-generated method stub
+
+        if(tts != null){
+
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onPause();
+    }
+
+    public void onClick(View v){
+
+        ConvertTextToSpeech();
+
+    }
+
+    private void ConvertTextToSpeech() {
+        // TODO Auto-generated method stub
+
+        if(text==null||"".equals(text))
+        {
+            text = "Content not available";
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }else
+            tts.speak(text+"is saved", TextToSpeech.QUEUE_FLUSH, null);
+    }
 
 }
+
+
+
+
