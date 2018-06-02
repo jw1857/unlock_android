@@ -1,10 +1,12 @@
 package com.example.jameswinters.unlock_android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -67,6 +69,7 @@ public class AudioActivity extends AppCompatActivity {
           
        }
         final MediaPlayer mediaPlayer = new MediaPlayer();
+
 
         if(is_POI){
             audioLinkTest = poi.getAudioLink();

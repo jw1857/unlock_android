@@ -28,7 +28,7 @@ public class bPOIPresentationActivity extends AppCompatActivity {
         if (b != null) {
             bpoi = (bPOI) b.getSerializable("bPOI");
             String imageString = bpoi.getMainImageLink();
-            Picasso.get().load(imageString).into(iv);
+//            Picasso.get().load(imageString).into(iv);
         }
         Button videoButton = findViewById(R.id.videobutton_bpoi);
         videoButton.setOnClickListener(new View.OnClickListener() {

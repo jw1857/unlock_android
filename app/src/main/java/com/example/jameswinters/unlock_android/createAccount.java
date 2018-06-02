@@ -88,9 +88,9 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                                     MainActivity.savehPOIListToSD(hPOIList,user);
                                     MainActivity.savebPOIListToSD(bPOIList,user);
                                     System.out.print("Test bPOI" + bPOIList.get(0).getTitle());
-                                    String name = usernameContainer.getText().toString();
-                                    DatabaseReference initialScoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-                                    initialScoreOnDb.child(name).setValue(POIList.size()+hPOIList.size()+sPOIList.size());
+                                   // String name = usernameContainer.getText().toString();
+                                    //DatabaseReference initialScoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+                                    //initialScoreOnDb.child(name).setValue(POIList.size()+hPOIList.size()+sPOIList.size());
                                     startActivity(i);
                                 }
                             });

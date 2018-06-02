@@ -213,7 +213,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 for (bPOI b : bPOIList) {
                     if (marker.equals(b.marker)) {
-
                         Intent i = new Intent(MapsActivity.this,bPOIPresentationActivity.class);
                         Bundle x= new Bundle();
                         x.putSerializable("bPOI",b);
@@ -286,26 +285,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             }
         });
-        for (POI p:POIList) {
-            boolean lsp = p.getLockStatus();
-            if (!lsp) {
-                progressCount = progressCount + 1;
-            }
-        }
-        for (sPOI s:sPOIList) {
-            boolean lss = s.getLockStatus();
-            if (!lss) {
-                progressCount = progressCount + 1;
-            }
-        }
-            for (hPOI h:hPOIList){
-            boolean lsh = h.getVisibility();
-            if (lsh){
-                progressCount = progressCount +1;
-                }
-        }
-        DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-        scoreOnDb.child(currentUser.getDisplayName()).setValue(POIList.size()+sPOIList.size()+hPOIList.size()-progressCount);
+
         System.out.println(progressCount);
         System.out.println(POIList.size());
         int size = POIList.size()+sPOIList.size()+hPOIList.size();
@@ -399,6 +379,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MainActivity.savehPOIListToSD(hPOIList,currentUser);
         MainActivity.savesPOIListToSD(sPOIList,currentUser);
         MainActivity.savebPOIListToSD(bPOIList,currentUser);
+        MainActivity.updateScore(POIList,sPOIList,hPOIList,currentUser,this);
     }
     @Override
     public void onBackPressed(){
@@ -406,6 +387,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         startActivity(i);
     }
-
 
 }

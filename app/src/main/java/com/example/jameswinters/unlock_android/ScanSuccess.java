@@ -75,6 +75,8 @@ public class ScanSuccess extends AppCompatActivity {
         for (hPOI h:hPOIList){
             locationList.add(h.getTitle());
         }
+        MainActivity.muteAudio(this,mediaPlayerFailure);
+        MainActivity.muteAudio(this,mediaPlayerSuccess);
         checkForError(location,mediaPlayerFailure);
         checkhPOI(location,mediaPlayerSuccess,toast);
         checksPOI(location,mediaPlayerSuccess,toast);
@@ -102,8 +104,8 @@ public class ScanSuccess extends AppCompatActivity {
                     }
                 }
                 int size = POIList.size() + hPOIList.size() + hPOIList.size();
-                DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-                scoreOnDb.child(currentUser.getDisplayName()).setValue(size - unlockCount);
+               // DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+               // scoreOnDb.child(currentUser.getDisplayName()).setValue(size - unlockCount);
                 Intent i = new Intent(ScanSuccess.this, hPOIPresentationActivity.class);
                 Bundle bun = new Bundle();
                 bun.putSerializable("hPOI",h);
@@ -143,8 +145,8 @@ public class ScanSuccess extends AppCompatActivity {
                     }
                 }
                 int size = POIList.size() + hPOIList.size() + hPOIList.size();
-                DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-                scoreOnDb.child(currentUser.getDisplayName()).setValue(size - unlockCount);
+                //DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+               // scoreOnDb.child(currentUser.getDisplayName()).setValue(size - unlockCount);
                 mp.start();
                 toast.show();
                 Toast.makeText(this, "Sub-location unlocked!", Toast.LENGTH_SHORT).show();
@@ -172,6 +174,7 @@ public class ScanSuccess extends AppCompatActivity {
         MainActivity.savePOIListToSD(POIList,currentUser);
         MainActivity.savehPOIListToSD(hPOIList,currentUser);
         MainActivity.savesPOIListToSD(sPOIList,currentUser);
+        MainActivity.updateScore(POIList,sPOIList,hPOIList,currentUser,this);
     }
 
     private void checkPOI(String loc, MediaPlayer mp ,Toast toast){
@@ -191,8 +194,8 @@ public class ScanSuccess extends AppCompatActivity {
                     }
                 }
                 int size = POIList.size() + hPOIList.size() + hPOIList.size();
-                DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-                scoreOnDb.child(currentUser.getDisplayName()).setValue(size - unlockCount);
+               // DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+              //  scoreOnDb.child(currentUser.getDisplayName()).setValue(size - unlockCount);
                 Intent i = new Intent(ScanSuccess.this, POIPresentationActivity.class);
                 Bundle b = new Bundle();
                 b.putSerializable("POI",p);

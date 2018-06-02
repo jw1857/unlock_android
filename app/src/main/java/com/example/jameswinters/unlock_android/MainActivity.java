@@ -5,10 +5,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -187,6 +190,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        button5.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+
+        });
 
     }
 
@@ -197,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
         savehPOIListToSD(hPOIList,currentUser);
         savesPOIListToSD(sPOIList,currentUser);
         savebPOIListToSD(bPOIList,currentUser);
+        updateScore(POIList,sPOIList,hPOIList,currentUser,this);
     }
 
     static public void savePOIListToSD(ArrayList<POI> POIs, FirebaseUser currentUser)
@@ -418,6 +430,44 @@ public class MainActivity extends AppCompatActivity {
         return bPOIs;
     }
 
+    static public void updateScore(ArrayList<POI> POIs,ArrayList<sPOI> sPOIs, ArrayList<hPOI> hPOIs, FirebaseUser currentUser,Context c){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
+        //Toast.makeText(c,"Setting"+sp.getBoolean("leaderboard",true),Toast.LENGTH_SHORT).show();
+        if (sp.getBoolean("leaderboard",false)) {
+            int progressCount = 0;
+            for (POI p : POIs) {
+                boolean lsp = p.getLockStatus();
+                if (!lsp) {
+                    progressCount = progressCount + 1;
+                }
+            }
+            for (sPOI s : sPOIs) {
+                boolean lss = s.getLockStatus();
+                if (!lss) {
+                    progressCount = progressCount + 1;
+                }
+            }
+            for (hPOI h : hPOIs) {
+                boolean lsh = h.getVisibility();
+                if (lsh) {
+                    progressCount = progressCount + 1;
+                }
+            }
+            DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+            scoreOnDb.child(currentUser.getDisplayName()).setValue(POIs.size() + sPOIs.size() + hPOIs.size() - progressCount);
+        }
+        if(!sp.getBoolean("leaderboard",false)){
+            DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+            scoreOnDb.child(currentUser.getDisplayName()).removeValue();
+        }
+    }
+
+    static public void muteAudio(Context c, MediaPlayer mediaPlayer){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
+        if (!sp.getBoolean("audio",true)){
+            mediaPlayer.setVolume(0f,0f);
+        }
+    }
 
     @Override
     public void onBackPressed(){

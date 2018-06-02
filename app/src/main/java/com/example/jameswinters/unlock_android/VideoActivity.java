@@ -1,6 +1,7 @@
 package com.example.jameswinters.unlock_android;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -74,6 +75,19 @@ public class VideoActivity extends AppCompatActivity {
         video.setMediaController(new MediaController(this));
         video.setVideoURI(uri);
         video.requestFocus();
+
+        MediaPlayer.OnPreparedListener PreparedListener = new MediaPlayer.OnPreparedListener(){
+
+            @Override
+            public void onPrepared(MediaPlayer m) {
+                try {
+                    MainActivity.muteAudio(VideoActivity.this,m);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        video.setOnPreparedListener(PreparedListener);
         video.start();
 
     }
