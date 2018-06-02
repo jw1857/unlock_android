@@ -184,7 +184,7 @@ public class POIPresentationActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        // TODO Auto-generated method stub
+
 
         if(tts != null){
 
@@ -201,7 +201,7 @@ public class POIPresentationActivity extends AppCompatActivity {
     }
 
     private void ConvertTextToSpeech() {
-        // TODO Auto-generated method stub
+      
 
         if(text==null||"".equals(text))
         {
