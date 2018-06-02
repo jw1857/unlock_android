@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".LeaderboardsActivity">
 
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  <!--  <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
         android:id="@+id/leaderboard"
         android:layout_width="fill_parent"
@@ -67,7 +67,20 @@
         </TableRow>
 
 
-    </TableLayout>
+    </TableLayout>-->
+  <ScrollView
+      android:id="@+id/SCROLLER_ID"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent"
+      android:scrollbars="vertical"
+      android:fillViewport="true">
+    <de.codecrafters.tableview.TableView
+        android:id="@+id/leaderboard"
+        android:layout_width="match_parent"
+        app:tableView_columnCount="2"
+        android:layout_height="match_parent">
+    </de.codecrafters.tableview.TableView>
+</ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>
