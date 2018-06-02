@@ -5,4 +5,11 @@
         <longitude>-1.0796</longitude>
         <visibility value = "false"/>
     </hPOI>
+
+    <hPOI name = "Quiet Place (Derwent College)">
+        <latitude>53.945708</latitude>
+        <longitude>-1.048881</longitude>,
+        <visibility value = "false"/>
+    </hPOI>
+
 </YorkhPOIs>
