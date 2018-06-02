@@ -1,6 +1,8 @@
 package com.example.jameswinters.unlock_android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -96,22 +98,12 @@ public class ScanSuccess extends AppCompatActivity {
                 h.setLockStatus(true);
                 h.setVisibility(true);
                 unlocked = true;
-                int unlockCount =0;
-                for (hPOI x : hPOIList) {
-                    boolean ls = x.getLockStatus();
-                    if (!ls) {
-                        unlockCount = unlockCount + 1;
-                    }
-                }
-                int size = POIList.size() + hPOIList.size() + hPOIList.size();
-               // DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-               // scoreOnDb.child(currentUser.getDisplayName()).setValue(size - unlockCount);
                 Intent i = new Intent(ScanSuccess.this, hPOIPresentationActivity.class);
                 Bundle bun = new Bundle();
                 bun.putSerializable("hPOI",h);
                 i.putExtras(bun);
                 mp.start();
-                toast.show();
+                disableAnimations(toast);
                 Toast.makeText(this, "Hidden location discovered!", Toast.LENGTH_SHORT).show();
                 startActivity(i);
             }
@@ -137,21 +129,9 @@ public class ScanSuccess extends AppCompatActivity {
                 unlocked = true;
                 Intent intent = new Intent(ScanSuccess.this, MapsActivity.class);
                 Bundle bundle = new Bundle();
-                int unlockCount =0;
-                for (sPOI x : sPOIList) {
-                    boolean ls = x.getLockStatus();
-                    if (!ls) {
-                        unlockCount = unlockCount + 1;
-                    }
-                }
-                int size = POIList.size() + hPOIList.size() + hPOIList.size();
-                //DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-               // scoreOnDb.child(currentUser.getDisplayName()).setValue(size - unlockCount);
                 mp.start();
-                toast.show();
+                disableAnimations(toast);
                 Toast.makeText(this, "Sub-location unlocked!", Toast.LENGTH_SHORT).show();
-
-               // is_sPOI = true;
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
@@ -184,7 +164,7 @@ public class ScanSuccess extends AppCompatActivity {
                 p.setLockStatus(false);
                 unlocked = true;
                 mp.start();
-                toast.show();
+               disableAnimations(toast);
                 Toast.makeText(this, "New location discovered!", Toast.LENGTH_SHORT).show();
                 int unlockCount = 0;
                 for (POI x : POIList) {
@@ -227,5 +207,13 @@ public class ScanSuccess extends AppCompatActivity {
             Intent i = new Intent(this, MainActivity.class);
             startActivity(i);
         }
+    }
+
+    public void disableAnimations(Toast toast){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        if(sp.getBoolean("animations",true)){
+            toast.show();
+        }
+
     }
 }

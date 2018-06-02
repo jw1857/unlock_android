@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <PreferenceCategory android:title="Notifications">
+    <PreferenceCategory android:title="Media">
     <SwitchPreference
-        android:key="notifications"
-        android:title="Notifications"
+        android:key="animations"
+        android:title="Animations"
+        android:summary="Toggle unlocking animations"
         android:defaultValue="true"/>
-    </PreferenceCategory>
-
-    <PreferenceCategory android:title ="Social and Media">
         <SwitchPreference
             android:key="audio"
             android:title="Audio"
+            android:summary="Toggle audio"
             android:defaultValue="true"/>
-    <SwitchPreference
-        android:key="autoplay"
-        android:title="Autoplay Media"
-        android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="autoplay"
+            android:title="Autoplay Video"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title ="Social">
         <SwitchPreference
             android:defaultValue="false"
             android:key="leaderboard"

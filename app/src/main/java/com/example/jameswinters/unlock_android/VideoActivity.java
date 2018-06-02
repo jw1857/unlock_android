@@ -1,8 +1,10 @@
 package com.example.jameswinters.unlock_android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -88,7 +90,8 @@ public class VideoActivity extends AppCompatActivity {
             }
         };
         video.setOnPreparedListener(PreparedListener);
-        video.start();
+        autoPlay(video);
+
 
     }
 
@@ -100,5 +103,15 @@ public class VideoActivity extends AppCompatActivity {
         b.putSerializable("POI", poi);
         i.putExtras(b);
         startActivity(i);
+    }
+
+    public void autoPlay(VideoView vid) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sp.getBoolean("autoplay", true)) {
+            vid.start();
+        }
+        if (!sp.getBoolean("autoplay", true)) {
+            vid.pause();
+        }
     }
 }
