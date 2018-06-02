@@ -12,7 +12,7 @@
             name2 = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FYork%20Minster%2FImage%2Fchapter_house_ceiling.jpg?alt=media&amp;token=8e4b5988-eac8-49e8-9c33-68e5a7b7efbb">
         </image>
         <audio name = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FYork%20Minster%2FAudio%2Fringing_bells.mp3?alt=media&amp;token=6ac7b6af-cafb-4df9-9873-047432aba5a6"/>
-        <text text = "The Cathedral and Metropolitical Church of Saint Peter in York, commonly known as York Minster, is the cathedral of York, England, and is one of the largest of its kind in Northern Europe. The minster is the seat of the Archbishop of York, the second-highest office of the Church of England, and is the mother church for the Diocese of York and the Province of York. It is run by a dean and chapter, under the Dean of York. The title &quot;minster&quot; is attributed to churches established in the Anglo-Saxon period as missionary teaching churches, and serves now as an honorific title. Services in the minster are sometimes regarded as on the High Church or Anglo-Catholic end of the Anglican continuum."/>
+        <text text = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FYork%20Minster%2FText%2FIntro.txt?alt=media&amp;token=11fa8bb7-6391-4a3d-89ef-b99d9bd3a8bd";
     </POI>
     <POI name = "Jorvik Viking Centre">
         <latitude>53.9574</latitude>
