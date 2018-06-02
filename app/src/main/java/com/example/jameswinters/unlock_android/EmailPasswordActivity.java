@@ -62,7 +62,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
         findViewById(R.id.signIn).setOnClickListener(this);
         findViewById(R.id.newAccount).setOnClickListener(this);
         // findViewById(R.id.signOut).setOnClickListener(this);
-        findViewById(R.id.verifyEmail).setOnClickListener(this);
+       // findViewById(R.id.verifyEmail).setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
 
     }
@@ -163,7 +163,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
             //findViewById(R.id.email_password_fields).setVisibility(View.GONE);
             //findViewById(R.id.signed_in_buttons).setVisibility(View.VISIBLE);
 
-            findViewById(R.id.verifyEmail).setEnabled(!user.isEmailVerified());
+           // findViewById(R.id.verifyEmail).setEnabled(!user.isEmailVerified());
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
@@ -252,7 +252,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
 
         return valid;
     }
-    private void sendEmailVerification() {
+   /* private void sendEmailVerification() {
         // Disable button
         findViewById(R.id.verifyEmail).setEnabled(false);
 
@@ -281,7 +281,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                     }
                 });
         // [END send_email_verification]
-    }
+    }*/
 
 
     public void onClick(View v) {
@@ -290,9 +290,9 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
             createAccount();
         } else if (i == R.id.signIn) {
             signIn(emailContainer.getText().toString(), passwordContainer.getText().toString());
-        }  else if (i == R.id.verifyEmail) {
+       } /* else if (i == R.id.verifyEmail) {
             sendEmailVerification();
-        }
+        }*/
     }
 
     @Override

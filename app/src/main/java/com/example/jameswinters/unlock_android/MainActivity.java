@@ -91,11 +91,14 @@ public class MainActivity extends AppCompatActivity {
         hPOIList = readhPOIsFromSD(hPOIList,currentUser);
         bPOIList= readbPOIsFromSD(bPOIList,currentUser);
        // Toast.makeText(this,bPOIList.get(0).getTitle(),Toast.LENGTH_SHORT).show();
+        checkForChangeInPOIs();
+        checkForChangeInsPOIs();
+        checkForChangeInhPOIs();
+        checkForChangeInbPOIs();
         myPOIRef.setValue(POIList);
         mysPOIRef.setValue(sPOIList);
         myhPOIRef.setValue(hPOIList);
         mybPOIRef.setValue(bPOIList);
-        checkForChangeInPOIs();
         signOut();
         if(isServicesOk()){
             init();
@@ -151,12 +154,52 @@ public class MainActivity extends AppCompatActivity {
         int size = POIList.size();
         while (compare.size() > size) {
             POIList.add(compare.get(size));
-            myPOIRef.setValue(POIList);
             size++;
         }
         while (compare.size() < size) {
             POIList.remove(size-1);
-            myPOIRef.setValue(POIList);
+            size--;
+        }
+    }
+    private void checkForChangeInsPOIs() {
+        ArrayList<sPOI> compare;
+        sPOIXMLParser spoixmlParser = new sPOIXMLParser(this);
+        compare = spoixmlParser.getsPOIList();
+        int size = sPOIList.size();
+        while (compare.size() > size) {
+            sPOIList.add(compare.get(size));
+            size++;
+        }
+        while (compare.size() < size) {
+            sPOIList.remove(size-1);
+            size--;
+        }
+    }
+    private void checkForChangeInhPOIs() {
+        ArrayList<hPOI> compare;
+        hPOIXMLParser hpoixmlParser = new hPOIXMLParser(this);
+        compare = hpoixmlParser.gethPOIList();
+        int size = hPOIList.size();
+        while (compare.size() > size) {
+            hPOIList.add(compare.get(size));
+            size++;
+        }
+        while (compare.size() < size) {
+            hPOIList.remove(size-1);
+            size--;
+        }
+    }
+    private void checkForChangeInbPOIs() {
+        ArrayList<bPOI> compare;
+        bPOIXMLParser bpoixmlParser = new bPOIXMLParser(this);
+        compare = bpoixmlParser.getbPOIList();
+        int size = bPOIList.size();
+        while (compare.size() > size) {
+            bPOIList.add(compare.get(size));
+            size++;
+        }
+        while (compare.size() < size) {
+            POIList.remove(size-1);
             size--;
         }
     }
@@ -208,6 +251,10 @@ public class MainActivity extends AppCompatActivity {
         savehPOIListToSD(hPOIList,currentUser);
         savesPOIListToSD(sPOIList,currentUser);
         savebPOIListToSD(bPOIList,currentUser);
+        myPOIRef.setValue(POIList);
+        mysPOIRef.setValue(sPOIList);
+        myhPOIRef.setValue(hPOIList);
+        mybPOIRef.setValue(bPOIList);
         updateScore(POIList,sPOIList,hPOIList,currentUser,this);
     }
 
