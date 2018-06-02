@@ -52,6 +52,7 @@ public class LeaderboardsActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
     TableLayout tbl;
+    int count;
 
 
     //TableDataAdapter<String[]> myDataAdapter;
@@ -65,20 +66,21 @@ public class LeaderboardsActivity extends AppCompatActivity {
         getSupportActionBar().hide();
         setContentView(R.layout.activity_leaderboards);
         Intent i;
+        count=0;
         i = getIntent();
         Bundle b = i.getExtras();
-        String[][] myData = new String[][]  {{,}};
+        //String[][] myData = new String[][]  {{"",""}};
         POIList = MainActivity.readPOIsFromSD(POIList, currentUser);
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList, currentUser);
         hPOIList = MainActivity.readhPOIsFromSD(hPOIList, currentUser);
         DatabaseReference scoresRef;
         table = findViewById(R.id.leaderboard);
-        myDataAdapter =
-                new SimpleTableDataAdapter(this,myData);
+
         TableHeaderAdapter myHeaderAdapter =
                 new SimpleTableHeaderAdapter(this, "Username", "Unlock Progress (%)");
-        table.setDataAdapter(myDataAdapter);
+        ;
         table.setHeaderAdapter(myHeaderAdapter);
+        //table.setHeaderVisible(false);
        // myDataAdapter.add(new String[]{"test","test"});
         //tbl = findViewById(R.id.leaderboard);
         scoresRef = FirebaseDatabase.getInstance().getReference().child("Scores");
@@ -107,12 +109,23 @@ public class LeaderboardsActivity extends AppCompatActivity {
     }
 
     void MakeTable(String username, int score){
+
         int size = POIList.size()+hPOIList.size()+sPOIList.size();
         int poisunlocked = size-score;
         float poisunlockedpercent = ((float)poisunlocked/(float)size)*100;
         int poisint = (int)poisunlockedpercent;
         String poiout = Integer.toString(poisint);
-        myDataAdapter.add(new String[]{username, poiout});
+
+        if (count ==0){
+            String[][] myData = new String[][]{{username,poiout}};
+            myDataAdapter =
+                    new SimpleTableDataAdapter(this,myData);
+            table.setDataAdapter(myDataAdapter);
+        }
+        if(count>0){
+            myDataAdapter.add(new String[]{username, poiout});
+        }
+        count++;
     }
 
 }
