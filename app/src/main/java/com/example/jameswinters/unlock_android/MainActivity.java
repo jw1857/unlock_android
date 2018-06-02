@@ -5,10 +5,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<POI> POIList = new ArrayList<>();
     public ArrayList<sPOI> sPOIList = new ArrayList<>();
     public ArrayList<hPOI> hPOIList = new ArrayList<>();
+    public ArrayList<bPOI> bPOIList = new ArrayList<>();
     private Intent i;
     //String username;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -66,6 +70,8 @@ public class MainActivity extends AppCompatActivity {
     DatabaseReference myPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
     DatabaseReference myhPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("hPOIs");
     DatabaseReference mysPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("sPOIs");
+    DatabaseReference mybPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("bPOIs");
+
     TextView currentUserText;
 
 
@@ -83,10 +89,16 @@ public class MainActivity extends AppCompatActivity {
         POIList = readPOIsFromSD(POIList,currentUser);
         sPOIList = readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = readhPOIsFromSD(hPOIList,currentUser);
+        bPOIList= readbPOIsFromSD(bPOIList,currentUser);
+       // Toast.makeText(this,bPOIList.get(0).getTitle(),Toast.LENGTH_SHORT).show();
+        checkForChangeInPOIs();
+        checkForChangeInsPOIs();
+        checkForChangeInhPOIs();
+        checkForChangeInbPOIs();
         myPOIRef.setValue(POIList);
         mysPOIRef.setValue(sPOIList);
         myhPOIRef.setValue(hPOIList);
-        checkForChangeInPOIs();
+        mybPOIRef.setValue(bPOIList);
         signOut();
         if(isServicesOk()){
             init();
@@ -142,12 +154,52 @@ public class MainActivity extends AppCompatActivity {
         int size = POIList.size();
         while (compare.size() > size) {
             POIList.add(compare.get(size));
-            myPOIRef.setValue(POIList);
             size++;
         }
         while (compare.size() < size) {
             POIList.remove(size-1);
-            myPOIRef.setValue(POIList);
+            size--;
+        }
+    }
+    private void checkForChangeInsPOIs() {
+        ArrayList<sPOI> compare;
+        sPOIXMLParser spoixmlParser = new sPOIXMLParser(this);
+        compare = spoixmlParser.getsPOIList();
+        int size = sPOIList.size();
+        while (compare.size() > size) {
+            sPOIList.add(compare.get(size));
+            size++;
+        }
+        while (compare.size() < size) {
+            sPOIList.remove(size-1);
+            size--;
+        }
+    }
+    private void checkForChangeInhPOIs() {
+        ArrayList<hPOI> compare;
+        hPOIXMLParser hpoixmlParser = new hPOIXMLParser(this);
+        compare = hpoixmlParser.gethPOIList();
+        int size = hPOIList.size();
+        while (compare.size() > size) {
+            hPOIList.add(compare.get(size));
+            size++;
+        }
+        while (compare.size() < size) {
+            hPOIList.remove(size-1);
+            size--;
+        }
+    }
+    private void checkForChangeInbPOIs() {
+        ArrayList<bPOI> compare;
+        bPOIXMLParser bpoixmlParser = new bPOIXMLParser(this);
+        compare = bpoixmlParser.getbPOIList();
+        int size = bPOIList.size();
+        while (compare.size() > size) {
+            bPOIList.add(compare.get(size));
+            size++;
+        }
+        while (compare.size() < size) {
+            POIList.remove(size-1);
             size--;
         }
     }
@@ -181,6 +233,14 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        button5.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+
+        });
 
     }
 
@@ -190,6 +250,12 @@ public class MainActivity extends AppCompatActivity {
         savePOIListToSD(POIList,currentUser);
         savehPOIListToSD(hPOIList,currentUser);
         savesPOIListToSD(sPOIList,currentUser);
+        savebPOIListToSD(bPOIList,currentUser);
+        myPOIRef.setValue(POIList);
+        mysPOIRef.setValue(sPOIList);
+        myhPOIRef.setValue(hPOIList);
+        mybPOIRef.setValue(bPOIList);
+        updateScore(POIList,sPOIList,hPOIList,currentUser,this);
     }
 
     static public void savePOIListToSD(ArrayList<POI> POIs, FirebaseUser currentUser)
@@ -271,7 +337,36 @@ public class MainActivity extends AppCompatActivity {
                 oos = new ObjectOutputStream(fos);
                 oos.writeObject(sPOIs);
                 oos.close();
-               // Toast.makeText(context,"Written to SD", Toast.LENGTH_SHORT).show();
+                // Toast.makeText(context,"Written to SD", Toast.LENGTH_SHORT).show();
+            } catch(Exception ex) {
+                ex.printStackTrace();
+                System.out.println(ex.getMessage());
+
+            }
+        }
+    }
+
+    static public void savebPOIListToSD(ArrayList<bPOI> bPOIs, FirebaseUser currentUser)
+    {
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/lists/" + currentUser.getDisplayName();
+            try {
+                File dir = new File(path);
+                if(!dir.exists())
+                {
+                    dir.mkdirs();
+                }
+                OutputStream fos = null;
+                ObjectOutputStream oos = null;
+                File file = new File(path, "/bPOIList.dat");
+                if (!file.exists()) {
+                    file.createNewFile();
+                }
+                fos = new FileOutputStream(file);
+                oos = new ObjectOutputStream(fos);
+                oos.writeObject(bPOIs);
+                oos.close();
+                // Toast.makeText(context,"Written to SD", Toast.LENGTH_SHORT).show();
             } catch(Exception ex) {
                 ex.printStackTrace();
                 System.out.println(ex.getMessage());
@@ -363,6 +458,63 @@ public class MainActivity extends AppCompatActivity {
         return hPOIs;
     }
 
+    static public ArrayList<bPOI> readbPOIsFromSD(ArrayList<bPOI> bPOIs, FirebaseUser currentUser){
+        String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/lists/" + currentUser.getDisplayName();
+        try (FileInputStream fis = new FileInputStream(new File(path, "bPOIList.dat"))) {
+            try (ObjectInputStream ios = new ObjectInputStream(fis)) {
+                bPOIs = (ArrayList<bPOI>)ios.readObject();
+                //Toast.makeText(this,POIList.get(0).getTitle(),Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bPOIs;
+    }
+
+    static public void updateScore(ArrayList<POI> POIs,ArrayList<sPOI> sPOIs, ArrayList<hPOI> hPOIs, FirebaseUser currentUser,Context c){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
+        //Toast.makeText(c,"Setting"+sp.getBoolean("leaderboard",true),Toast.LENGTH_SHORT).show();
+        if (sp.getBoolean("leaderboard",false)) {
+            int progressCount = 0;
+            for (POI p : POIs) {
+                boolean lsp = p.getLockStatus();
+                if (!lsp) {
+                    progressCount = progressCount + 1;
+                }
+            }
+            for (sPOI s : sPOIs) {
+                boolean lss = s.getLockStatus();
+                if (!lss) {
+                    progressCount = progressCount + 1;
+                }
+            }
+            for (hPOI h : hPOIs) {
+                boolean lsh = h.getVisibility();
+                if (lsh) {
+                    progressCount = progressCount + 1;
+                }
+            }
+            DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+            scoreOnDb.child(currentUser.getDisplayName()).setValue(POIs.size() + sPOIs.size() + hPOIs.size() - progressCount);
+        }
+        if(!sp.getBoolean("leaderboard",false)){
+            DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
+            scoreOnDb.child(currentUser.getDisplayName()).removeValue();
+        }
+    }
+
+    static public void muteAudio(Context c, MediaPlayer mediaPlayer){
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
+        if (!sp.getBoolean("audio",true)){
+            mediaPlayer.setVolume(0f,0f);
+        }
+    }
 
     @Override
     public void onBackPressed(){

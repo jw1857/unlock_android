@@ -6,8 +6,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class bPOI extends POI {
 
+    private String type;
     public bPOI(){
         this.setLockStatus(false);
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getType() {
+        return type;
     }
 
     public void setBusinessIconType(String type){
@@ -20,7 +29,7 @@ public class bPOI extends POI {
                 this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant));
                 break;
 
-            case "Pub":
+            case "pub":
                 this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.bar));
                 break;
 

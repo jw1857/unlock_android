@@ -97,7 +97,7 @@ public class bPOIXMLParser extends DefaultHandler{
                     currentbPOI.setTitle((attributeValue));
                     break;
                 case "businesstype":
-                    currentbPOI.setBusinessIconType(attributeValue);
+                    currentbPOI.setType(attributeValue);
                     break;
                 case "video":
                     currentbPOI.setVideoLink(attributeValue);

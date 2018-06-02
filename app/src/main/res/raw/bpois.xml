@@ -3,15 +3,15 @@
     <bPOI name = "Pivni Pub">
         <latitude>53.9597</latitude>
         <longitude>-1.0808</longitude>
-        <video name =""/>
-        <mainImage name =""/>
+        <video name ="vidtest"/>
+        <mainImage name ="imagetest"/>
         <image
             number = "2"
-            name = ""
-            name2 = "">
+            name = "test"
+            name2 = "ytest">
         </image>
-        <audio name = ""/>
-        <text text = ""/>
+        <audio name = "audiotest"/>
+        <text text = "Pivni is a great place to get wasted"/>
         <businesstype type = "pub"/>
 
     </bPOI>

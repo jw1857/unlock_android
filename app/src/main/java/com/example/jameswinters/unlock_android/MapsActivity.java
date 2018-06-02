@@ -73,6 +73,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
+    private ArrayList<bPOI> bPOIList;
     private GoogleMap mMap;
 
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -174,7 +175,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         addPOIMarkers(POIList);
         addsPOIMarkers(POIList,sPOIList);
         addhPOIMarkers(hPOIList);
-        //addbPOIMarkers();
+        addbPOIMarkers(bPOIList);
         mMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
             @Override
             public void onCameraMove() {
@@ -207,6 +208,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Bundle b= new Bundle();
                         b.putSerializable("hPOI",h);
                         i.putExtras(b);
+                        startActivity(i);
+                    }
+                }
+                for (bPOI b : bPOIList) {
+                    if (marker.equals(b.marker)) {
+                        Intent i = new Intent(MapsActivity.this,bPOIPresentationActivity.class);
+                        Bundle x= new Bundle();
+                        x.putSerializable("bPOI",b);
+                        i.putExtras(x);
                         startActivity(i);
                     }
                 }
@@ -275,26 +285,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 return true;
             }
         });
-        for (POI p:POIList) {
-            boolean lsp = p.getLockStatus();
-            if (!lsp) {
-                progressCount = progressCount + 1;
-            }
-        }
-        for (sPOI s:sPOIList) {
-            boolean lss = s.getLockStatus();
-            if (!lss) {
-                progressCount = progressCount + 1;
-            }
-        }
-            for (hPOI h:hPOIList){
-            boolean lsh = h.getVisibility();
-            if (lsh){
-                progressCount = progressCount +1;
-                }
-        }
-        DatabaseReference scoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-        scoreOnDb.child(currentUser.getDisplayName()).setValue(POIList.size()+sPOIList.size()+hPOIList.size()-progressCount);
+
         System.out.println(progressCount);
         System.out.println(POIList.size());
         int size = POIList.size()+sPOIList.size()+hPOIList.size();
@@ -320,6 +311,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         POIList = MainActivity.readPOIsFromSD(POIList,currentUser);
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = MainActivity.readhPOIsFromSD(hPOIList,currentUser);
+        bPOIList =MainActivity.readbPOIsFromSD(bPOIList,currentUser);
 
     }
 
@@ -347,7 +339,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             b.marker =  mMap.addMarker(new MarkerOptions()
                     .position(new LatLng(b.getLat(),b.getLng()))
                     .title(b.getTitle()));
-
+            b.setBusinessIconType(b.getType());
         }
     }
 
@@ -386,6 +378,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         MainActivity.savePOIListToSD(POIList,currentUser);
         MainActivity.savehPOIListToSD(hPOIList,currentUser);
         MainActivity.savesPOIListToSD(sPOIList,currentUser);
+        MainActivity.savebPOIListToSD(bPOIList,currentUser);
+        MainActivity.updateScore(POIList,sPOIList,hPOIList,currentUser,this);
     }
     @Override
     public void onBackPressed(){
@@ -393,6 +387,5 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         startActivity(i);
     }
-
 
 }

@@ -40,6 +40,9 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
     private String msg = "Android:";
     private static final String WRITE_DATA = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     private static final int REQUEST_CODE = 1234;
+    private static final String FINE_LOCATION = android.Manifest.permission.ACCESS_FINE_LOCATION;
+    private static final String COARSE_LOCATION = android.Manifest.permission.ACCESS_COARSE_LOCATION;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1233;
     private boolean mWriteStorage =false;
     EditText emailContainer ;
     EditText passwordContainer ;
@@ -53,7 +56,9 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_email_password);
-        getStoragePermissions();
+
+        getPermissions();
+
         emailContainer = findViewById(R.id.emailContainer);
         passwordContainer = findViewById(R.id.passwordContainer);
         mStatusTextView = findViewById(R.id.mStatusTextView);
@@ -61,7 +66,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
         findViewById(R.id.signIn).setOnClickListener(this);
         findViewById(R.id.newAccount).setOnClickListener(this);
         // findViewById(R.id.signOut).setOnClickListener(this);
-        findViewById(R.id.verifyEmail).setOnClickListener(this);
+       // findViewById(R.id.verifyEmail).setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -111,10 +116,11 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                     GenericTypeIndicator<ArrayList<POI>> genericTypeIndicatorPOI = new GenericTypeIndicator<ArrayList<POI>>() {};
                                     GenericTypeIndicator<ArrayList<sPOI>> genericTypeIndicatorsPOI = new GenericTypeIndicator<ArrayList<sPOI>>() {};
                                     GenericTypeIndicator<ArrayList<hPOI>> genericTypeIndicatorhPOI = new GenericTypeIndicator<ArrayList<hPOI>>() {};
+                                    GenericTypeIndicator<ArrayList<bPOI>> genericTypeIndicatorbPOI = new GenericTypeIndicator<ArrayList<bPOI>>() {};
                                     ArrayList<POI> POIList=new ArrayList<>();
                                     ArrayList<sPOI> sPOIList=new ArrayList<>();
                                     ArrayList<hPOI> hPOIList=new ArrayList<>();
-                                    Bundle b = new Bundle();
+                                    ArrayList<bPOI> bPOIList=new ArrayList<>();
                                     for(DataSnapshot d : dataSnapshot.getChildren()) {
                                         switch (d.getKey()) {
                                             case "POIs":
@@ -125,6 +131,9 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                                 break;
                                             case "hPOIs":
                                                 hPOIList = d.getValue(genericTypeIndicatorhPOI);
+                                                break;
+                                            case "bPOIs":
+                                                bPOIList = d.getValue(genericTypeIndicatorbPOI);
 
 
                                         }
@@ -132,6 +141,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                     MainActivity.savePOIListToSD(POIList,user);
                                     MainActivity.savesPOIListToSD(sPOIList,user);
                                     MainActivity.savehPOIListToSD(hPOIList,user);
+                                    MainActivity.savebPOIListToSD(bPOIList,user);
                                     startActivity(i);
                                 }
 
@@ -166,7 +176,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
             //findViewById(R.id.email_password_fields).setVisibility(View.GONE);
             //findViewById(R.id.signed_in_buttons).setVisibility(View.VISIBLE);
 
-            findViewById(R.id.verifyEmail).setEnabled(!user.isEmailVerified());
+           // findViewById(R.id.verifyEmail).setEnabled(!user.isEmailVerified());
         } else {
             mStatusTextView.setText(R.string.signed_out);
             mDetailTextView.setText(null);
@@ -189,12 +199,50 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
 
     }
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(grantResults[0]== PackageManager.PERMISSION_GRANTED){
-            Log.v("Android","Permission: "+permissions[0]+ "was "+grantResults[0]);
-            //resume tasks needing this permission
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        Log.d(msg, "onRequestPermissionsResult: called.");
+        //mLocationPermissionGranted = false;
+        switch(requestCode){
+            case LOCATION_PERMISSION_REQUEST_CODE:{
+                if(grantResults.length > 0){
+                    for(int i = 0; i < grantResults.length; i++){
+                        if(grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                            // mLocationPermissionGranted = false;
+                            Log.d(msg, "onRequestPermissionsResult: permission failed");
+                            return;
+                        }
+                    }
+                    Log.d(msg, "onRequestPermissionsResult: permission granted");
+                    // mLocationPermissionGranted = true;
+                    // Initialize map
+                    // initMap();
+                }
+            }
+
         }
+    }
+    private void getPermissions(){
+        Log.d(msg, "getLocationPermission: getting location permissions");
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.WRITE_EXTERNAL_STORAGE,Manifest.permission.READ_EXTERNAL_STORAGE};
+        if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+            if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                    COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                Log.d(msg, "getLocationPermission: Self Permission Granted");
+                //Toast.makeText(this, "Self Permission Granted", Toast.LENGTH_SHORT).show();
+                //mLocationPermissionGranted = true;
+
+            }
+            else{
+                ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
+            }
+
+        }
+        else{
+            ActivityCompat.requestPermissions(this, permissions, LOCATION_PERMISSION_REQUEST_CODE);
+        }
+
+
     }
     private boolean validateForm() {
         boolean valid = true;
@@ -217,7 +265,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
 
         return valid;
     }
-    private void sendEmailVerification() {
+   /* private void sendEmailVerification() {
         // Disable button
         findViewById(R.id.verifyEmail).setEnabled(false);
 
@@ -246,7 +294,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                     }
                 });
         // [END send_email_verification]
-    }
+    }*/
 
 
     public void onClick(View v) {
@@ -255,9 +303,9 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
             createAccount();
         } else if (i == R.id.signIn) {
             signIn(emailContainer.getText().toString(), passwordContainer.getText().toString());
-        }  else if (i == R.id.verifyEmail) {
+       } /* else if (i == R.id.verifyEmail) {
             sendEmailVerification();
-        }
+        }*/
     }
 
     @Override

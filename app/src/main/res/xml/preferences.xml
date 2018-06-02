@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="Media">
+    <SwitchPreference
+        android:key="animations"
+        android:title="Animations"
+        android:summary="Toggle unlocking animations"
+        android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="audio"
+            android:title="Audio"
+            android:summary="Toggle audio"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:key="autoplay"
+            android:title="Autoplay Video"
+            android:summary="Toggle autoplay"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title ="Social">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="leaderboard"
+            android:title="Share Stats to Public Leaderboard" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title ="Accessibility">
+        <ListPreference
+            android:defaultValue="medium"
+            android:key="textsize"
+            android:summary="%s"
+            android:entries="@array/entries"
+            android:entryValues="@array/entryValues"
+            android:title="Content Text Size" />
+        <SwitchPreference
+            android:title="Text-to-Speech"
+            android:key="texttospeech"
+            android:summary="Toggle text-to-speech"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+</PreferenceScreen>
