@@ -1,7 +1,9 @@
 package com.example.jameswinters.unlock_android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -130,6 +133,21 @@ public class POIPresentationActivity extends AppCompatActivity {
 
         StorageReference txtRef = storage.getReferenceFromUrl(str);
         final TextView textView = findViewById(R.id.TEXT_STATUS_ID);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        switch(sp.getString("textsize","textsmall")){
+            case "textsmall":
+                textView.setTextSize(15.0f);
+                break;
+            case "textmedium":
+                textView.setTextSize(20.0f);
+                break;
+            case "textlarge":
+                textView.setTextSize(25.0f);
+                break;
+            default:
+                textView.setTextSize(20.0f);
+                break;
+        }
         final long ONE_MEGABYTE = 1024 * 1024; // or to the maximum size of your text, but careful it crashes if it's too big
         txtRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
@@ -138,6 +156,7 @@ public class POIPresentationActivity extends AppCompatActivity {
                 textView.setText(text);
                 textView.setTextColor(WHITE);
                 //textView.setTextSize();
+                Toast.makeText(POIPresentationActivity.this, "" + textView.getTextSize(), Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -158,7 +177,6 @@ public class POIPresentationActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 tts.stop();
-                tts.shutdown();
             }
         });
 
@@ -201,7 +219,7 @@ public class POIPresentationActivity extends AppCompatActivity {
     }
 
     private void ConvertTextToSpeech() {
-      
+
 
         if(text==null||"".equals(text))
         {
