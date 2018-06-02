@@ -13,6 +13,9 @@ import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 
 public class VideoActivity extends AppCompatActivity {
@@ -73,6 +76,7 @@ public class VideoActivity extends AppCompatActivity {
 
 
         Uri uri = Uri.parse(str);
+
         VideoView video = findViewById(R.id.video_view);
         video.setMediaController(new MediaController(this));
         video.setVideoURI(uri);
