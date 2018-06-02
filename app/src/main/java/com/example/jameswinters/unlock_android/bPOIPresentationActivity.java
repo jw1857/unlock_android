@@ -20,6 +20,7 @@ public class bPOIPresentationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_poipresentation);
 
         iv = findViewById(R.id.bpoiMainImage); // need to change

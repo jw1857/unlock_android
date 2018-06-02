@@ -34,7 +34,9 @@ public class ScanSuccess extends AppCompatActivity {
 
     @Override @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
         final MediaPlayer mediaPlayerSuccess = MediaPlayer.create(this, R.raw.unlock_success);

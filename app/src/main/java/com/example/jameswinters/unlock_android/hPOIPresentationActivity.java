@@ -19,6 +19,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_hpoipresentation);
 
         iv = findViewById(R.id.hpoiMainImage); // need to change

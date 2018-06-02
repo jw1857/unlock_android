@@ -53,6 +53,7 @@ public class LeaderboardsActivity extends AppCompatActivity {
     FirebaseUser currentUser = mAuth.getCurrentUser();
     TableLayout tbl;
 
+
     //TableDataAdapter<String[]> myDataAdapter;
     TableView<String[]> table;
     TableDataAdapter<String[]> myDataAdapter;
@@ -66,7 +67,7 @@ public class LeaderboardsActivity extends AppCompatActivity {
         Intent i;
         i = getIntent();
         Bundle b = i.getExtras();
-        String[][] myData = new String[][]  {{"", ""}};
+        String[][] myData = new String[][]  {{,}};
         POIList = MainActivity.readPOIsFromSD(POIList, currentUser);
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList, currentUser);
         hPOIList = MainActivity.readhPOIsFromSD(hPOIList, currentUser);
@@ -112,30 +113,6 @@ public class LeaderboardsActivity extends AppCompatActivity {
         int poisint = (int)poisunlockedpercent;
         String poiout = Integer.toString(poisint);
         myDataAdapter.add(new String[]{username, poiout});
-       /*// TableRow tr = new TableRow(LeaderboardsActivity.this);
-        //TextView un = new TextView(LeaderboardsActivity.this);
-
-        un.setWidth(100);
-        un.setHeight(50);
-        un.setGravity(Gravity.CENTER);
-        un.setText(username);
-        un.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        TextView pu = new TextView(LeaderboardsActivity.this);
-        int size = POIList.size()+hPOIList.size()+sPOIList.size();
-        int poisunlocked = size-score;
-        float poisunlockedpercent = ((float)poisunlocked/(float)size)*100;
-        int poisint = (int)poisunlockedpercent;
-        String poiout = Integer.toString(poisint);
-        pu.setWidth(100);
-        pu.setGravity(Gravity.CENTER);
-        pu.setHeight(50);
-        pu.setText(poiout);
-        pu.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-        tr.addView(un);
-        tr.addView(pu);
-        tbl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT,TableLayout.LayoutParams.WRAP_CONTENT));*/
-
-
     }
 
 }
