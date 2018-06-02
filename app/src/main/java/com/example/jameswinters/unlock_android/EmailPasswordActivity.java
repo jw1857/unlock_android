@@ -17,6 +17,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -43,6 +46,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
     TextView mStatusTextView ;
     TextView mDetailTextView ;
 
+
     //Button signIn = findViewById(R.id.signIn);
 
     @Override
@@ -59,8 +63,17 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
         // findViewById(R.id.signOut).setOnClickListener(this);
         findViewById(R.id.verifyEmail).setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        findViewById(R.id.sign_in_button).setOnClickListener(this);
+
 
     }
+
+
+
     @Override
     public void onStart() {
         super.onStart();

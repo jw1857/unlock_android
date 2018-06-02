@@ -31,13 +31,13 @@ public class bPOIXMLParser extends DefaultHandler{
     public static void main(String[] args) {
 
     }
-    public  ArrayList<bPOI> getPOIList() {
-        DefaultHandler handler = new POIXMLParser(context);
+    public  ArrayList<bPOI> getbPOIList() {
+        DefaultHandler handler = new bPOIXMLParser(context);
         //System.out.println(context.getResources().get(R.raw.pois));
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
-            saxParser.parse(context.getResources().openRawResource(R.raw.poicoords),handler);
+            saxParser.parse(context.getResources().openRawResource(R.raw.bpois),handler);
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();
         } catch (SAXException saxe) {
@@ -130,7 +130,7 @@ public class bPOIXMLParser extends DefaultHandler{
         if ("".equals(elementName)) {
             elementName = qName;
         }
-        if (elementName.equals("POI")) {
+        if (elementName.equals("bPOI")) {
 
             bPOIList.add(currentbPOI);
             currentbPOI = null;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<YorkhPOIs>
-    <hPOI name = "Pivni Pub">
+<YorkbPOIs>
+    <bPOI name = "Pivni Pub">
         <latitude>53.9597</latitude>
         <longitude>-1.0808</longitude>
         <video name =""/>
@@ -14,5 +14,5 @@
         <text text = ""/>
         <businesstype type = "pub"/>
 
-    </hPOI>
-</YorkhPOIs>
+    </bPOI>
+</YorkbPOIs>
