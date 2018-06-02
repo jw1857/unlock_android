@@ -23,4 +23,17 @@
             android:key="leaderboard"
             android:title="Share Stats to Public Leaderboard" />
     </PreferenceCategory>
+    <PreferenceCategory android:title ="Accessibility">
+        <ListPreference
+            android:defaultValue="medium"
+            android:key="textsize"
+            android:summary="%s"
+            android:entries="@array/entries"
+            android:entryValues="@array/entryValues"
+            android:title="Text Size" />
+        <SwitchPreference
+            android:title="Text-to-Speech"
+            android:key="texttospeech"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
 </PreferenceScreen>
