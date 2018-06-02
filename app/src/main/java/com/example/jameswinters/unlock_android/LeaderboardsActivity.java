@@ -53,6 +53,7 @@ public class LeaderboardsActivity extends AppCompatActivity {
     FirebaseUser currentUser = mAuth.getCurrentUser();
     TableLayout tbl;
 
+
     //TableDataAdapter<String[]> myDataAdapter;
     TableView<String[]> table;
     TableDataAdapter<String[]> myDataAdapter;
@@ -66,7 +67,7 @@ public class LeaderboardsActivity extends AppCompatActivity {
         Intent i;
         i = getIntent();
         Bundle b = i.getExtras();
-        String[][] myData = new String[][]  {{"", ""}};
+        String[][] myData = new String[][]  {{,}};
         POIList = MainActivity.readPOIsFromSD(POIList, currentUser);
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList, currentUser);
         hPOIList = MainActivity.readhPOIsFromSD(hPOIList, currentUser);

@@ -42,6 +42,7 @@ public class AudioActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_audio);
         Intent i = getIntent();
         Bundle b = i.getExtras();

@@ -36,6 +36,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_create_account);
         mAuth = FirebaseAuth.getInstance();
         emailContainer = findViewById(R.id.newEmailContainer);
