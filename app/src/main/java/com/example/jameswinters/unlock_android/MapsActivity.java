@@ -210,38 +210,39 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 int unlockCount =0;
                 for (hPOI h : hPOIList) {
                     if ((marker.equals(h.marker)&&(h.marker.isVisible()))) {
-                        h.marker.showInfoWindow();
-                    }
-                    if(!h.getLockStatus()){
-                        Intent i = new Intent(MapsActivity.this,hPOIPresentationActivity.class);
-                        Bundle b= new Bundle();
-                        b.putSerializable("hPOI",h);
-                        i.putExtras(b);
-                        startActivity(i);
-                    }
-                }
-                for (bPOI b : bPOIList) {
-                    if (marker.equals(b.marker)) {
-                        Intent i = new Intent(MapsActivity.this,bPOIPresentationActivity.class);
-                        Bundle x= new Bundle();
-                        x.putSerializable("bPOI",b);
-                        i.putExtras(x);
-                        startActivity(i);
+                        if (h.getLockStatus()) {
+                            Intent i1 = new Intent(MapsActivity.this, hPOIPresentationActivity.class);
+                            Bundle b = new Bundle();
+                            b.putSerializable("hPOI", h);
+                            i1.putExtras(b);
+                            startActivity(i1);
+                        }
                     }
                 }
+                //for (bPOI b : bPOIList) {
+                    //if (marker.equals(b.marker)) {
+                      //  Intent i2 = new Intent(MapsActivity.this,bPOIPresentationActivity.class);
+                      //  Bundle x= new Bundle();
+                      //  x.putSerializable("bPOI",b);
+                      //  i2.putExtras(x);
+                      //  startActivity(i2);
+                   // }
+               // }
                 for (sPOI s : sPOIList) {
                     if ((marker.equals(s.marker)&&(s.marker.isVisible()))) {
-                       // s.setIcon(!s.getLockStatus());
-                       // s.setLockStatus(!s.getLockStatus());
-                        s.marker.showInfoWindow();
-                       // s.setLockStatus(!s.getLockStatus());
+                        if(s.getLockStatus()) {
+                            // s.setIcon(!s.getLockStatus());
+                            // s.setLockStatus(!s.getLockStatus());
+                            s.marker.showInfoWindow();
+                            // s.setLockStatus(!s.getLockStatus());
+                        }
+                    if(!s.getLockStatus()) {
+                        Intent i3 = new Intent(MapsActivity.this, sPOIPresentationActivity.class);
+                        Bundle b = new Bundle();
+                        b.putSerializable("sPOI", s);
+                        i3.putExtras(b);
+                        startActivity(i3);
                     }
-                    if(!s.getLockStatus()){
-                        Intent i = new Intent(MapsActivity.this,sPOIPresentationActivity.class);
-                        Bundle b= new Bundle();
-                        b.putSerializable("sPOI",s);
-                        i.putExtras(b);
-                        startActivity(i);
                     }
                 }
                 //System.out.println(mMap.getCameraPosition().zoom);
@@ -259,12 +260,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 }
                             }
                         }
-                        if(!p.getLockStatus()){
-                            Intent i = new Intent(MapsActivity.this,POIPresentationActivity.class);
+                        else if(!p.getLockStatus()){
+                            Intent i4 = new Intent(MapsActivity.this,POIPresentationActivity.class);
                             Bundle b= new Bundle();
                             b.putSerializable("POI",p);
-                            i.putExtras(b);
-                            startActivity(i);
+                            i4.putExtras(b);
+                            startActivity(i4);
                         }
                         //Toast.makeText(MapsActivity.this,"marker pressed", Toast.LENGTH_SHORT).show();
                     }

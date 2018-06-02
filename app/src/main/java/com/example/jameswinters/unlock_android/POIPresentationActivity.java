@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -138,6 +139,7 @@ public class POIPresentationActivity extends AppCompatActivity {
                 textView.setText(text);
                 textView.setTextColor(WHITE);
                 //textView.setTextSize();
+                Toast.makeText(POIPresentationActivity.this, "" + textView.getTextSize(), Toast.LENGTH_SHORT).show();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -201,7 +203,7 @@ public class POIPresentationActivity extends AppCompatActivity {
     }
 
     private void ConvertTextToSpeech() {
-      
+
 
         if(text==null||"".equals(text))
         {
