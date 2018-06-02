@@ -21,7 +21,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hpoipresentation);
 
-        iv = findViewById(R.id.poiMainImage); // need to change
+        iv = findViewById(R.id.hpoiMainImage); // need to change
         Intent i = getIntent();
         Bundle b = i.getExtras();
         if (b != null) {

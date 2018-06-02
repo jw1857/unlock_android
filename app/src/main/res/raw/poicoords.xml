@@ -12,7 +12,7 @@
             name2 = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FYork%20Minster%2FImage%2Fchapter_house_ceiling.jpg?alt=media&amp;token=8e4b5988-eac8-49e8-9c33-68e5a7b7efbb">
         </image>
         <audio name = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FYork%20Minster%2FAudio%2Fringing_bells.mp3?alt=media&amp;token=6ac7b6af-cafb-4df9-9873-047432aba5a6"/>
-        <text text = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FYork%20Minster%2FText%2FIntro.txt?alt=media&amp;token=11fa8bb7-6391-4a3d-89ef-b99d9bd3a8bd";
+        <text text = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FYork%20Minster%2FText%2FIntro.txt?alt=media&amp;token=c6f36d03-c1ca-422c-afde-571cc928db1b"/>
     </POI>
     <POI name = "Jorvik Viking Centre">
         <latitude>53.9574</latitude>

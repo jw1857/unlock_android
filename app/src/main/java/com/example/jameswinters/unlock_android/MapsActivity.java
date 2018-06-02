@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.util.Xml;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -169,6 +170,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ProgressBar pb = findViewById(R.id.progressBar);
         pb.setMax(100);
         mMap = googleMap;
+        pb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         int progressCount=0;
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style));
         mMap.setLatLngBoundsForCameraTarget(YORK);
@@ -312,6 +320,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = MainActivity.readhPOIsFromSD(hPOIList,currentUser);
         bPOIList =MainActivity.readbPOIsFromSD(bPOIList,currentUser);
+
 
     }
 
