@@ -8,7 +8,7 @@
               android:padding="8dp"
               android:background="#DAAA"
 >
-<pl.droidsonroids.gif.GifImageView android:src="@drawable/unlockgif"
+<pl.droidsonroids.gif.GifImageView android:src="@drawable/tick"
                                    android:layout_width="wrap_content"
                                    android:layout_height="wrap_content"
                                    android:layout_marginRight="8dp"

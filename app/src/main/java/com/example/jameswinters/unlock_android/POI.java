@@ -109,10 +109,10 @@ public class POI implements Serializable{
 
     public void setIcon(boolean locked){
         if (locked){
-            this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.lock));
+            this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.lock_vsmallsize));
         }
         if (!locked){
-            this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.unlock));
+            this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.lock_open_vsmallsize));
         }
     }
 

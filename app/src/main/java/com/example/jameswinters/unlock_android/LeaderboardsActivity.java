@@ -77,7 +77,7 @@ public class LeaderboardsActivity extends AppCompatActivity {
         table = findViewById(R.id.leaderboard);
 
         TableHeaderAdapter myHeaderAdapter =
-                new SimpleTableHeaderAdapter(this, "Username", "Unlock Progress (%)");
+                new SimpleTableHeaderAdapter(this, "Username", "Unlock Progress %");
         ;
         table.setHeaderAdapter(myHeaderAdapter);
         //table.setHeaderVisible(false);
