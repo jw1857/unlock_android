@@ -219,15 +219,15 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     }
                 }
-                //for (bPOI b : bPOIList) {
-                    //if (marker.equals(b.marker)) {
-                      //  Intent i2 = new Intent(MapsActivity.this,bPOIPresentationActivity.class);
-                      //  Bundle x= new Bundle();
-                      //  x.putSerializable("bPOI",b);
-                      //  i2.putExtras(x);
-                      //  startActivity(i2);
-                   // }
-               // }
+                for (bPOI b : bPOIList) {
+                    if (marker.equals(b.marker)) {
+                       Intent i2 = new Intent(MapsActivity.this,bPOIPresentationActivity.class);
+                        Bundle x= new Bundle();
+                        x.putSerializable("bPOI",b);
+                        i2.putExtras(x);
+                        startActivity(i2);
+                    }
+               }
                 for (sPOI s : sPOIList) {
                     if ((marker.equals(s.marker)&&(s.marker.isVisible()))) {
                         if(s.getLockStatus()) {

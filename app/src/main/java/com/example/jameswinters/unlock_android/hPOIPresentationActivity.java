@@ -19,7 +19,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         setContentView(R.layout.activity_hpoipresentation);
 
         iv = findViewById(R.id.hpoiMainImage); // need to change
@@ -27,7 +27,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if (b != null) {
             hpoi = (hPOI) b.getSerializable("hPOI");
-
+            this.setTitle(hpoi.getTitle());
             //String imageString = hpoi.getMainImageLink();
            // Picasso.get().load(imageString).into(iv);
         }

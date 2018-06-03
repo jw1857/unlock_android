@@ -70,7 +70,7 @@ public class AudioActivity extends AppCompatActivity {
           
        }
         final MediaPlayer mediaPlayer = new MediaPlayer();
-
+        MainActivity.muteAudio(this,mediaPlayer);
 
         if(is_POI){
             audioLinkTest = poi.getAudioLink();
