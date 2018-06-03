@@ -41,10 +41,6 @@ public class POIPresentationActivity extends AppCompatActivity {
     POI poi;
     sPOI spoi;
     hPOI hpoi;
-    private boolean is_sPOI = false;
-    private boolean is_hPOI = false;
-    private boolean is_POI = false;
-    private int MY_DATA_CHECK_CODE = 0;
 
     TextToSpeech tts;
     String str;
@@ -67,50 +63,48 @@ public class POIPresentationActivity extends AppCompatActivity {
             String imageString = poi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
 
-            spoi = (sPOI) b.getSerializable("sPOI");
-            hpoi = (hPOI) b.getSerializable("hPOI");
-            if (!(poi == null)) {
-                is_POI = true;
-                is_sPOI = false;
-                is_hPOI = false;
-            } else if (!(spoi == null)) {
-                is_sPOI = true;
-                is_POI = false;
-                is_hPOI = false;
-            } else if (!(hpoi == null)) {
-                is_hPOI = true;
-                is_POI = false;
-                is_sPOI = false;
-            }
-
         }
 
 
 
         Button videoButton = findViewById(R.id.videobutton_poi);
-        videoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(POIPresentationActivity.this, VideoActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("POI", poi);
-                i.putExtras(b);
-                startActivity(i);
-            }
-        });
+        if (poi.getVideoLink()==null){
+            videoButton.setVisibility(View.INVISIBLE);
+        }
+        else if (poi.getVideoLink()!=null) {
+            videoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(POIPresentationActivity.this, VideoActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("POI", poi);
+                    i.putExtras(b);
+                    startActivity(i);
+                }
+            });
+        }
         Button imageButton = findViewById(R.id.imagebutton_poi);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(POIPresentationActivity.this, ImageActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("POI", poi);
-                i.putExtras(b);
-                startActivity(i);
-            }
-        });
+        if (poi.getImageLinks()==null){
+            imageButton.setVisibility(View.INVISIBLE);
+        }
+        else if (poi.getImageLinks()!=null) {
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(POIPresentationActivity.this, ImageActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("POI", poi);
+                    i.putExtras(b);
+                    startActivity(i);
+                }
+            });
+        }
         Button audioButton = findViewById(R.id.audiobutton_poi);
-        audioButton.setOnClickListener(new View.OnClickListener() {
+        if (poi.getAudioLink()==null){
+            audioButton.setVisibility(View.INVISIBLE);
+        }
+        else if (poi.getAudioLink()!=null) {
+            audioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(POIPresentationActivity.this, AudioActivity.class);
@@ -119,17 +113,11 @@ public class POIPresentationActivity extends AppCompatActivity {
                     i.putExtras(b);
                     startActivity(i);
                 }
-        });
+            });
+        }
 
-        if(is_POI){
             str = poi.getText();
-        }
-        else if(is_sPOI){
-            str = spoi.getText();
-        }
-        else if(is_hPOI){
-            str = hpoi.getText();
-        }
+
         //
         //str = poi.getText();
 
@@ -150,7 +138,8 @@ public class POIPresentationActivity extends AppCompatActivity {
                 break;
         }
         if ((str.length()<20)||(str.equals(null))){
-            textView.setText("Add Firebase Text Link");
+            textView.setText(str);
+            text =str;
 
         }
         else if ((str.length()>20)){
@@ -247,7 +236,7 @@ public class POIPresentationActivity extends AppCompatActivity {
             text = "Content not available";
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
         }else
-            tts.speak(text+"is saved", TextToSpeech.QUEUE_FLUSH, null);
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
 
 }

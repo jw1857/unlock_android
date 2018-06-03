@@ -4,7 +4,7 @@
         <latitude>53.9623</latitude>
         <longitude>-1.0819</longitude>
         <locked value = "true"/>
-        <video name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FYork%20Minster%2FVideo%2Fyork_minster_library.mp4?alt=media&amp;token=b9a43a74-ca29-4f56-bb24-3ca963d7aef1"/>
+        <video name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FYork%20Minster%2FVideo%2Ftrimmed_york_minster_library.mp4?alt=media&amp;token=bc2cda79-4c48-4165-8510-dea4f7044690"/>
         <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FYork%20Minster%2FImage%2Fmain_splash.jpg?alt=media&amp;token=ea3f477a-26d5-4364-92e3-0e493c5bb531"/>
         <image
             number = "2"
@@ -18,56 +18,62 @@
         <latitude>53.9574</latitude>
         <longitude>-1.0803</longitude>
         <locked value = "true"/>
-        <video name ="vidtest"/>
         <mainImage name ="maintest"/>
         <image
-            number = "2"
+            number = "0"
             name = "image1"
             name2 = "image2">
         </image>
-        <audio name = "audiotest"/>
-        <text text = ""/>
+        <text text = "Jorvik Viking Centre"/>
     </POI>
     <POI name = "York Museum Gardens">
         <latitude>53.9615</latitude>
         <longitude>-1.0883</longitude>
         <locked value = "true"/>
-        <video name ="vidtest"/>
-        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlockauth-469c0.appspot.com/o/yorkmuseumgardens.jpg?alt=media&amp;token=af3748a4-9287-430c-bed0-6103415ead55"/>
+        <mainImage name ="maintest"/>
         <image
-            number = "2"
+            number = "0"
             name = "image1"
             name2 = "image2">
         </image>
-        <audio name = "audiotest"/>
-        <text text = ""/>
+
+        <text text = "York Museum Gardens"/>
     </POI>
     <POI name = "University of York">
         <latitude>53.9471</latitude>
         <longitude>-1.0529</longitude>
         <locked value = "true"/>
-        <video name ="vidtest"/>
-        <mainImage name ="maintest"/>
+        <video name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funividcompressed.mp4?alt=media&amp;token=76ae342c-9e82-493f-a3bd-5433ebf23e89"/>
+        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funimain.jpg?alt=media&amp;token=a9288831-115a-42ca-ae95-2f5d8a3b6a83"/>
         <image
             number = "2"
-            name = "image1"
-            name2 = "image2">
-        </image>
-        <audio name = "audiotest"/>
-        <text text = ""/>
+            name = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funi1.jpg?alt=media&amp;token=1b8626a9-6220-4c73-9edf-10eb21eddcb7"
+            name2 = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funi2.jpg?alt=media&amp;token=be7bac89-a90f-4502-8775-db6ae346b0c5">
+         </image>
+        <audio name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funiaudio.mp3?alt=media&amp;token=e677be9a-a551-4aee-93fe-cd9c5e0bcb5c"/>
+        <text text = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funi.txt?alt=media&amp;token=05011368-14df-43b6-8f40-85b867a67b3f"/>
     </POI>
     <POI name = "Clifford's Tower">
         <latitude>53.9558</latitude>
         <longitude>-1.0799</longitude>
         <locked value = "true"/>
-        <video name ="vidtest"/>
         <mainImage name ="maintest"/>
         <image
-            number = "2"
+            number = "0"
             name = "image1"
             name2 = "image2">
         </image>
-        <audio name = "audiotest"/>
-        <text text = ""/>
+        <text text = "Clifford's Tower"/>
+    </POI>
+    <POI name = "The Shambles">
+        <latitude>53.9597</latitude>
+        <longitude>-1.0808</longitude>
+        <locked value = "true"/>
+        <mainImage name ="maintest"/>
+        <image
+            number = "0"
+            name = ""
+            name2 = ""/>
+        <text text = "The Shambles"/>
     </POI>
 </YorkPOIs>

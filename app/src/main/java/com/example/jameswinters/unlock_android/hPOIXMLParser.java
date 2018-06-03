@@ -49,6 +49,7 @@ public class hPOIXMLParser extends DefaultHandler {
 
     public void startElement(String uri, String localName, String qName, Attributes attrs) throws SAXException{
         String elementName = localName;
+        imagesList = new ArrayList<>();
         if ("".equals(elementName)) {
             elementName = qName;
         }
@@ -114,6 +115,9 @@ public class hPOIXMLParser extends DefaultHandler {
                     break;
                 case "image":
                     int number = Integer.parseInt(attributeValue);
+                    if(number ==0){
+                        imagesList=null;
+                    }
                     for (int i=1;i<=number;i++) {
                         imagesList.add(attrs.getValue(i));
                     }

@@ -4,12 +4,25 @@
         <latitude>53.9591</latitude>
         <longitude>-1.0796</longitude>
         <visibility value = "false"/>
+        <mainImage name ="maintest"/>
+        <image
+            number = "0"
+            name = "image1"
+            name2 = "image2">
+        </image>
+        <text text = "Whip-Ma-Whop-Ma-Gate"/>
     </hPOI>
 
     <hPOI name = "Quiet Place (Derwent College)">
         <latitude>53.945708</latitude>
         <longitude>-1.048881</longitude>,
         <visibility value = "false"/>
+        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquietmain.jpg?alt=media&amp;token=d4d50b05-5342-4d55-9ba9-3e3d4f7d1820"/>
+        <image
+            number = "2"
+            name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquiet1.jpg?alt=media&amp;token=e6b5384e-3671-43df-b7d7-d80563e8ccee"
+            name2="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquiet2.jpg?alt=media&amp;token=6dc8e023-5ed0-49f6-b4b8-d255179ad2f5">
+        </image>
+        <text text = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquiet.txt?alt=media&amp;token=f5b4c1e6-e0be-4dd3-9f06-7f658ca55cea"/>
     </hPOI>
-
 </YorkhPOIs>

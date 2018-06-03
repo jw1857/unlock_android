@@ -1,20 +1,35 @@
 package com.example.jameswinters.unlock_android;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.speech.tts.TextToSpeech;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Locale;
+
+import static android.graphics.Color.WHITE;
 
 public class hPOIPresentationActivity extends AppCompatActivity {
     hPOI hpoi;
-
+    TextToSpeech tts;
+    String str;
+    String text;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
     ImageView iv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,32 +43,42 @@ public class hPOIPresentationActivity extends AppCompatActivity {
         if (b != null) {
             hpoi = (hPOI) b.getSerializable("hPOI");
             this.setTitle(hpoi.getTitle());
-            //String imageString = hpoi.getMainImageLink();
-           // Picasso.get().load(imageString).into(iv);
+            String imageString = hpoi.getMainImageLink();
+            Picasso.get().load(imageString).into(iv);
         }
         Button videoButton = findViewById(R.id.videobutton_hpoi);
-        videoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(hPOIPresentationActivity.this, VideoActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("hPOI", hpoi);
-                i.putExtras(b);
-                startActivity(i);
-            }
-        });
+        if (hpoi.getVideoLink()==null){
+            videoButton.setVisibility(View.INVISIBLE);
+        }
+        else if (hpoi.getVideoLink()!=null) {
+            videoButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(hPOIPresentationActivity.this, VideoActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("hPOI", hpoi);
+                    i.putExtras(b);
+                    startActivity(i);
+                }
+            });
+        }
         Button imageButton = findViewById(R.id.imagebutton_hpoi);
-        imageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(hPOIPresentationActivity.this, ImageActivity.class);
-                Bundle b = new Bundle();
-                b.putSerializable("hPOI", hpoi);
+        if(hpoi.getImageLinks()==null){
+            imageButton.setVisibility(View.INVISIBLE);
+        }
+        else if (hpoi.getImageLinks()!=null) {
+            imageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(hPOIPresentationActivity.this, ImageActivity.class);
+                    Bundle b = new Bundle();
+                    b.putSerializable("hPOI", hpoi);
 
-                i.putExtras(b);
-                startActivity(i);
-            }
-        });
+                    i.putExtras(b);
+                    startActivity(i);
+                }
+            });
+        }
         Button audioButton = findViewById(R.id.audiobutton_hpoi);
         if(hpoi.getAudioLink() == null){
             audioButton.setVisibility(View.INVISIBLE);
@@ -71,7 +96,92 @@ public class hPOIPresentationActivity extends AppCompatActivity {
             });
         }
 
+        str = hpoi.getText();
 
+        //
+        //str = poi.getText();
+
+        final TextView textView = findViewById(R.id.TEXT_STATUS_ID_hpoi);
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        switch(sp.getString("textsize","textsmall")){
+            case "textsmall":
+                textView.setTextSize(15.0f);
+                break;
+            case "textmedium":
+                textView.setTextSize(20.0f);
+                break;
+            case "textlarge":
+                textView.setTextSize(25.0f);
+                break;
+            default:
+                textView.setTextSize(15.0f);
+                break;
+        }
+        if ((str.length()<20)||(str.equals(null))){
+            textView.setText(str);
+            text =str;
+
+        }
+        else if ((str.length()>20)){
+            StorageReference txtRef =
+                    storage.getReferenceFromUrl(str);
+            final long ONE_MEGABYTE = 1024 * 1024; // or to the maximum size of your text, but careful it crashes if it's too big
+            txtRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                                                                   @Override
+                                                                   public void onSuccess(byte[] bytes) {
+                                                                       text = new String(bytes);
+                                                                       textView.setText(text);
+                                                                       textView.setTextColor(WHITE);
+                                                                       //textView.setTextSize();
+                                                                       //Toast.makeText(POIPresentationActivity.this, "" + textView.getTextSize(), Toast.LENGTH_SHORT).show();
+                                                                   }
+                                                               }
+            ).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle any errors
+                }
+            });
+        }
+
+
+        Button textToSpeechButton = findViewById(R.id.button_texttospeech_hpoi);
+        if(!sp.getBoolean("texttospeech",true)){
+            textToSpeechButton.setVisibility(View.INVISIBLE);
+        }
+
+        textToSpeechButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!sp.getBoolean("audio",true)){
+                    tts.shutdown();
+                }
+                ConvertTextToSpeech();
+            }
+        });
+        Button stopTextToSpeechButton = findViewById(R.id.button_stoptexttospeech_hpoi);
+        if(!sp.getBoolean("texttospeech",true)){
+            stopTextToSpeechButton.setVisibility(View.INVISIBLE);
+        }
+
+        stopTextToSpeechButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tts.stop();
+            }
+        });
+
+        tts=new TextToSpeech(hPOIPresentationActivity.this, new TextToSpeech.OnInitListener() {
+
+            @Override
+            public void onInit(int status) {
+                if(status == TextToSpeech.SUCCESS){
+                    int result=tts.setLanguage(Locale.UK);
+                }
+                else
+                    Log.e("error", "Initilization Failed!");
+            }
+        });
 
     }
 
@@ -81,5 +191,39 @@ public class hPOIPresentationActivity extends AppCompatActivity {
         startActivity(i);
     }
 
+    @Override
+    protected void onPause() {
+
+
+        if(tts != null){
+
+            tts.stop();
+            tts.shutdown();
+        }
+        super.onPause();
+    }
+
+    public void onClick(View v){
+
+        ConvertTextToSpeech();
+
+    }
+
+    private void ConvertTextToSpeech() {
+
+
+        if(text==null||"".equals(text))
+        {
+            text = "Content not available";
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+        }else
+            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+    }
+
+
 
 }
+
+
+
+
