@@ -153,7 +153,9 @@ public class ScanSuccess extends AppCompatActivity {
                 Intent backToMain = new Intent(ScanSuccess.this, sPOIPresentationActivity.class);
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("sPOI",s);
+                backToMain.putExtras(bundle);
                 startActivity(backToMain);
+
             }
         }
     }

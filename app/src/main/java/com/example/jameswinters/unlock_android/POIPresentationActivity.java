@@ -62,7 +62,10 @@ public class POIPresentationActivity extends AppCompatActivity {
             this.setTitle(poi.getTitle());
 
             String imageString = poi.getMainImageLink();
-            Picasso.get().load(imageString).into(iv);
+            Picasso.get()
+                    .load(imageString)
+                    .fit()
+                    .into(iv);
 
         }
 
