@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,7 +47,8 @@ public class sPOIPresentationActivity extends AppCompatActivity {
             String imageString = spoi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }
-        Button videoButton = findViewById(R.id.videobutton_spoi);
+
+       ImageButton videoButton = findViewById(R.id.spoipresentation_videoimagebutton);
         if (spoi.getVideoLink()==null){
             videoButton.setVisibility(View.INVISIBLE);
         }
@@ -62,7 +64,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
                 }
             });
         }
-        Button imageButton = findViewById(R.id.imagebutton_spoi);
+        ImageButton imageButton = findViewById(R.id.spoipresentation_photobutton);
         if (spoi.getImageLinks()==null){
             imageButton.setVisibility(View.INVISIBLE);
         }
@@ -78,7 +80,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
                 }
             });
         }
-        Button audioButton = findViewById(R.id.audiobutton_spoi);
+        ImageButton audioButton = findViewById(R.id.spoipresentation_audio);
         if (spoi.getAudioLink()==null){
             audioButton.setVisibility(View.INVISIBLE);
         }
@@ -99,7 +101,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
         //
         //str = poi.getText();
 
-        final TextView textView = findViewById(R.id.TEXT_STATUS_ID_spoi);
+        final TextView textView = findViewById(R.id.spoi_TEXT_STATUS_ID);
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         switch(sp.getString("textsize","textsmall")){
             case "textsmall":
@@ -142,7 +144,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
         }
 
 
-        Button textToSpeechButton = findViewById(R.id.button_texttospeech_spoi);
+        Button textToSpeechButton = findViewById(R.id.spoipresentation_tts);
         if(!sp.getBoolean("texttospeech",true)){
             textToSpeechButton.setVisibility(View.INVISIBLE);
         }
@@ -156,19 +158,24 @@ public class sPOIPresentationActivity extends AppCompatActivity {
                 ConvertTextToSpeech();
             }
         });
-        Button stopTextToSpeechButton = findViewById(R.id.button_stoptexttospeech_spoi);
+
+        Button stopTextToSpeechButton = findViewById(R.id.spoipresentation_notts);
         if(!sp.getBoolean("texttospeech",true)){
             stopTextToSpeechButton.setVisibility(View.INVISIBLE);
         }
 
         stopTextToSpeechButton.setOnClickListener(new View.OnClickListener() {
+
+        
             @Override
             public void onClick(View v) {
                 tts.stop();
             }
         });
 
+
         tts=new TextToSpeech(sPOIPresentationActivity.this, new TextToSpeech.OnInitListener() {
+
 
             @Override
             public void onInit(int status) {

@@ -68,11 +68,7 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
         // findViewById(R.id.signOut).setOnClickListener(this);
        // findViewById(R.id.verifyEmail).setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+
 
 
     }

@@ -1,5 +1,7 @@
 package com.example.jameswinters.unlock_android;
 
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+
 public class sPOI extends POI {
     private boolean visibility;
     private String parentName;
@@ -25,6 +27,15 @@ public class sPOI extends POI {
 
     public void setVisibility(boolean visibility) {
         this.visibility = visibility;
+    }
+
+    public void setIcon(boolean locked){
+        if (locked){
+            this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.spoi_lock_vsmallsize));
+        }
+        if (!locked){
+            this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.spoi_lock_open_vsmallsize));
+        }
     }
 
     //public void setVisibility(float zoom){

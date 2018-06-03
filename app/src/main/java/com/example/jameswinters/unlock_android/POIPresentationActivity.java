@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.speech.tts.TextToSpeech;
@@ -67,39 +68,41 @@ public class POIPresentationActivity extends AppCompatActivity {
 
 
 
-        Button videoButton = findViewById(R.id.videobutton_poi);
+        //Button videoButton = findViewById(R.id.videobutton_poi);
+        ImageButton videoImageButton = (ImageButton)findViewById(R.id.poipresentation_videoimagebutton);
+       
         if (poi.getVideoLink()==null){
-            videoButton.setVisibility(View.INVISIBLE);
+            videoImageButton.setVisibility(View.INVISIBLE);
         }
         else if (poi.getVideoLink()!=null) {
-            videoButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(POIPresentationActivity.this, VideoActivity.class);
-                    Bundle b = new Bundle();
-                    b.putSerializable("POI", poi);
-                    i.putExtras(b);
-                    startActivity(i);
-                }
-            });
+            videoImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(POIPresentationActivity.this, VideoActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("POI", poi);
+                i.putExtras(b);
+                startActivity(i);
+            }
+        });
         }
-        Button imageButton = findViewById(R.id.imagebutton_poi);
+        ImageButton imageButton = findViewById(R.id.poipresentation_photobutton);
         if (poi.getImageLinks()==null){
             imageButton.setVisibility(View.INVISIBLE);
         }
         else if (poi.getImageLinks()!=null) {
             imageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i = new Intent(POIPresentationActivity.this, ImageActivity.class);
-                    Bundle b = new Bundle();
-                    b.putSerializable("POI", poi);
-                    i.putExtras(b);
-                    startActivity(i);
-                }
-            });
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(POIPresentationActivity.this, ImageActivity.class);
+                Bundle b = new Bundle();
+                b.putSerializable("POI", poi);
+                i.putExtras(b);
+                startActivity(i);
+            }
+        });
         }
-        Button audioButton = findViewById(R.id.audiobutton_poi);
+        ImageButton audioButton = findViewById(R.id.poipresentation_audio);
         if (poi.getAudioLink()==null){
             audioButton.setVisibility(View.INVISIBLE);
         }
@@ -164,7 +167,7 @@ public class POIPresentationActivity extends AppCompatActivity {
     }
 
 
-        Button textToSpeechButton = findViewById(R.id.button_texttospeech);
+        ImageButton textToSpeechButton = findViewById(R.id.poipresentation_tts);
         if(!sp.getBoolean("texttospeech",true)){
             textToSpeechButton.setVisibility(View.INVISIBLE);
         }
@@ -178,7 +181,7 @@ public class POIPresentationActivity extends AppCompatActivity {
                 ConvertTextToSpeech();
             }
         });
-        Button stopTextToSpeechButton = findViewById(R.id.button_stoptexttospeech);
+        ImageButton stopTextToSpeechButton = (ImageButton)findViewById(R.id.poipresentation_notts);
         if(!sp.getBoolean("texttospeech",true)){
             stopTextToSpeechButton.setVisibility(View.INVISIBLE);
         }

@@ -16,4 +16,13 @@ public class hPOI extends POI {
     public boolean getVisibility(){
         return this.visibility;
     }
+
+    public void setIcon(boolean locked){
+        if (locked){
+            this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.hpoi_lock_vsmallsize));
+        }
+        if (!locked){
+            this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.hpoi_lock_open_vsmallsize));
+        }
+    }
 }

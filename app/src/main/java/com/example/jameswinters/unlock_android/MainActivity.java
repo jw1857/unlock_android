@@ -23,6 +23,7 @@ import android.telecom.Connection;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -110,8 +111,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void signOut(){
-        Button signOut = findViewById(R.id.signOutMain);
-        signOut.setOnClickListener(new View.OnClickListener() {
+        ImageButton signOut_imagebutton = (ImageButton)findViewById(R.id.signout_imagebutton);
+        signOut_imagebutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -206,38 +207,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void init(){
-        Button button = (Button)findViewById(R.id.btnMap);
-        Button button2 = (Button)findViewById(R.id.btnMap1);
-        Button button3 = (Button)findViewById(R.id.btnMap2);
-        Button button5 = (Button)findViewById(R.id.button_settings);
+        ImageButton qr_imagebutton = (ImageButton)findViewById(R.id.qr_imagebutton);
 
 
-        button.setOnClickListener(new View.OnClickListener(){
+        ImageButton settings_imagebutton = (ImageButton)findViewById(R.id.settings_imagebutton);
+        ImageButton leaderboard_imagebutton = (ImageButton)findViewById(R.id.leader_imagebutton);
+        ImageButton map_imagebutton = (ImageButton)findViewById(R.id.map_imagebutton);
+
+
+        qr_imagebutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, QRActivity.class);
                 startActivity(intent);
             }
         });
-        button2.setOnClickListener(new View.OnClickListener(){
+        map_imagebutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(intent);
             }
         });
-        button3.setOnClickListener(new View.OnClickListener(){
+
+        settings_imagebutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, LeaderboardsActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
             }
 
         });
-        button5.setOnClickListener(new View.OnClickListener(){
+        leaderboard_imagebutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                Intent intent = new Intent(MainActivity.this, LeaderboardsActivity.class);
                 startActivity(intent);
             }
 
