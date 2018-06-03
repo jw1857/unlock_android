@@ -20,14 +20,15 @@ public class bPOIPresentationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
-        setContentView(R.layout.activity_poipresentation);
+        //getSupportActionBar().hide();
+        setContentView(R.layout.activity_bpoipresentation);
 
         iv = findViewById(R.id.bpoiMainImage); // need to change
         Intent i = getIntent();
         Bundle b = i.getExtras();
         if (b != null) {
             bpoi = (bPOI) b.getSerializable("bPOI");
+            this.setTitle(bpoi.getTitle());
             String imageString = bpoi.getMainImageLink();
            Picasso.get().load(imageString).into(iv);
         }

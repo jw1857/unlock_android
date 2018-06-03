@@ -18,7 +18,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+       // getSupportActionBar().hide();
         setContentView(R.layout.activity_spoipresentation);
 
         iv = findViewById(R.id.spoiMainImage); // need to change
@@ -26,6 +26,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if (b != null) {
             spoi = (sPOI) b.getSerializable("sPOI");
+            this.setTitle(spoi.getTitle());
             String imageString = spoi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }

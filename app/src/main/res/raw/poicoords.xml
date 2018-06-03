@@ -26,7 +26,7 @@
             name2 = "image2">
         </image>
         <audio name = "audiotest"/>
-        <text text = "York Minster is a minster in York."/>
+        <text text = ""/>
     </POI>
     <POI name = "York Museum Gardens">
         <latitude>53.9615</latitude>
@@ -40,7 +40,7 @@
             name2 = "image2">
         </image>
         <audio name = "audiotest"/>
-        <text text = "York Minster is a minster in York."/>
+        <text text = ""/>
     </POI>
     <POI name = "University of York">
         <latitude>53.9471</latitude>
@@ -54,7 +54,7 @@
             name2 = "image2">
         </image>
         <audio name = "audiotest"/>
-        <text text = "York Minster is a minster in York."/>
+        <text text = ""/>
     </POI>
     <POI name = "Clifford's Tower">
         <latitude>53.9558</latitude>
@@ -68,6 +68,6 @@
             name2 = "image2">
         </image>
         <audio name = "audiotest"/>
-        <text text = "York Minster is a minster in York."/>
+        <text text = ""/>
     </POI>
 </YorkPOIs>

@@ -1,5 +1,6 @@
 package com.example.jameswinters.unlock_android;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -53,7 +54,7 @@ public class POIPresentationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+       // getSupportActionBar().hide();
         setContentView(R.layout.activity_poipresentation);
 
         iv = findViewById(R.id.poiMainImage);
@@ -61,6 +62,7 @@ public class POIPresentationActivity extends AppCompatActivity {
         Bundle b = i.getExtras();
         if (b != null) {
             poi = (POI) b.getSerializable("POI");
+            this.setTitle(poi.getTitle());
 
             String imageString = poi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
@@ -131,9 +133,8 @@ public class POIPresentationActivity extends AppCompatActivity {
         //
         //str = poi.getText();
 
-        StorageReference txtRef = storage.getReferenceFromUrl(str);
         final TextView textView = findViewById(R.id.TEXT_STATUS_ID);
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+       final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         switch(sp.getString("textsize","textsmall")){
             case "textsmall":
                 textView.setTextSize(15.0f);
@@ -145,9 +146,15 @@ public class POIPresentationActivity extends AppCompatActivity {
                 textView.setTextSize(25.0f);
                 break;
             default:
-                textView.setTextSize(20.0f);
+                textView.setTextSize(15.0f);
                 break;
         }
+        if ((str.length()<20)||(str.equals(null))){
+            textView.setText("Add Firebase Text Link");
+
+        }
+        else if ((str.length()>20)){
+        StorageReference txtRef = storage.getReferenceFromUrl(str);
         final long ONE_MEGABYTE = 1024 * 1024; // or to the maximum size of your text, but careful it crashes if it's too big
         txtRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
             @Override
@@ -156,23 +163,37 @@ public class POIPresentationActivity extends AppCompatActivity {
                 textView.setText(text);
                 textView.setTextColor(WHITE);
                 //textView.setTextSize();
-                Toast.makeText(POIPresentationActivity.this, "" + textView.getTextSize(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(POIPresentationActivity.this, "" + textView.getTextSize(), Toast.LENGTH_SHORT).show();
             }
-        }).addOnFailureListener(new OnFailureListener() {
+        }
+        ).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
             }
         });
+    }
+
 
         Button textToSpeechButton = findViewById(R.id.button_texttospeech);
+        if(!sp.getBoolean("texttospeech",true)){
+            textToSpeechButton.setVisibility(View.INVISIBLE);
+        }
+
         textToSpeechButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!sp.getBoolean("audio",true)){
+                    tts.shutdown();
+                }
                 ConvertTextToSpeech();
             }
         });
         Button stopTextToSpeechButton = findViewById(R.id.button_stoptexttospeech);
+        if(!sp.getBoolean("texttospeech",true)){
+            stopTextToSpeechButton.setVisibility(View.INVISIBLE);
+        }
+
         stopTextToSpeechButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
