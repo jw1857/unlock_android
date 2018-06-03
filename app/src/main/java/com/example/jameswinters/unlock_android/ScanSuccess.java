@@ -31,6 +31,10 @@ public class ScanSuccess extends AppCompatActivity {
     private ArrayList<String> locationList=new ArrayList<>();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("POIs");
+    DatabaseReference myhPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("hPOIs");
+    DatabaseReference mysPOIRef = database.getReference("POIList").child(currentUser.getDisplayName()).child("sPOIs");
 
     @Override @SuppressWarnings("unchecked")
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +45,8 @@ public class ScanSuccess extends AppCompatActivity {
         Bundle b = intent.getExtras();
         final MediaPlayer mediaPlayerSuccess = MediaPlayer.create(this, R.raw.unlock_success);
         final MediaPlayer mediaPlayerFailure = MediaPlayer.create(this, R.raw.unlock_failure);
-
+        mediaPlayerSuccess.setVolume(12,12);
+        mediaPlayerFailure.setVolume(12,12);
 
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.toast_layout,
@@ -160,6 +165,10 @@ public class ScanSuccess extends AppCompatActivity {
         MainActivity.savehPOIListToSD(hPOIList,currentUser);
         MainActivity.savesPOIListToSD(sPOIList,currentUser);
         MainActivity.updateScore(POIList,sPOIList,hPOIList,currentUser,this);
+        myPOIRef.setValue(POIList);
+        mysPOIRef.setValue(sPOIList);
+        myhPOIRef.setValue(hPOIList);
+
     }
 
     private void checkPOI(String loc, MediaPlayer mp ,Toast toast){

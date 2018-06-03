@@ -28,14 +28,14 @@
         app:layout_constraintStart_toEndOf="parent">
 
         <ScrollView
-            android:id="@+id/SCROLLER_ID"
+            android:id="@+id/spoi_SCROLLER_ID"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:fillViewport="true"
             android:scrollbars="vertical">
 
             <TextView
-                android:id="@+id/TEXT_STATUS_ID"
+                android:id="@+id/spoi_TEXT_STATUS_ID"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="1.0" />

@@ -117,12 +117,12 @@ public class sPOIPresentationActivity extends AppCompatActivity {
                 textView.setTextSize(15.0f);
                 break;
         }
-        if ((str.length()<20)||(str.equals(null))){
+        if ((str.length()<30)||(str.equals(null))){
             textView.setText(str);
             text=str;
 
         }
-        else if ((str.length()>20)){
+        else if ((str.length()>30)){
             StorageReference txtRef = storage.getReferenceFromUrl(str);
             final long ONE_MEGABYTE = 1024 * 1024; // or to the maximum size of your text, but careful it crashes if it's too big
             txtRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -144,7 +144,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
         }
 
 
-        Button textToSpeechButton = findViewById(R.id.spoipresentation_tts);
+        ImageButton textToSpeechButton = findViewById(R.id.spoipresentation_tts);
         if(!sp.getBoolean("texttospeech",true)){
             textToSpeechButton.setVisibility(View.INVISIBLE);
         }
@@ -159,7 +159,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
             }
         });
 
-        Button stopTextToSpeechButton = findViewById(R.id.spoipresentation_notts);
+        ImageButton stopTextToSpeechButton = findViewById(R.id.spoipresentation_notts);
         if(!sp.getBoolean("texttospeech",true)){
             stopTextToSpeechButton.setVisibility(View.INVISIBLE);
         }

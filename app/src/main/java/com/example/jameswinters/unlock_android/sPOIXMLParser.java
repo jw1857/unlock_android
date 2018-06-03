@@ -104,6 +104,7 @@ public class sPOIXMLParser extends DefaultHandler {
                     break;
                 case "locked":
                     currentsPOI.setLockStatus(Boolean.parseBoolean(attributeValue));
+                    break;
                 case "parentName":
                     currentsPOI.setParentName(attributeValue);
                     break;
@@ -118,6 +119,7 @@ public class sPOIXMLParser extends DefaultHandler {
                     break;
                 case "text":
                     currentsPOI.setText(attributeValue);
+                    break;
                 case "visibility":
                     currentsPOI.setVisibility(Boolean.parseBoolean(attributeValue));
                     break;

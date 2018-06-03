@@ -44,11 +44,11 @@
         <longitude>-1.0529</longitude>
         <locked value = "true"/>
         <video name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funividcompressed.mp4?alt=media&amp;token=76ae342c-9e82-493f-a3bd-5433ebf23e89"/>
-        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funimain.jpg?alt=media&amp;token=a9288831-115a-42ca-ae95-2f5d8a3b6a83"/>
+        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funimaindark.jpg?alt=media&amp;token=f65d76dc-0931-4fdd-ab3c-74a1781ec597"/>
         <image
             number = "2"
-            name = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funi1.jpg?alt=media&amp;token=1b8626a9-6220-4c73-9edf-10eb21eddcb7"
-            name2 = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funi2.jpg?alt=media&amp;token=be7bac89-a90f-4502-8775-db6ae346b0c5">
+            name = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funi1.jpg?alt=media&amp;token=00634d25-d204-46fb-869c-3a176c659ca8"
+            name2 = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funi2.jpg?alt=media&amp;token=d9271458-0604-47ef-ac5e-d317637e4bd0">
          </image>
         <audio name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funiaudio.mp3?alt=media&amp;token=e677be9a-a551-4aee-93fe-cd9c5e0bcb5c"/>
         <text text = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funi.txt?alt=media&amp;token=05011368-14df-43b6-8f40-85b867a67b3f"/>

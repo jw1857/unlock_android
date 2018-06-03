@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,7 +39,7 @@ public class bPOIPresentationActivity extends AppCompatActivity {
         //getSupportActionBar().hide();
         setContentView(R.layout.activity_bpoipresentation);
 
-        iv = findViewById(R.id.bpoiMainImage); // need to change
+        iv = findViewById(R.id.bpoiMainImage);
         Intent i = getIntent();
         Bundle b = i.getExtras();
         if (b != null) {
@@ -47,7 +48,7 @@ public class bPOIPresentationActivity extends AppCompatActivity {
             String imageString = bpoi.getMainImageLink();
            Picasso.get().load(imageString).into(iv);
         }
-        Button videoButton = findViewById(R.id.videobutton_bpoi);
+        ImageButton videoButton = findViewById(R.id.bpoipresentation_videoimagebutton);
         if (bpoi.getVideoLink()==null){
             videoButton.setVisibility(View.INVISIBLE);
         }
@@ -63,7 +64,7 @@ public class bPOIPresentationActivity extends AppCompatActivity {
                 }
             });
         }
-        Button imageButton = findViewById(R.id.imagebutton_bpoi);
+        ImageButton imageButton = findViewById(R.id.bpoipresentation_photobutton);
         if (bpoi.getImageLinks()==null){
             imageButton.setVisibility(View.INVISIBLE);
         }
@@ -79,7 +80,7 @@ public class bPOIPresentationActivity extends AppCompatActivity {
                 }
             });
         }
-        Button audioButton = findViewById(R.id.audiobutton_bpoi);
+        ImageButton audioButton = findViewById(R.id.bpoipresentation_audio);
         if (bpoi.getAudioLink()==null){
             audioButton.setVisibility(View.INVISIBLE);
         }
@@ -100,7 +101,7 @@ public class bPOIPresentationActivity extends AppCompatActivity {
         //
         //str = poi.getText();
 
-        final TextView textView = findViewById(R.id.TEXT_STATUS_ID_bpoi);
+        final TextView textView = findViewById(R.id.bpoi_TEXT_STATUS_ID);
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         switch(sp.getString("textsize","textsmall")){
             case "textsmall":
@@ -116,11 +117,11 @@ public class bPOIPresentationActivity extends AppCompatActivity {
                 textView.setTextSize(15.0f);
                 break;
         }
-        if ((str.length()<20)||(str.equals(null))){
+        if ((str.length()<30)||(str.equals(null))){
             textView.setText(str);
             text = str;
         }
-        else if ((str.length()>20)){
+        else if ((str.length()>30)){
             StorageReference txtRef = storage.getReferenceFromUrl(str);
             final long ONE_MEGABYTE = 1024 * 1024; // or to the maximum size of your text, but careful it crashes if it's too big
             txtRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
@@ -142,7 +143,7 @@ public class bPOIPresentationActivity extends AppCompatActivity {
         }
 
 
-        Button textToSpeechButton = findViewById(R.id.button_texttospeech_bpoi);
+        ImageButton textToSpeechButton = findViewById(R.id.bpoipresentation_tts);
         if(!sp.getBoolean("texttospeech",true)){
             textToSpeechButton.setVisibility(View.INVISIBLE);
         }
@@ -156,7 +157,7 @@ public class bPOIPresentationActivity extends AppCompatActivity {
                 ConvertTextToSpeech();
             }
         });
-        Button stopTextToSpeechButton = findViewById(R.id.button_stoptexttospeech_bpoi);
+        ImageButton stopTextToSpeechButton = findViewById(R.id.bpoipresentation_notts);
         if(!sp.getBoolean("texttospeech",true)){
             stopTextToSpeechButton.setVisibility(View.INVISIBLE);
         }
