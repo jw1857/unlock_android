@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <YorkbPOIs>
-    <bPOI name = "Pivni Pub">
-        <latitude>53.9597</latitude>
-        <longitude>-1.0808</longitude>
-        <video name ="vidtest"/>
-        <mainImage name ="imagetest"/>
+    <bPOI name = "Gatehouse Coffee">
+        <latitude>53.9551</latitude>
+        <longitude>-1.0707</longitude>
+        <mainImage name ="maintest"/>
         <image
-            number = "2"
-            name = "test"
-            name2 = "ytest">
+            number = "0"
+            name = ""
+            name2 = "">
         </image>
-        <audio name = "audiotest"/>
-        <text text = "Pivni is a great place to get wasted"/>
-        <businesstype type = "pub"/>
+        <text text = "Gatehouse Coffee"/>
+        <businesstype type = "cafe"/>
     </bPOI>
 </YorkbPOIs>

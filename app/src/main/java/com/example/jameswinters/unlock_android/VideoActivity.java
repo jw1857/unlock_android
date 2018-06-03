@@ -23,10 +23,12 @@ public class VideoActivity extends AppCompatActivity {
     private POI poi;
     private sPOI spoi;
     private hPOI hpoi;
+    private bPOI bpoi;
     
     private boolean is_sPOI = false;
     private boolean is_hPOI = false;
     private boolean is_POI = false;
+    private boolean is_bPOI = false;
     String str;
 
     @Override
@@ -41,24 +43,30 @@ public class VideoActivity extends AppCompatActivity {
         Intent i = getIntent();
         Bundle b = i.getExtras();
         if(b!=null){
-
+            bpoi = (bPOI)b.get("bPOI");
             poi = (POI)b.getSerializable("POI");
             spoi = (sPOI)b.getSerializable("sPOI");
             hpoi = (hPOI)b.getSerializable("hPOI");
-            if(!(poi == null)){
+            if (!(poi == null)) {
                 is_POI = true;
                 is_sPOI = false;
                 is_hPOI = false;
-            }
-            else if(!(spoi == null)){
+                is_bPOI = false;
+            } else if (!(spoi == null)) {
                 is_sPOI = true;
                 is_POI = false;
                 is_hPOI = false;
-            }
-            else if (!(hpoi == null)){
+                is_bPOI = false;
+            } else if (!(hpoi == null)) {
                 is_hPOI = true;
                 is_POI = false;
                 is_sPOI = false;
+                is_bPOI = false;
+            } else if (bpoi != null) {
+                is_hPOI = false;
+                is_POI = false;
+                is_sPOI = false;
+                is_bPOI = true;
             }
      
         }
@@ -72,6 +80,9 @@ public class VideoActivity extends AppCompatActivity {
         }
         else if(is_hPOI){
              str = hpoi.getVideoLink();
+        }
+        else if(is_bPOI){
+            str = bpoi.getVideoLink();
         }
 
 
@@ -102,11 +113,34 @@ public class VideoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Intent i = new Intent(VideoActivity.this, POIPresentationActivity.class);
-        Bundle b = new Bundle();
-        b.putSerializable("POI", poi);
-        i.putExtras(b);
-        startActivity(i);
+        if (is_POI) {
+            Intent i = new Intent(VideoActivity.this, POIPresentationActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("POI", poi);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        if (is_sPOI) {
+            Intent i = new Intent(VideoActivity.this, sPOIPresentationActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("sPOI", spoi);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        if (is_hPOI) {
+            Intent i = new Intent(VideoActivity.this, hPOIPresentationActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("hPOI", hpoi);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        if (is_bPOI) {
+            Intent i = new Intent(VideoActivity.this, bPOIPresentationActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("bPOI", bpoi);
+            i.putExtras(b);
+            startActivity(i);
+        }
     }
 
     public void autoPlay(VideoView vid) {

@@ -201,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
             size++;
         }
         while (compare.size() < size) {
-            POIList.remove(size-1);
+            bPOIList.remove(size-1);
             size--;
         }
     }
@@ -261,6 +261,10 @@ public class MainActivity extends AppCompatActivity {
         myhPOIRef.setValue(hPOIList);
         mybPOIRef.setValue(bPOIList);
         updateScore(POIList,sPOIList,hPOIList,currentUser,this);
+        checkForChangeInPOIs();
+        checkForChangeInbPOIs();
+        checkForChangeInhPOIs();
+        checkForChangeInsPOIs();
     }
 
     static public void savePOIListToSD(ArrayList<POI> POIs, FirebaseUser currentUser)

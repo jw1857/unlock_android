@@ -21,11 +21,11 @@ public class bPOI extends POI {
 
     public void setBusinessIconType(String type){
         switch(type) {
-            case "Cafe":
+            case "cafe":
                 this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.cafe));
                 break;
 
-            case "Restaurant":
+            case "restaurant":
                 this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.restaurant));
                 break;
 
@@ -33,11 +33,11 @@ public class bPOI extends POI {
                 this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.bar));
                 break;
 
-            case "Hotel":
+            case "hotel":
                 this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.hotel));
                 break;
 
-            case "Shop":
+            case "shop":
                 this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.shop));
                 break;
         }

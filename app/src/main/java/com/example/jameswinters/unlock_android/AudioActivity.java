@@ -27,6 +27,7 @@ public class AudioActivity extends AppCompatActivity {
     private POI poi;
     private sPOI spoi;
     private hPOI hpoi;
+    private bPOI bpoi;
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
@@ -40,6 +41,7 @@ public class AudioActivity extends AppCompatActivity {
     private boolean is_sPOI = false;
     private boolean is_hPOI = false;
     private boolean is_POI = false;
+    private boolean is_bPOI = false;
     String audioLinkTest;
     ImageView iv;
     Uri uri;
@@ -58,20 +60,30 @@ public class AudioActivity extends AppCompatActivity {
            poi = (POI)b.getSerializable("POI");
            spoi = (sPOI)b.getSerializable("sPOI");
            hpoi = (hPOI)b.getSerializable("hPOI");
+           bpoi = (bPOI)b.getSerializable("bPOI");
            if(!(poi == null)){
                is_POI = true;
                is_sPOI = false;
                is_hPOI = false;
+               is_bPOI=false;
            }
            else if(!(spoi == null)){
                is_sPOI = true;
                is_POI = false;
                is_hPOI = false;
+               is_bPOI=false;
            }
            else if (!(hpoi == null)){
                is_hPOI = true;
                is_POI = false;
                is_sPOI = false;
+               is_bPOI=false;
+           }
+           else if (bpoi!=null){
+               is_hPOI = false;
+               is_POI = false;
+               is_sPOI = false;
+               is_bPOI=true;
            }
           
        }
@@ -92,6 +104,9 @@ public class AudioActivity extends AppCompatActivity {
             audioLinkTest = hpoi.getAudioLink();
             String imageString = hpoi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
+        }
+        else if (is_bPOI){
+            audioLinkTest =bpoi.getAudioLink();
         }
         uri = Uri.parse(audioLinkTest);
         ImageButton audioPlayButton = findViewById(R.id.audioactivity_play);
@@ -142,5 +157,37 @@ public class AudioActivity extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if (is_POI) {
+            Intent i = new Intent(AudioActivity.this, POIPresentationActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("POI", poi);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        if (is_sPOI) {
+            Intent i = new Intent(AudioActivity.this, sPOIPresentationActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("sPOI", spoi);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        if (is_hPOI) {
+            Intent i = new Intent(AudioActivity.this, hPOIPresentationActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("hPOI", hpoi);
+            i.putExtras(b);
+            startActivity(i);
+        }
+        if (is_bPOI) {
+            Intent i = new Intent(AudioActivity.this, bPOIPresentationActivity.class);
+            Bundle b = new Bundle();
+            b.putSerializable("bPOI", bpoi);
+            i.putExtras(b);
+            startActivity(i);
+        }
     }
 }

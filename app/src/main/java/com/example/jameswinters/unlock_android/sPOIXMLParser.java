@@ -50,6 +50,7 @@ public class sPOIXMLParser extends DefaultHandler {
 
     public void startElement(String uri, String localName, String qName, Attributes attrs) throws SAXException{
         String elementName = localName;
+        imagesList = new ArrayList<>();
         if ("".equals(elementName)) {
             elementName = qName;
         }
@@ -105,6 +106,7 @@ public class sPOIXMLParser extends DefaultHandler {
                     currentsPOI.setLockStatus(Boolean.parseBoolean(attributeValue));
                 case "parentName":
                     currentsPOI.setParentName(attributeValue);
+                    break;
                 case "video":
                     currentsPOI.setVideoLink(attributeValue);
                     break;
@@ -121,6 +123,9 @@ public class sPOIXMLParser extends DefaultHandler {
                     break;
                 case "image":
                     int number = Integer.parseInt(attributeValue);
+                    if (number ==0){
+                        imagesList=null;
+                    }
                     for (int i=1;i<=number;i++) {
                         imagesList.add(attrs.getValue(i));
                     }

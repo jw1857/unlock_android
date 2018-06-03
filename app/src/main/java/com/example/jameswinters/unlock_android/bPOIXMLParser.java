@@ -113,6 +113,9 @@ public class bPOIXMLParser extends DefaultHandler{
                     break;
                 case "image":
                     int number = Integer.parseInt(attributeValue);
+                    if (number==0){
+                        imagesList=null;
+                    }
                     for (int i=1;i<=number;i++) {
                         imagesList.add(attrs.getValue(i));
                     }
