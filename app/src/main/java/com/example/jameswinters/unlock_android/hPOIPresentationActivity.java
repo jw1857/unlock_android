@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -46,7 +47,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
             String imageString = hpoi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }
-        Button videoButton = findViewById(R.id.videobutton_hpoi);
+        ImageButton videoButton = findViewById(R.id.hpoipresentation_videoimagebutton);
         if (hpoi.getVideoLink()==null){
             videoButton.setVisibility(View.INVISIBLE);
         }
@@ -62,7 +63,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 }
             });
         }
-        Button imageButton = findViewById(R.id.imagebutton_hpoi);
+        ImageButton imageButton = findViewById(R.id.hpoipresentation_photobutton);
         if(hpoi.getImageLinks()==null){
             imageButton.setVisibility(View.INVISIBLE);
         }
@@ -79,7 +80,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 }
             });
         }
-        Button audioButton = findViewById(R.id.audiobutton_hpoi);
+        ImageButton audioButton = findViewById(R.id.hpoipresentation_audio);
         if(hpoi.getAudioLink() == null){
             audioButton.setVisibility(View.INVISIBLE);
         }
@@ -101,7 +102,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
         //
         //str = poi.getText();
 
-        final TextView textView = findViewById(R.id.TEXT_STATUS_ID_hpoi);
+        final TextView textView = findViewById(R.id.hpoi_TEXT_STATUS_ID);
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         switch(sp.getString("textsize","textsmall")){
             case "textsmall":
@@ -117,12 +118,12 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 textView.setTextSize(15.0f);
                 break;
         }
-        if ((str.length()<20)||(str.equals(null))){
+        if ((str.length()<30)||(str.equals(null))){
             textView.setText(str);
             text =str;
 
         }
-        else if ((str.length()>20)){
+        else if ((str.length()>30)){
             StorageReference txtRef =
                     storage.getReferenceFromUrl(str);
             final long ONE_MEGABYTE = 1024 * 1024; // or to the maximum size of your text, but careful it crashes if it's too big
@@ -145,7 +146,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
         }
 
 
-        Button textToSpeechButton = findViewById(R.id.button_texttospeech_hpoi);
+        ImageButton textToSpeechButton = findViewById(R.id.hpoipresentation_tts);
         if(!sp.getBoolean("texttospeech",true)){
             textToSpeechButton.setVisibility(View.INVISIBLE);
         }
@@ -159,7 +160,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 ConvertTextToSpeech();
             }
         });
-        Button stopTextToSpeechButton = findViewById(R.id.button_stoptexttospeech_hpoi);
+        ImageButton stopTextToSpeechButton = findViewById(R.id.hpoipresentation_notts);
         if(!sp.getBoolean("texttospeech",true)){
             stopTextToSpeechButton.setVisibility(View.INVISIBLE);
         }

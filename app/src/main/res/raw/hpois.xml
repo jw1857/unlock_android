@@ -17,11 +17,11 @@
         <latitude>53.945708</latitude>
         <longitude>-1.048881</longitude>,
         <visibility value = "false"/>
-        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquietmain.jpg?alt=media&amp;token=d4d50b05-5342-4d55-9ba9-3e3d4f7d1820"/>
+        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquietmaindark.jpg?alt=media&amp;token=2f358f05-0bb7-4040-b877-317ea5b35a97"/>
         <image
             number = "2"
-            name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquiet1.jpg?alt=media&amp;token=e6b5384e-3671-43df-b7d7-d80563e8ccee"
-            name2="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquiet2.jpg?alt=media&amp;token=6dc8e023-5ed0-49f6-b4b8-d255179ad2f5">
+            name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquiet1.jpg?alt=media&amp;token=f26e381f-3292-426d-86e6-ff7d29b0b182"
+            name2="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquiet2.jpg?alt=media&amp;token=a4f93c48-6542-41c8-bb56-08362dd22905">
         </image>
         <text text = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/hPOIs%2FQuiet%20Place%2Fquiet.txt?alt=media&amp;token=f5b4c1e6-e0be-4dd3-9f06-7f658ca55cea"/>
     </hPOI>

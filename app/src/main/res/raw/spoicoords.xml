@@ -20,11 +20,11 @@
         <locked value = "true"/>
         <parentName name = "University of York"/>
         <visibilty value = "false"/>
-        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/sPOIs%2FHeslington%20Hall%2Fheshallmain.jpg?alt=media&amp;token=0496b3b2-0405-4eb5-a733-dc0446f0431c"/>
+        <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/sPOIs%2FHeslington%20Hall%2Fheshallmaindark2.jpg?alt=media&amp;token=dc07f61d-88c9-4d60-b4c2-856553d354b6"/>
         <image
             number = "2"
             name = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/sPOIs%2FHeslington%20Hall%2Fhh1.jpg?alt=media&amp;token=88ca2bc5-28df-4954-be38-43e312152633"
-            name2 = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/sPOIs%2FHeslington%20Hall%2Fhh2.png?alt=media&amp;token=459d96f9-9750-4fe2-b77f-1b082206ce95">
+            name2 = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/sPOIs%2FHeslington%20Hall%2Fhh2.JPG?alt=media&amp;token=771a2ccb-9a3a-416f-97bf-60e3ebd88b76">
         </image>
         <text text = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/sPOIs%2FHeslington%20Hall%2Fheshall.txt?alt=media&amp;token=ca583ee5-5a94-4d78-a9c7-7dbf25fd9418"/>
     </sPOI>

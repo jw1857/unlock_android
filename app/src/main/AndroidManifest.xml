@@ -83,11 +83,15 @@
             android:name=".VideoActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="landscape" />
-        <activity android:name=".ImageActivity" />
+        <activity android:name=".ImageActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SettingsActivity"
             android:label="Settings" />
-        <activity android:name=".AudioActivity" />
+        <activity android:name=".AudioActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ProgressTableActivity"></activity>
     </application>
 
