@@ -12,7 +12,11 @@ import android.os.Bundle;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.MediaController;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -37,6 +41,7 @@ public class AudioActivity extends AppCompatActivity {
     private boolean is_hPOI = false;
     private boolean is_POI = false;
     String audioLinkTest;
+    ImageView iv;
     Uri uri;
 
     @Override
@@ -44,6 +49,7 @@ public class AudioActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_audio);
+        iv = findViewById(R.id.audioMainImage);
         Intent i = getIntent();
         Bundle b = i.getExtras();
        
@@ -74,15 +80,21 @@ public class AudioActivity extends AppCompatActivity {
 
         if(is_POI){
             audioLinkTest = poi.getAudioLink();
+            String imageString = poi.getMainImageLink();
+            Picasso.get().load(imageString).into(iv);
         }
         else if(is_sPOI){
             audioLinkTest = spoi.getAudioLink();
+            String imageString = spoi.getMainImageLink();
+            Picasso.get().load(imageString).into(iv);
         }
         else if(is_hPOI){
             audioLinkTest = hpoi.getAudioLink();
+            String imageString = hpoi.getMainImageLink();
+            Picasso.get().load(imageString).into(iv);
         }
         uri = Uri.parse(audioLinkTest);
-        Button audioPlayButton = findViewById(R.id.playbutton);
+        ImageButton audioPlayButton = findViewById(R.id.audioactivity_play);
         audioPlayButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,7 +122,7 @@ public class AudioActivity extends AppCompatActivity {
             }
         });
 
-        Button audioStopButton = findViewById(R.id.stopbutton);
+        ImageButton audioStopButton = findViewById(R.id.audioactivity_stop);
         audioStopButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -120,7 +132,7 @@ public class AudioActivity extends AppCompatActivity {
             }
         });
 
-        Button audioPauseButton = findViewById(R.id.pausebutton);
+        ImageButton audioPauseButton = findViewById(R.id.audioactivity_pause);
         audioPauseButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

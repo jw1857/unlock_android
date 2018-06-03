@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,7 +31,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
             String imageString = spoi.getMainImageLink();
             Picasso.get().load(imageString).into(iv);
         }
-        Button videoButton = findViewById(R.id.videobutton_spoi);
+        ImageButton videoButton = findViewById(R.id.spoipresentation_videoimagebutton);
         videoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,7 +42,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        Button imageButton = findViewById(R.id.imagebutton_spoi);
+        ImageButton imageButton = findViewById(R.id.spoipresentation_photobutton);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,7 +53,7 @@ public class sPOIPresentationActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        Button audioButton = findViewById(R.id.audiobutton_spoi);
+        ImageButton audioButton = findViewById(R.id.spoipresentation_audio);
         audioButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
