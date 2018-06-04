@@ -12,4 +12,40 @@
         <text text = "Gatehouse Coffee"/>
         <businesstype type = "cafe"/>
     </bPOI>
+    <bPOI name = "House of the Trembling Madness">
+        <latitude>53.9613</latitude>
+        <longitude>-1.0829</longitude>
+        <mainImage name ="maintest"/>
+        <image
+            number = "0"
+            name = ""
+            name2 = "">
+        </image>
+        <text text = "House of the Trembling Madness"/>
+        <businesstype type = "pub"/>
+    </bPOI>
+    <bPOI name = "The Shop That Must Not Be Named">
+        <latitude>53.9591</latitude>
+        <longitude>-1.0800</longitude>
+        <mainImage name ="maintest"/>
+        <image
+            number = "0"
+            name = ""
+            name2 = "">
+        </image>
+        <text text = "The Shop That Must Not Be Named"/>
+        <businesstype type = "shop"/>
+    </bPOI>
+    <bPOI name = "Red Chilli">
+        <latitude>53.9579</latitude>
+        <longitude>-1.0870</longitude>
+        <mainImage name ="maintest"/>
+        <image
+            number = "0"
+            name = ""
+            name2 = "">
+        </image>
+        <text text = "Red Chilli"/>
+        <businesstype type = "restaurant"/>
+    </bPOI>
 </YorkbPOIs>
