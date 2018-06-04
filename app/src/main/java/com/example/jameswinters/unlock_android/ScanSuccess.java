@@ -67,7 +67,7 @@ public class ScanSuccess extends AppCompatActivity {
         } else location = "invalid";
         POIList = MainActivity.readPOIsFromSD(POIList,currentUser);
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList,currentUser);
-        hPOIList = MainActivity.readhPOIsFromSD(hPOIList,currentUser);
+       hPOIList = MainActivity.readhPOIsFromSD(hPOIList,currentUser);
         for (sPOI s : sPOIList) {
             for (POI p : POIList) {
                 if (s.getParentName().equals(p.getTitle())) {
@@ -143,7 +143,7 @@ public class ScanSuccess extends AppCompatActivity {
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
-            else if ((loc.equals(s.getTitle()))&&(parent.getLockStatus())){
+            if ((loc.equals(s.getTitle()))&&(parent.getLockStatus())){
                 Toast.makeText(this, "Unlock Parent POI First! ", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
@@ -163,7 +163,7 @@ public class ScanSuccess extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        MainActivity.savePOIListToSD(POIList,currentUser);
+       MainActivity.savePOIListToSD(POIList,currentUser);
         MainActivity.savehPOIListToSD(hPOIList,currentUser);
         MainActivity.savesPOIListToSD(sPOIList,currentUser);
         MainActivity.updateScore(POIList,sPOIList,hPOIList,currentUser,this);
