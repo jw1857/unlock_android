@@ -45,7 +45,10 @@ public class sPOIPresentationActivity extends AppCompatActivity {
             spoi = (sPOI) b.getSerializable("sPOI");
             this.setTitle(spoi.getTitle());
             String imageString = spoi.getMainImageLink();
-            Picasso.get().load(imageString).into(iv);
+            Picasso.get()
+                    .load(imageString)
+                    .fit()
+                    .into(iv);
         }
 
        ImageButton videoButton = findViewById(R.id.spoipresentation_videoimagebutton);

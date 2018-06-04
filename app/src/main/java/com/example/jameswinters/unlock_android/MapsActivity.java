@@ -360,7 +360,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (h.getVisibility()){
                 h.marker =  mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(h.getLat(),h.getLng()))
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.hpoi))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.hpoi_lock))
                         .title(h.getTitle()));
             }
         }

@@ -45,7 +45,10 @@ public class hPOIPresentationActivity extends AppCompatActivity {
             hpoi = (hPOI) b.getSerializable("hPOI");
             this.setTitle(hpoi.getTitle());
             String imageString = hpoi.getMainImageLink();
-            Picasso.get().load(imageString).into(iv);
+            Picasso.get()
+                    .load(imageString)
+                    .fit()
+                    .into(iv);
         }
         ImageButton videoButton = findViewById(R.id.hpoipresentation_videoimagebutton);
         if (hpoi.getVideoLink()==null){

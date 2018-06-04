@@ -46,7 +46,10 @@ public class bPOIPresentationActivity extends AppCompatActivity {
             bpoi = (bPOI) b.getSerializable("bPOI");
             this.setTitle(bpoi.getTitle());
             String imageString = bpoi.getMainImageLink();
-           Picasso.get().load(imageString).into(iv);
+            Picasso.get()
+                    .load(imageString)
+                    .fit()
+                    .into(iv);
         }
         ImageButton videoButton = findViewById(R.id.bpoipresentation_videoimagebutton);
         if (bpoi.getVideoLink()==null){

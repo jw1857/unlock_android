@@ -43,6 +43,7 @@ public class AudioActivity extends AppCompatActivity {
     private boolean is_POI = false;
     private boolean is_bPOI = false;
     String audioLinkTest;
+    String imageString;
     ImageView iv;
     Uri uri;
 
@@ -92,22 +93,26 @@ public class AudioActivity extends AppCompatActivity {
 
         if(is_POI){
             audioLinkTest = poi.getAudioLink();
-            String imageString = poi.getMainImageLink();
-            Picasso.get().load(imageString).into(iv);
+            imageString = poi.getMainImageLink();
+
         }
         else if(is_sPOI){
             audioLinkTest = spoi.getAudioLink();
-            String imageString = spoi.getMainImageLink();
-            Picasso.get().load(imageString).into(iv);
+            imageString = spoi.getMainImageLink();
+
         }
         else if(is_hPOI){
             audioLinkTest = hpoi.getAudioLink();
-            String imageString = hpoi.getMainImageLink();
-            Picasso.get().load(imageString).into(iv);
+            imageString = hpoi.getMainImageLink();
+
         }
         else if (is_bPOI){
             audioLinkTest =bpoi.getAudioLink();
         }
+        Picasso.get()
+                .load(imageString)
+                .fit()
+                .into(iv);
         uri = Uri.parse(audioLinkTest);
         ImageButton audioPlayButton = findViewById(R.id.audioactivity_play);
         audioPlayButton.setOnClickListener(new View.OnClickListener() {
