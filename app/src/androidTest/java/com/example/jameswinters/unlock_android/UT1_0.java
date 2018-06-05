@@ -3,7 +3,6 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.test.ActivityInstrumentationTestCase2;
@@ -37,16 +36,14 @@ import pl.droidsonroids.gif.GifImageView;
 /**
  * Created by McKeown on 08/03/2018.
  */
-public class MIT13_0 extends ActivityInstrumentationTestCase2<QRActivity>{
+public class UT1_0 extends ActivityInstrumentationTestCase2<MainActivity>{
 
 
-    public MIT13_0() {
-        super(QRActivity.class);
+    public UT1_0() {
+        super(MainActivity.class);
     }
     private Solo solo;
-    @Rule
-    public ActivityTestRule<ScanSuccess> activityTestRule =
-            new ActivityTestRule<>(ScanSuccess.class);
+
 
     @Override
     protected void setUp() throws Exception {
@@ -55,30 +52,12 @@ public class MIT13_0 extends ActivityInstrumentationTestCase2<QRActivity>{
 
     }
 
-    private Callable<Boolean> newQRscan(Activity thisActivity) {
-        final TextView v = thisActivity.findViewById(R.id.txtResult);
-        return new Callable<Boolean>() {
-            public Boolean call() throws Exception {
-                return !(v.getText().toString().equals("Please focus camera to QR Code")); // The condition that must be fulfilled
-            }
-        };
-    }
-
-
-
 
     @SmallTest
     public void test() {
-        await().until(newQRscan(getActivity()));
-        solo.assertCurrentActivity("Wrong activity",hPOIPresentationActivity.class);
-        assertTrue(solo.waitForText("The Quiet Place is set aside as an area of stillness and quiet"));
-        solo.clickOnView(solo.getView(R.id.hpoipresentation_audio));
-        solo.assertCurrentActivity("Wrong Activity",AudioActivity.class);
-        solo.goBack();
-        solo.clickOnView(solo.getView(R.id.hpoipresentation_photobutton));
-        solo.goBack();
-        solo.clickOnView(solo.getView(R.id.hpoipresentation_videoimagebutton));
-        solo.assertCurrentActivity("Wrong Activity",VideoActivity.class);
-
+        getActivity();
+        solo.clickOnView(solo.getView(R.id.map_imagebutton));
+        solo.assertCurrentActivity("Wrong Activity",MapsActivity.class);
+        assertTrue(solo.waitForView(R.id.map));
     }
 }

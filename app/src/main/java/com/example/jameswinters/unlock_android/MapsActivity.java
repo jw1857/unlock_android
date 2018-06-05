@@ -81,7 +81,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LatLngBounds YORK = new LatLngBounds(
             new LatLng (53.926343, -1.156002), new LatLng(53.993656, -1.022793));
 
-    private static final float DEFAULT_ZOOM = 15f;
+    private static final float DEFAULT_ZOOM = 13f;
 
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
@@ -182,6 +182,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style));
         mMap.setLatLngBoundsForCameraTarget(YORK);
         addPOIMarkers(POIList);
+        for (sPOI s:sPOIList){
+            if(mMap.getCameraPosition().zoom>15){
+                //if(s.marker!=null) {
+                    s.setVisibility(true);
+                  //  s.marker.setVisible(s.getVisibility());
+                //}
+            }
+            else if (mMap.getCameraPosition().zoom<15) {
+                //if (s.marker != null) {
+                    s.setVisibility(false);
+                  //  s.marker.setVisible(s.getVisibility());
+                //}
+            }
+        }
+
         addsPOIMarkers(POIList,sPOIList);
         addhPOIMarkers(hPOIList);
         addbPOIMarkers(bPOIList);
