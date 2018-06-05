@@ -20,6 +20,7 @@
         <locked value = "true"/>
         <parentName name = "University of York"/>
         <visibilty value = "false"/>
+        <video name = "https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/sPOIs%2FHeslington%20Hall%2Funlock%20york.mp4?alt=media&amp;token=6a5d2bee-26ef-41a3-b5a3-f481743b5073"/>
         <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/sPOIs%2FHeslington%20Hall%2Fheshallmaindark2.jpg?alt=media&amp;token=dc07f61d-88c9-4d60-b4c2-856553d354b6"/>
         <image
             number = "2"
