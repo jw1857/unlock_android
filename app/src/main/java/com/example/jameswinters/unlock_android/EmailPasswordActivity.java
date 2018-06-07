@@ -45,8 +45,6 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
     TextView mStatusTextView ;
     TextView mDetailTextView ;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,8 +60,6 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
         findViewById(R.id.newAccount).setOnClickListener(this);
         mAuth = FirebaseAuth.getInstance();
     }
-
-
 
     @Override
     public void onStart() {
@@ -121,8 +117,6 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                                 break;
                                             case "bPOIs":
                                                 bPOIList = d.getValue(genericTypeIndicatorbPOI);
-
-
                                         }
                                     }
                                     //save data obatined from firebase to sd card of phone
@@ -133,10 +127,8 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
                                     startActivity(i);//go to main activity
                                 }
 
-
                                 @Override
                                 public void onCancelled(DatabaseError databaseError) {
-
                                 }
                             });
 

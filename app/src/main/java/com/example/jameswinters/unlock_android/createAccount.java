@@ -38,7 +38,8 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
         emailContainer = findViewById(R.id.newEmailContainer);//associate layout files with views
         usernameContainer = findViewById(R.id.newUsernameContainer);
         passwordContainer = findViewById(R.id.newPasswordContainer);
-        findViewById(R.id.createAccount).setOnClickListener(this);
+        Button buttonCreateAccount = findViewById(R.id.createAccount);
+        buttonCreateAccount.setOnClickListener(this);
 
     }
 

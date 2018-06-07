@@ -1,23 +1,12 @@
 package com.example.jameswinters.unlock_android;
 
-
-import android.Manifest;
-import android.content.Context;
-import android.content.ContextWrapper;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.util.Xml;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -39,28 +28,17 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
-import org.xmlpull.v1.XmlSerializer;
-
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStreamWriter;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
 
-import static com.example.jameswinters.unlock_android.MainActivity.savePOIListToSD;
-
+// MapsActivity displays icons for POI/sPOI/bPOI/hPOIs at their geolocation
+// Clicking an icon takes user to respective presentationActivity.
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private static final String TAG = "MapActivity";
 
+
+    // Get list of POI/sPOI/bPOI/hPOIs from Firebase
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser =mAuth.getCurrentUser();
     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -70,18 +48,22 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     double POIProgress;
 
 
-   // private Boolean mLocationPermissionGranted = false;
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
     private ArrayList<bPOI> bPOIList;
-    private GoogleMap mMap;
 
+
+    // Setting up the map based on coordinates of York
+    private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
     private LatLngBounds YORK = new LatLngBounds(
             new LatLng (53.926343, -1.156002), new LatLng(53.993656, -1.022793));
 
-    private static final float DEFAULT_ZOOM = 13f;
+
+    // This zoom level is the default zoom level that the map loads to
+    private static final float DEFAULT_ZOOM = 14.5f;
+
 
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
@@ -89,10 +71,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    // Checks value of progress and updates progress bar
     private void setProgressValue(double progress){
         ProgressBar pb = findViewById(R.id.progressBar);
         pb.setProgress((int)progress);
-
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -135,12 +117,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(TAG, "moveCamera: moving the camera to: lat" + latLng.latitude + ", lng: " + latLng.longitude);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
+
     private void getDeviceLocation(){
         Log.d(TAG, "getDeviceLocation: getting the device location");
-
         mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         try{
-           // if(mLocationPermissionGranted){
                 Task location = mFusedLocationProviderClient.getLastLocation();
                 location.addOnCompleteListener(new OnCompleteListener() {
                     @Override
@@ -158,8 +139,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     }
                 });
-            //}
-
         }catch (SecurityException e){
             Log.e(TAG, "getDeviceLocation: SecurityException: " + e.getMessage() );
         }
@@ -170,6 +149,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ProgressBar pb = findViewById(R.id.progressBar);
         pb.setMax(100);
         mMap = googleMap;
+
+        // If progress bar pressed go to ProgressTableActivity to see user progress
         pb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,22 +159,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        // Set up map
         int progressCount=0;
         mMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,R.raw.map_style));
         mMap.setLatLngBoundsForCameraTarget(YORK);
+
+        // Add POI markers to map
         addPOIMarkers(POIList);
+
+        // Show sPOIs depending on zoom level
         for (sPOI s:sPOIList){
             if(mMap.getCameraPosition().zoom>15){
-                //if(s.marker!=null) {
                     s.setVisibility(true);
-                  //  s.marker.setVisible(s.getVisibility());
-                //}
             }
             else if (mMap.getCameraPosition().zoom<15) {
-                //if (s.marker != null) {
                     s.setVisibility(false);
-                  //  s.marker.setVisible(s.getVisibility());
-                //}
             }
         }
 
@@ -219,10 +199,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         });
+
+        // Logic to interpret user press input
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener(){
             @Override
             public boolean onMarkerClick(final Marker marker) {
                 int unlockCount =0;
+                // Go through list of hPOIs and if hPOI pressed go to hPOIPresentationActivity
                 for (hPOI h : hPOIList) {
                     if ((marker.equals(h.marker)&&(h.marker.isVisible()))) {
                         if (h.getLockStatus()) {
@@ -234,6 +217,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         }
                     }
                 }
+                // Go through list of bPOIs and if bPOI pressed go to hPOIPresentationActivity
                 for (bPOI b : bPOIList) {
                     if (marker.equals(b.marker)) {
                        Intent i2 = new Intent(MapsActivity.this,bPOIPresentationActivity.class);
@@ -243,13 +227,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         startActivity(i2);
                     }
                }
+
+                // Go through list of sPOIs and if sPOI unlocked and pressed go to hPOIPresentationActivity
                 for (sPOI s : sPOIList) {
                     if ((marker.equals(s.marker)&&(s.marker.isVisible()))) {
                         if(s.getLockStatus()) {
-                            // s.setIcon(!s.getLockStatus());
-                            // s.setLockStatus(!s.getLockStatus());
                             s.marker.showInfoWindow();
-                            // s.setLockStatus(!s.getLockStatus());
                         }
                     if(!s.getLockStatus()) {
                         Intent i3 = new Intent(MapsActivity.this, sPOIPresentationActivity.class);
@@ -260,13 +243,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                     }
                 }
-                //System.out.println(mMap.getCameraPosition().zoom);
+
+                // Go through list of POIs and if POI unlocked add the relevant sPOIs associated with
+                // that POI
                 for (POI p : POIList){
                     if (marker.equals(p.marker)){
                         if (p.getLockStatus()) {
-                            //p.setIcon(!p.getLockStatus());
                             p.marker.showInfoWindow();
-                            //p.setLockStatus(!p.getLockStatus());
                             for (sPOI s : sPOIList) {
                                 if (s.getParentName().equals(p.getTitle())) {
                                     if (!p.getLockStatus()) {
@@ -275,17 +258,18 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 }
                             }
                         }
-                        else if(!p.getLockStatus()){
-                            Intent i4 = new Intent(MapsActivity.this,POIPresentationActivity.class);
-                            Bundle b= new Bundle();
-                            b.putSerializable("POI",p);
-                            i4.putExtras(b);
-                            startActivity(i4);
+                    // if POI unlocked and pressed go to POIPresentationActivity
+                    else if(!p.getLockStatus()){
+                        Intent i4 = new Intent(MapsActivity.this,POIPresentationActivity.class);
+                        Bundle b= new Bundle();
+                        b.putSerializable("POI",p);
+                        i4.putExtras(b);
+                        startActivity(i4);
                         }
-                        //Toast.makeText(MapsActivity.this,"marker pressed", Toast.LENGTH_SHORT).show();
                     }
-
                 }
+
+                // Update the user progress
                 for (POI p:POIList) {
                     boolean lsp = p.getLockStatus();
                     if (!lsp) {
@@ -318,19 +302,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         System.out.println(POIProgress);
         POIProgress = POIProgress*pb.getMax();
         System.out.println(POIProgress);
-        setProgressValue(POIProgress);//
-        //if(mLocationPermissionGranted){
-            getDeviceLocation();
-        //}
+        setProgressValue(POIProgress);
+        getDeviceLocation();
     }
 
-
+    // Get list of all POIs (containing their locked status and more) from SD card
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_maps);
-        //getLocationPermission();
         initMap();
         Intent intent = getIntent();
         Bundle b = intent.getExtras();
@@ -338,10 +319,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = MainActivity.readhPOIsFromSD(hPOIList,currentUser);
         bPOIList =MainActivity.readbPOIsFromSD(bPOIList,currentUser);
-
-
     }
 
+    // Method to add single sPOI marker to map
     private void addSinglesPOIMarker(sPOI s){
         s.marker =  mMap.addMarker(new MarkerOptions()
                 .visible(s.getVisibility())
@@ -350,8 +330,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         s.setIcon(s.getLockStatus());
     }
 
-
-
+    // Method to add single POI marker to map
     private void addPOIMarkers(ArrayList<POI> poi) {
         for (POI p : poi) {
             p.marker =  mMap.addMarker(new MarkerOptions()
@@ -361,6 +340,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    // Method to add single bPOI marker to map
     private void addbPOIMarkers(ArrayList<bPOI> bpoi) {
         for (bPOI b : bpoi) {
             b.marker =  mMap.addMarker(new MarkerOptions()
@@ -370,6 +350,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    // Method to add single hPOI marker to map
+    // Always unlocked so it is assigned custom hPOI unlocked icon
     private void addhPOIMarkers(ArrayList<hPOI> hpoi){
         for (hPOI h: hpoi){
             if (h.getVisibility()){
@@ -380,6 +362,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
     }
+
+    // Add list of sPOIs to map
     private void addsPOIMarkers(ArrayList<POI> poi, ArrayList<sPOI> spoi) {
         for (sPOI s : spoi) {
             for (POI p : poi) {
@@ -398,7 +382,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -411,7 +394,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onBackPressed(){
         Intent i = new Intent(this, MainActivity.class);
-
         startActivity(i);
     }
 

@@ -1,12 +1,13 @@
 package com.example.jameswinters.unlock_android;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
+// Business Point of Interest (bPOI)
 
 public class bPOI extends POI {
 
     private String type;
+
+    // bPOI always unlocked.
     public bPOI(){
         this.setLockStatus(false);
     }
@@ -19,6 +20,8 @@ public class bPOI extends POI {
         return type;
     }
 
+
+    // Depending on the type of business, set an appropriate icon
     public void setBusinessIconType(String type){
         switch(type) {
             case "cafe":
