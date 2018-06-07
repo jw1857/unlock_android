@@ -1,19 +1,18 @@
 package com.example.jameswinters.unlock_android;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-
 import java.io.Serializable;
 import java.util.ArrayList;
+
+// Point of Interest (POI)
+// Each POI has coordinates (latitude longitude), a lock status, a marker for the map,
+// a Firebase url link to video, audio and text, and a background image.
 
 public class POI implements Serializable{
     private double lat;
     private double lng;
     private boolean lockStatus;
-    private String username;
-    //private transient LatLng position;
     public transient Marker marker;
     private String title;
     private String videoLink;
@@ -29,9 +28,10 @@ public class POI implements Serializable{
         this.lng = newLong;
         this.title = name;
         this.lockStatus = locked;
-
     }
 
+    // These set and get methods are called on a POI object, and will set/return the relevant information.
+    // The information for each POI is stored in poicoords.xml
     public void setText(String text) {
         this.text = text;
     }
@@ -84,10 +84,6 @@ public class POI implements Serializable{
         return this.lockStatus;
     }
 
-    //public LatLng getPosition(){
-    // return this.position;
-    //}
-
     public String getTitle(){
         return this.title;
     }
@@ -100,13 +96,11 @@ public class POI implements Serializable{
         this.lng = nLng;
     }
 
-    //   public void setPosition(double lat, double lng){
-    //     this.position = new LatLng(lat,lng);
-    //}
     public void setLockStatus(boolean ls){
         this.lockStatus = ls;
     }
 
+    // Set icon if POI is locked/unlocked
     public void setIcon(boolean locked){
         if (locked){
             this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.lock_vsmallsize));
@@ -115,8 +109,6 @@ public class POI implements Serializable{
             this.marker.setIcon(BitmapDescriptorFactory.fromResource(R.drawable.lock_open_vsmallsize));
         }
     }
-
-
 
     public void setTitle(String newTitle){
         this.title = newTitle;

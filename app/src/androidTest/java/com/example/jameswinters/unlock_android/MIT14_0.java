@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.concurrent.Callable;
 
 import static org.awaitility.Awaitility.await;
-
+//MIT13_0
 import com.robotium.solo.Solo;
 
 public class MIT14_0 extends ActivityInstrumentationTestCase2<MapsActivity>{

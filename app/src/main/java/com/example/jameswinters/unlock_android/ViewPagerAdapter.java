@@ -9,11 +9,15 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+// ViewPagerAdapter used to display images in ImageActivity
+
 public class ViewPagerAdapter extends PagerAdapter {
 
     private Context context;
     private String[] imageUrls;
 
+
+    // ViewPager has String array of image urls to be displayed
     ViewPagerAdapter(Context context, String[] imageUrls){
         this.context = context;
         this.imageUrls = imageUrls;
@@ -39,7 +43,6 @@ public class ViewPagerAdapter extends PagerAdapter {
                 .centerCrop()
                 .into(imageView);
         container.addView(imageView);
-
         return imageView;
     }
 

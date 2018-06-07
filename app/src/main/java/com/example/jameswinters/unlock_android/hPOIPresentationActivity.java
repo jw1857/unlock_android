@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,11 +19,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
-import java.util.ArrayList;
 import java.util.Locale;
 
 import static android.graphics.Color.WHITE;
 
+// hPOIPresentationActivity contains the relevant content for a hPOI,
+// and clickable icons which lead user to activity containing relevant content for that hPOI
 public class hPOIPresentationActivity extends AppCompatActivity {
     hPOI hpoi;
     TextToSpeech tts;
@@ -35,25 +35,34 @@ public class hPOIPresentationActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //getSupportActionBar().hide();
         setContentView(R.layout.activity_hpoipresentation);
 
-        iv = findViewById(R.id.hpoiMainImage); // need to change
+        // Get imageView for background image
+        iv = findViewById(R.id.hpoiMainImage);
         Intent i = getIntent();
         Bundle b = i.getExtras();
         if (b != null) {
+            // Get hPOI from previous activity
             hpoi = (hPOI) b.getSerializable("hPOI");
             this.setTitle(hpoi.getTitle());
+
+            // Get main image of hPOI and put into ImageView
             String imageString = hpoi.getMainImageLink();
             Picasso.get()
                     .load(imageString)
                     .fit()
                     .into(iv);
         }
+
+        // Make video button
         ImageButton videoButton = findViewById(R.id.hpoipresentation_videoimagebutton);
         if (hpoi.getVideoLink()==null){
+            // If no video for hPOI, do not display video icon
             videoButton.setVisibility(View.INVISIBLE);
         }
+
+        // If hPOI has a video, set on click listener so when pressed program takes user
+        // to VideoActivity
         else if (hpoi.getVideoLink()!=null) {
             videoButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,27 +75,40 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 }
             });
         }
+
+        // Make image button
         ImageButton imageButton = findViewById(R.id.hpoipresentation_photobutton);
         if(hpoi.getImageLinks()==null){
+            // If no images for hPOI, do not display image icon
             imageButton.setVisibility(View.INVISIBLE);
         }
+
+        // If hPOI has an image, set on click listener so when pressed program takes user
+        // to ImageActivity.
         else if (hpoi.getImageLinks()!=null) {
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i = new Intent(hPOIPresentationActivity.this, ImageActivity.class);
                     Bundle b = new Bundle();
-                    b.putSerializable("hPOI", hpoi);
 
+                    // Pass hPOI through to ImageActivity so it knows what hPOI
+                    b.putSerializable("hPOI", hpoi);
                     i.putExtras(b);
                     startActivity(i);
                 }
             });
         }
+
+        // Make audio button
         ImageButton audioButton = findViewById(R.id.hpoipresentation_audio);
         if(hpoi.getAudioLink() == null){
+            // If no audio for hPOI, do not display audio icon
             audioButton.setVisibility(View.INVISIBLE);
         }
+
+        // If hPOI has an audio file, set on click listener so when pressed program takes user
+        // to ImageActivity
         else if(!(hpoi.getAudioLink() == null)){
             audioButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -100,12 +122,11 @@ public class hPOIPresentationActivity extends AppCompatActivity {
             });
         }
 
+        // Get text content from hPOI
         str = hpoi.getText();
-
-        //
-        //str = poi.getText();
-
         final TextView textView = findViewById(R.id.hpoi_TEXT_STATUS_ID);
+
+        // Get text size setting from settings and change text size
         final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         switch(sp.getString("textsize","textsmall")){
             case "textsmall":
@@ -121,39 +142,42 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 textView.setTextSize(15.0f);
                 break;
         }
+
+        // Display text to textView
         if ((str.length()<30)||(str.equals(null))){
             textView.setText(str);
             text =str;
 
         }
+
+        // If text is longer than textView can handle, implement scrolling
         else if ((str.length()>30)){
             StorageReference txtRef =
                     storage.getReferenceFromUrl(str);
-            final long ONE_MEGABYTE = 1024 * 1024; // or to the maximum size of your text, but careful it crashes if it's too big
+            final long ONE_MEGABYTE = 1024 * 1024;
             txtRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
                                                                    @Override
                                                                    public void onSuccess(byte[] bytes) {
-                                                                       text = new String(bytes);
-                                                                       textView.setText(text);
-                                                                       textView.setTextColor(WHITE);
-                                                                       //textView.setTextSize();
-                                                                       //Toast.makeText(POIPresentationActivity.this, "" + textView.getTextSize(), Toast.LENGTH_SHORT).show();
+               text = new String(bytes);
+               textView.setText(text);
+               textView.setTextColor(WHITE);
                                                                    }
                                                                }
             ).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception exception) {
-                    // Handle any errors
                 }
             });
         }
 
-
+        // Make text-to-speech button
         ImageButton textToSpeechButton = findViewById(R.id.hpoipresentation_tts);
         if(!sp.getBoolean("texttospeech",true)){
+            // If text-to-speech turned off, display no icon
             textToSpeechButton.setVisibility(View.INVISIBLE);
         }
 
+        // Set on click listener for text-to-speech button
         textToSpeechButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,11 +187,14 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 ConvertTextToSpeech();
             }
         });
+
+        // Make stop text-to-speech button
         ImageButton stopTextToSpeechButton = findViewById(R.id.hpoipresentation_notts);
         if(!sp.getBoolean("texttospeech",true)){
             stopTextToSpeechButton.setVisibility(View.INVISIBLE);
         }
 
+        // Set on click listener for stop text-to-speech
         stopTextToSpeechButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,12 +210,13 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                     int result=tts.setLanguage(Locale.UK);
                 }
                 else
-                    Log.e("error", "Initilization Failed!");
+                    Log.e("error", "Initialization Failed!");
             }
         });
 
     }
 
+    // Go back to MapsActivity if back is pressed
     @Override
     public void onBackPressed() {
         Intent i = new Intent(this, MapsActivity.class);
@@ -197,10 +225,7 @@ public class hPOIPresentationActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-
-
         if(tts != null){
-
             tts.stop();
             tts.shutdown();
         }
@@ -208,24 +233,16 @@ public class hPOIPresentationActivity extends AppCompatActivity {
     }
 
     public void onClick(View v){
-
         ConvertTextToSpeech();
-
     }
 
     private void ConvertTextToSpeech() {
-
-
-        if(text==null||"".equals(text))
-        {
+        if(text==null||"".equals(text)) {
             text = "Content not available";
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
         }else
             tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
     }
-
-
-
 }
 
 

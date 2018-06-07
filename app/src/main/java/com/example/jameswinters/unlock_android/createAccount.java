@@ -1,10 +1,6 @@
 package com.example.jameswinters.unlock_android;
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -90,9 +86,6 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                                     MainActivity.savehPOIListToSD(hPOIList,user);
                                     MainActivity.savebPOIListToSD(bPOIList,user);
                                     System.out.print("Test bPOI" + bPOIList.get(0).getTitle());
-                                   // String name = usernameContainer.getText().toString();
-                                    //DatabaseReference initialScoreOnDb = FirebaseDatabase.getInstance().getReference().child("Scores");
-                                    //initialScoreOnDb.child(name).setValue(POIList.size()+hPOIList.size()+sPOIList.size());
                                     startActivity(i);
                                 }
                             });
