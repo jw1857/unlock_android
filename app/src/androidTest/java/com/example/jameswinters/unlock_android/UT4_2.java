@@ -14,6 +14,8 @@ import static org.awaitility.Awaitility.await;
 
 import com.robotium.solo.Solo;
 
+//UT 4.2
+
 public class UT4_2 extends ActivityInstrumentationTestCase2<QRActivity>{
 
     public UT4_2() {
@@ -39,15 +41,29 @@ public class UT4_2 extends ActivityInstrumentationTestCase2<QRActivity>{
 
     @SmallTest
     public void test(){
+        //In QRActivity
         getActivity();
+
+        // Scan sPOI
         await().until(newQRscan(getActivity()));
+
+        // Assert current activity is sPOIPresentationActivity
         solo.assertCurrentActivity("Wrong activity", sPOIPresentationActivity.class);
-        //assertTrue(solo.waitForView(solo.getView(R.id.spoi_TEXT_STATUS_ID)));
+
+        // Click on video icon
         solo.clickOnView(solo.getView(R.id.spoipresentation_videoimagebutton));
+
+        // Assert videoView is shown
         assertTrue(solo.waitForView(solo.getView(R.id.video_view)));
+
+        // Press back twice to go to MapsActivity
         solo.goBack();
         solo.goBack();
+
+        // Assert current activity is MapsActivity
         solo.assertCurrentActivity("Wrong activity", MapsActivity.class);
+
+        // Click on sPOI
         UiDevice device = UiDevice.getInstance(getInstrumentation());
         UiObject marker = device.findObject(new UiSelector().descriptionContains("Heslington Hall"));
         try {
@@ -55,9 +71,13 @@ public class UT4_2 extends ActivityInstrumentationTestCase2<QRActivity>{
         } catch (UiObjectNotFoundException e) {
             e.printStackTrace();
         }
+        // Assert current activity is sPOIPresentationActivity
         solo.assertCurrentActivity("Wrong activity", sPOIPresentationActivity.class);
-        //assertTrue(solo.waitForView(solo.getView(R.id.spoi_TEXT_STATUS_ID)));
+
+        // Click on video icon
         solo.clickOnView(solo.getView(R.id.spoipresentation_videoimagebutton));
+
+        // Assert videoView is shown
         assertTrue(solo.waitForView(solo.getView(R.id.video_view)));
     }
 }

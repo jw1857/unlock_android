@@ -1,39 +1,16 @@
 package com.example.jameswinters.unlock_android;
+
 import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.test.filters.SmallTest;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
-import android.support.test.uiautomator.UiObjectNotFoundException;
-import android.support.test.uiautomator.UiSelector;
 import android.test.ActivityInstrumentationTestCase2;
-import org.awaitility.Awaitility.*;
-import org.junit.Rule;
-
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-
-import android.test.InstrumentationTestCase;
-import android.view.View;
 import android.widget.TextView;
 import java.util.concurrent.Callable;
-
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.awaitility.Awaitility.await;
-import static org.awaitility.Awaitility.with;
-import static org.junit.Assert.*;
+
 import com.robotium.solo.Solo;
 
 public class UT3_3 extends ActivityInstrumentationTestCase2<QRActivity>{
-
+    // Start in QRActivity
     public UT3_3() {
         super(QRActivity.class);
     }
@@ -57,11 +34,19 @@ public class UT3_3 extends ActivityInstrumentationTestCase2<QRActivity>{
 
     @SmallTest
     public void test(){
+        // Start in QR Activity
         getActivity();
+
+        // Wait for QR scan
         await().until(newQRscan(getActivity()));
+
+        // Assert current activity is POIPresentationActivity
         solo.assertCurrentActivity("Wrong activity", POIPresentationActivity.class);
-        //assertTrue(solo.waitForView(solo.getView(R.id.TEXT_STATUS_ID)));
+
+        // Press video button
         solo.clickOnView(solo.getView(R.id.poipresentation_videoimagebutton));
+
+        // Check VideoView is shown
         assertTrue(solo.waitForView(solo.getView(R.id.video_view)));
     }
 }

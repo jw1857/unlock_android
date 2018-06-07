@@ -1,39 +1,24 @@
 package com.example.jameswinters.unlock_android;
+
 import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.test.filters.SmallTest;
-import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.test.ActivityInstrumentationTestCase2;
-import org.awaitility.Awaitility.*;
-import org.junit.Rule;
-
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
-
-import android.test.InstrumentationTestCase;
-import android.view.View;
 import android.widget.TextView;
 import java.util.concurrent.Callable;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.awaitility.Awaitility.await;
-import static org.awaitility.Awaitility.with;
-import static org.junit.Assert.*;
+
 import com.robotium.solo.Solo;
+
+// UT 3.1
 
 public class UT3_1 extends ActivityInstrumentationTestCase2<QRActivity>{
 
+    // Start in QRActivity
     public UT3_1() {
         super(QRActivity.class);
     }
@@ -57,11 +42,22 @@ public class UT3_1 extends ActivityInstrumentationTestCase2<QRActivity>{
 
     @SmallTest
     public void test(){
+        // Start in QRActivity
         getActivity();
+
+        // Wait for QR scan
         await().until(newQRscan(getActivity()));
+
+        // Assert current activity is POIPresentationActivity
         solo.assertCurrentActivity("Wrong activity", POIPresentationActivity.class);
+
+        // Check for opening hours in text
         assertTrue(solo.waitForText("OPENING HOURS: 09:00 to 17:00"));
+
+        // Go back
         solo.goBack();
+
+        // Press POI Icon on map
         UiDevice device = UiDevice.getInstance(getInstrumentation());
         UiObject marker = device.findObject(new UiSelector().descriptionContains("University of York"));
         try {
@@ -69,7 +65,11 @@ public class UT3_1 extends ActivityInstrumentationTestCase2<QRActivity>{
         } catch (UiObjectNotFoundException e) {
             e.printStackTrace();
         }
+
+        // Assert current activity is POIPresentationActivity
         solo.assertCurrentActivity("Wrong activity", POIPresentationActivity.class);
+
+        // Check for opening hours in text
         assertTrue(solo.waitForText("OPENING HOURS: 09:00 to 17:00"));
     }
 }
