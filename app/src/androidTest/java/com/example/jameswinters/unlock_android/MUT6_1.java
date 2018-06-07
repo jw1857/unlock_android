@@ -3,7 +3,6 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.test.espresso.ViewAction;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.test.ActivityInstrumentationTestCase2;
@@ -27,8 +26,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.awaitility.Awaitility.await;
 import static org.awaitility.Awaitility.with;
 import static org.junit.Assert.*;
-
-
 import com.robotium.solo.Solo;
 
 import pl.droidsonroids.gif.GifImageView;
@@ -37,11 +34,11 @@ import pl.droidsonroids.gif.GifImageView;
 /**
  * Created by McKeown on 08/03/2018.
  */
-public class UT5_0 extends ActivityInstrumentationTestCase2<MainActivity>{
+public class MUT6_1 extends ActivityInstrumentationTestCase2<QRActivity>{
 
 
-    public UT5_0() {
-        super(MainActivity.class);
+    public MUT6_1() {
+        super(QRActivity.class);
     }
     private Solo solo;
     @Rule
@@ -69,9 +66,8 @@ public class UT5_0 extends ActivityInstrumentationTestCase2<MainActivity>{
 
     @SmallTest
     public void test() {
-        getActivity();
-        solo.scrollViewToSide(solo.getView(R.id.horizontalScrollView),solo.RIGHT);
-        solo.clickOnView(solo.getView(R.id.settings_imagebutton));
-        solo.assertCurrentActivity("Wrong Activity",SettingsActivity.class);
-        }
+        //make sure its a non unlocked activity
+        await().until(newQRscan(getActivity()));
+        assertTrue(solo.waitForText("testanimation"));
+    }
 }

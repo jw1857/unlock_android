@@ -34,10 +34,10 @@ import pl.droidsonroids.gif.GifImageView;
 /**
  * Created by McKeown on 08/03/2018.
  */
-public class MIT7_0 extends ActivityInstrumentationTestCase2<QRActivity>{
+public class MIT6_0 extends ActivityInstrumentationTestCase2<QRActivity>{
 
 
-    public MIT7_0() {
+    public MIT6_0() {
         super(QRActivity.class);
     }
     private Solo solo;
