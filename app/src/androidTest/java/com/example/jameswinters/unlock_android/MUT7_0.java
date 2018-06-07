@@ -67,6 +67,7 @@ public class MUT7_0 extends ActivityInstrumentationTestCase2<QRActivity>{
     @SmallTest
     public void test() {
         await().until(newQRscan(getActivity()));
+        assertTrue(solo.waitForText("Hidden location discovered"));
         solo.assertCurrentActivity("Wrong activity",hPOIPresentationActivity.class);
     }
 }

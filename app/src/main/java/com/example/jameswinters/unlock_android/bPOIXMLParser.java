@@ -17,7 +17,7 @@ import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 
-
+//works in the same way as POIXMLParser, contains one extra field to set the business icon.
 public class bPOIXMLParser extends DefaultHandler{
     public bPOI currentbPOI;
     public String currentSubElement;

@@ -22,7 +22,8 @@ import java.util.ArrayList;
 
 import pl.droidsonroids.gif.GifImageView;
 
-
+//ScanSuccess is called when a QR code is detected in the QRACtivity class. It takes in the text from the QR code from
+//the previous activity and compares this text with the titles of all locations to see if this text is for a location.
 public class ScanSuccess extends AppCompatActivity {
     String location = "null";
     private ArrayList<POI> POIList;
@@ -71,11 +72,11 @@ public class ScanSuccess extends AppCompatActivity {
         for (sPOI s : sPOIList) {
             for (POI p : POIList) {
                 if (s.getParentName().equals(p.getTitle())) {
-                    s.setParent(p);
+                    s.setParent(p);//find parent POIs of sPOIs
                 }
             }
         }
-        for (POI p:POIList){
+        for (POI p:POIList){//add all locations to list so invalid text can be detected
             locationList.add(p.getTitle());
         }
         for (sPOI s:sPOIList){
@@ -84,9 +85,9 @@ public class ScanSuccess extends AppCompatActivity {
         for (hPOI h:hPOIList){
             locationList.add(h.getTitle());
         }
-        MainActivity.muteAudio(this,mediaPlayerFailure);
+        MainActivity.muteAudio(this,mediaPlayerFailure);//if audio is turned off in settings, mute mediaplayer
         MainActivity.muteAudio(this,mediaPlayerSuccess);
-        checkForError(location,mediaPlayerFailure);
+        checkForError(location,mediaPlayerFailure);//check for invalid qr code
         checkhPOI(location,mediaPlayerSuccess,toast);
         checksPOI(location,mediaPlayerSuccess,toast);
         checkPOI(location,mediaPlayerSuccess,toast);
@@ -101,20 +102,23 @@ public class ScanSuccess extends AppCompatActivity {
     private void checkhPOI(String loc,MediaPlayer mp, Toast toast){
         boolean unlocked = false;
         for (hPOI h : hPOIList) {
+            //if the text from qr is a hPOI title and the hPOI is not already visible, its a new unlock
             if ((loc.equals(h.getTitle())) && (!h.getLockStatus())&&(!h.getVisibility())) {
                 h.setLockStatus(true);
                 h.setVisibility(true);
                 unlocked = true;
+                //start content view
                 Intent i = new Intent(ScanSuccess.this, hPOIPresentationActivity.class);
                 Bundle bun = new Bundle();
                 bun.putSerializable("hPOI",h);
                 i.putExtras(bun);
-                mp.start();
-                disableAnimations(toast);
+                mp.start();//play success sound
+                disableAnimations(toast);//play animation if animation set on in settings
                 Toast.makeText(this, "Hidden location discovered!", Toast.LENGTH_SHORT).show();
                 startActivity(i);
             }
             if ((loc.equals(h.getTitle())) && (h.getVisibility()) && (h.getLockStatus()) && (!unlocked)){
+                //if text is hPOI title, but it is already unlocked, move to content screen but notify user that POI is already unlocked
                 Toast.makeText(this, "Location already discovered!", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(ScanSuccess.this, hPOIPresentationActivity.class);
                 Bundle bundle = new Bundle();
@@ -131,6 +135,7 @@ public class ScanSuccess extends AppCompatActivity {
         boolean unlocked = false;
         for (sPOI s : sPOIList) {
             POI parent = s.getParent();
+            //if text is sPOI title and parent is unlocked, unlcok sPOI
             if ((loc.equals(s.getTitle())) && (!parent.getLockStatus()) && (s.getLockStatus())) {
                 s.setLockStatus(false);
                 unlocked = true;
@@ -143,11 +148,14 @@ public class ScanSuccess extends AppCompatActivity {
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
+            //if parent is not unlocked, notify user that they must unlock the parent first.
             if ((loc.equals(s.getTitle()))&&(parent.getLockStatus())){
                 Toast.makeText(this, "Unlock Parent POI First! ", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(this, MainActivity.class);
                 startActivity(i);
             }
+
+            //
             if ((loc.equals(s.getTitle()))&&(!s.getLockStatus())&&(!parent.getLockStatus())&&(!unlocked)) {
                 Toast.makeText(this, "Location already discovered!", Toast.LENGTH_SHORT).show();
                 Intent backToMain = new Intent(ScanSuccess.this, sPOIPresentationActivity.class);
@@ -161,7 +169,7 @@ public class ScanSuccess extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause() {//save progress to sd and database on leaving activity
         super.onPause();
        MainActivity.savePOIListToSD(POIList,currentUser);
         MainActivity.savehPOIListToSD(hPOIList,currentUser);
@@ -217,6 +225,7 @@ public class ScanSuccess extends AppCompatActivity {
                 failCount++;
             }
         }
+        //if text matches no locations it is invalid
         if (failCount==size){
             Toast.makeText(this, "Invalid QR Code", Toast.LENGTH_SHORT).show();
             mp.start();
@@ -225,6 +234,8 @@ public class ScanSuccess extends AppCompatActivity {
         }
     }
 
+
+    //turn off animations depending on settings
     public void disableAnimations(Toast toast){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
         if(sp.getBoolean("animations",true)){

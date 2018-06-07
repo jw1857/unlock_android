@@ -16,7 +16,7 @@ import java.util.List;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
-
+//works the same way as POIXMLParser but with extra fields for visibility
 public class hPOIXMLParser extends DefaultHandler {
     public hPOI currenthPOI;
     public String currentSubElement;

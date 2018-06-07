@@ -54,7 +54,8 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
-
+//MainActivity is the main screen of the app that calls all majot activities. It writes the users progress to the sd card and
+//to the firebase and allows the user to enter mapview, qrscanner, settings, leaderboard or sign out and go back to emailpassword
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
@@ -88,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         currentUserText = findViewById(R.id.currentUser);
         currentUserText.setText(getString(R.string.currentUserID,currentUser.getDisplayName()));
         Bundle b = i.getExtras();
-        POIList = readPOIsFromSD(POIList,currentUser);
+        POIList = readPOIsFromSD(POIList,currentUser);//read user progress
         sPOIList = readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = readhPOIsFromSD(hPOIList,currentUser);
         bPOIList= readbPOIsFromSD(bPOIList,currentUser);
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         checkForChangeInsPOIs();
         checkForChangeInhPOIs();
         checkForChangeInbPOIs();
-        myPOIRef.setValue(POIList);
+        myPOIRef.setValue(POIList);//update database
         mysPOIRef.setValue(sPOIList);
         myhPOIRef.setValue(hPOIList);
         mybPOIRef.setValue(bPOIList);
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    public void signOut(){
+    public void signOut(){//check for button presses on sign out button
         ImageButton signOut_imagebutton = (ImageButton)findViewById(R.id.signout_imagebutton);
         signOut_imagebutton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
     }
 
-    private void checkForChangeInPOIs() {
+    private void checkForChangeInPOIs() {//checks for additions/removals from poi.xml and adds/removes pois
         ArrayList<POI> compare;
         POIXMLParser poixmlParser = new POIXMLParser(this);
         compare = poixmlParser.getPOIList();
@@ -206,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void init(){
+    private void init(){//checks for button presses
         ImageButton qr_imagebutton = (ImageButton)findViewById(R.id.qr_imagebutton);
 
 
@@ -250,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onPause() {//save user progress to sd and firebsae on exiting this activity
         super.onPause();
         savePOIListToSD(POIList,currentUser);
         savehPOIListToSD(hPOIList,currentUser);
@@ -267,15 +268,16 @@ public class MainActivity extends AppCompatActivity {
         checkForChangeInsPOIs();
     }
 
-    static public void savePOIListToSD(ArrayList<POI> POIs, FirebaseUser currentUser)
+    static public void savePOIListToSD(ArrayList<POI> POIs, FirebaseUser currentUser)//save POIList to the sd card of the phone
     {
         if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            //get path to sd card file containing current user's poilist
             String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/lists/" + currentUser.getDisplayName();
             try {
                 File dir = new File(path);
                 if(!dir.exists())
                 {
-                    dir.mkdirs();
+                    dir.mkdirs();//make directory if it doesnt exist
                 }
                 OutputStream fos = null;
                 ObjectOutputStream oos = null;
@@ -285,10 +287,9 @@ public class MainActivity extends AppCompatActivity {
                 }
                 fos = new FileOutputStream(file);
                 oos = new ObjectOutputStream(fos);
-                oos.writeObject(POIs);
+                oos.writeObject(POIs);//write object to sd card
                 System.out.println("Storing data");
-                oos.close();
-                //Toast.makeText(context,"Written to SD", Toast.LENGTH_SHORT).show();
+                oos.close();//close stream
             } catch(Exception ex) {
                 ex.printStackTrace();
                 System.out.println(ex.getMessage());
@@ -408,12 +409,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    static public ArrayList<POI> readPOIsFromSD(ArrayList<POI> POIs, FirebaseUser currentUser){
+    static public ArrayList<POI> readPOIsFromSD(ArrayList<POI> POIs, FirebaseUser currentUser){//read POIList from sd
+        //get path to directory where POIlist is stored in sd card.
         String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)+"/lists/" + currentUser.getDisplayName();
         try (FileInputStream fis = new FileInputStream(new File(path, "POIList.dat"))) {
             try (ObjectInputStream ios = new ObjectInputStream(fis)) {
-                POIs = (ArrayList<POI>)ios.readObject();
-                //Toast.makeText(this,POIList.get(0).getTitle(),Toast.LENGTH_SHORT).show();
+                POIs = (ArrayList<POI>)ios.readObject();//read from sd
+
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException e) {
@@ -488,7 +490,7 @@ public class MainActivity extends AppCompatActivity {
 
     static public void updateScore(ArrayList<POI> POIs,ArrayList<sPOI> sPOIs, ArrayList<hPOI> hPOIs, FirebaseUser currentUser,Context c){
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
-        //Toast.makeText(c,"Setting"+sp.getBoolean("leaderboard",true),Toast.LENGTH_SHORT).show();
+        //if user has set their data to appear on leaderbaord, upload their score to firebase
         if (sp.getBoolean("leaderboard",false)) {
             int progressCount = 0;
             for (POI p : POIs) {
@@ -518,7 +520,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
     static public void muteAudio(Context c, MediaPlayer mediaPlayer){
+        //if user has turned off audio in settings set mediaplayer volumeto 0
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(c);
         if (!sp.getBoolean("audio",true)){
             mediaPlayer.setVolume(0f,0f);
@@ -527,7 +531,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-
+        //leave app on back pressed
         Intent a = new Intent(Intent.ACTION_MAIN);
         a.addCategory(Intent.CATEGORY_HOME);
         a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

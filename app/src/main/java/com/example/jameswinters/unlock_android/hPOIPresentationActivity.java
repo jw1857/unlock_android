@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import static android.graphics.Color.WHITE;
-
+//works in the same way as POIXMLParser, contains an extra field for visibility.
 public class hPOIPresentationActivity extends AppCompatActivity {
     hPOI hpoi;
     TextToSpeech tts;
