@@ -9,7 +9,7 @@ import com.robotium.solo.Solo;
 
 
 
-
+//This test checks all user progress meausrement can be accessed by the user
 public class MIT4_0 extends ActivityInstrumentationTestCase2<MapsActivity>{
 
 

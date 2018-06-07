@@ -1,16 +1,16 @@
 package com.example.jameswinters.unlock_android;
 import android.app.Activity;
 import android.support.test.filters.SmallTest;
-import android.support.test.rule.ActivityTestRule;
+
 import android.test.ActivityInstrumentationTestCase2;
-import org.junit.Rule;
+
 import android.widget.TextView;
 import java.util.concurrent.Callable;
 import static org.awaitility.Awaitility.await;
 
 import com.robotium.solo.Solo;
 
-
+//tests for animation playing on POI unlock
 public class MIT1_0 extends ActivityInstrumentationTestCase2<QRActivity>{
 
 
@@ -18,16 +18,14 @@ public class MIT1_0 extends ActivityInstrumentationTestCase2<QRActivity>{
         super(QRActivity.class);
     }
     private Solo solo;
-    @Rule
-    public ActivityTestRule<ScanSuccess> activityTestRule =
-            new ActivityTestRule<>(ScanSuccess.class);
-
     @Override
     protected void setUp() throws Exception {
         solo = new Solo(getInstrumentation());
         super.setUp();
 
     }
+
+
 
     private Callable<Boolean> newQRscan(Activity thisActivity) {
         final TextView v = thisActivity.findViewById(R.id.txtResult);
@@ -43,7 +41,7 @@ public class MIT1_0 extends ActivityInstrumentationTestCase2<QRActivity>{
 
     @SmallTest
     public void test() {
-        await().until(newQRscan(getActivity()));
+        await().until(newQRscan(getActivity()));//wait for new qr scan
         solo.assertCurrentActivity("Wrong activity",POIPresentationActivity.class);
         assertTrue(solo.waitForText("testanimation"));
     }

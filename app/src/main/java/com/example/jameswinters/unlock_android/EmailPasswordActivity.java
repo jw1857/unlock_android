@@ -3,7 +3,6 @@ package com.example.jameswinters.unlock_android;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -47,7 +46,6 @@ public class EmailPasswordActivity extends AppCompatActivity implements Button.O
     TextView mDetailTextView ;
 
 
-    //Button signIn = findViewById(R.id.signIn);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

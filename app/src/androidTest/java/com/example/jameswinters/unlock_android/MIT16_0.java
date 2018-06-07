@@ -1,19 +1,13 @@
 package com.example.jameswinters.unlock_android;
-import android.app.Activity;
-import android.app.Instrumentation;
-import android.content.Intent;
-import android.graphics.drawable.Drawable;
+
 import android.support.test.filters.SmallTest;
-import android.support.test.rule.ActivityTestRule;
+
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 import android.test.ActivityInstrumentationTestCase2;
-import org.awaitility.Awaitility.*;
-import org.junit.Rule;
 
-import static android.support.test.espresso.matcher.RootMatchers.withDecorView;
 
 import com.robotium.solo.Solo;
 

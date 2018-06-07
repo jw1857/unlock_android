@@ -20,9 +20,7 @@ import com.robotium.solo.Solo;
 
 
 
-/**
- * Created by McKeown on 08/03/2018.
- */
+//detects error message on scanning an incorrect qr code
 public class MIT1_1 extends ActivityInstrumentationTestCase2<QRActivity>{
 
 
@@ -30,9 +28,7 @@ public class MIT1_1 extends ActivityInstrumentationTestCase2<QRActivity>{
         super(QRActivity.class);
     }
     private Solo solo;
-    @Rule
-    public ActivityTestRule<ScanSuccess> activityTestRule =
-            new ActivityTestRule<>(ScanSuccess.class);
+
 
     @Override
     protected void setUp() throws Exception {
@@ -55,7 +51,7 @@ public class MIT1_1 extends ActivityInstrumentationTestCase2<QRActivity>{
 
     @SmallTest
     public void test() {
-        await().until(newQRscan(getActivity()));
+        await().until(newQRscan(getActivity()));//wait for qr scn before running tests
         assertTrue(solo.waitForText("Invalid QR Code"));
         solo.assertCurrentActivity("Wrong activity",MainActivity.class);
     }

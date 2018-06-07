@@ -34,9 +34,7 @@ import com.robotium.solo.Solo;
 import pl.droidsonroids.gif.GifImageView;
 
 
-/**
- * Created by McKeown on 08/03/2018.
- */
+//check that unlocking a hPOI takes you to content screen and that all content can be accessed
 public class MIT12_0 extends ActivityInstrumentationTestCase2<QRActivity>{
 
 

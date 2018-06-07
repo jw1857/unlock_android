@@ -83,17 +83,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_main);
-        //getStoragePermissions();
-        System.out.println(currentUser.getDisplayName());
         i = getIntent();
         currentUserText = findViewById(R.id.currentUser);
         currentUserText.setText(getString(R.string.currentUserID,currentUser.getDisplayName()));
-        Bundle b = i.getExtras();
+        //read from sd to get lists set in createAccount and EmailPassword Activities
         POIList = readPOIsFromSD(POIList,currentUser);//read user progress
         sPOIList = readsPOIsFromSD(sPOIList,currentUser);
         hPOIList = readhPOIsFromSD(hPOIList,currentUser);
         bPOIList= readbPOIsFromSD(bPOIList,currentUser);
-       // Toast.makeText(this,bPOIList.get(0).getTitle(),Toast.LENGTH_SHORT).show();
+        //check for xml updates
         checkForChangeInPOIs();
         checkForChangeInsPOIs();
         checkForChangeInhPOIs();
@@ -347,7 +345,6 @@ public class MainActivity extends AppCompatActivity {
                 oos = new ObjectOutputStream(fos);
                 oos.writeObject(sPOIs);
                 oos.close();
-                // Toast.makeText(context,"Written to SD", Toast.LENGTH_SHORT).show();
             } catch(Exception ex) {
                 ex.printStackTrace();
                 System.out.println(ex.getMessage());
