@@ -44,18 +44,16 @@ import de.codecrafters.tableview.TableView;
 import de.codecrafters.tableview.toolkit.SimpleTableDataAdapter;
 import de.codecrafters.tableview.toolkit.SimpleTableHeaderAdapter;
 
+//LeaderboardsActivity  accesses the scores section of the firebase database to pull down all public users
+//scores and then adds them in order of score from highest to lowest to a tableview
 public class LeaderboardsActivity extends AppCompatActivity {
-    // ArrayList<UnlockUser> UserList = new ArrayList<>();
+
     private ArrayList<POI> POIList;
     private ArrayList<sPOI> sPOIList;
     private ArrayList<hPOI> hPOIList;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = mAuth.getCurrentUser();
-    TableLayout tbl;
     int count;
-
-
-    //TableDataAdapter<String[]> myDataAdapter;
     TableView<String[]> table;
     TableDataAdapter<String[]> myDataAdapter;
 
@@ -68,25 +66,25 @@ public class LeaderboardsActivity extends AppCompatActivity {
         Intent i;
         count=0;
         i = getIntent();
-        Bundle b = i.getExtras();
-        //String[][] myData = new String[][]  {{"",""}};
+
         POIList = MainActivity.readPOIsFromSD(POIList, currentUser);
         sPOIList = MainActivity.readsPOIsFromSD(sPOIList, currentUser);
         hPOIList = MainActivity.readhPOIsFromSD(hPOIList, currentUser);
         DatabaseReference scoresRef;
         table = findViewById(R.id.leaderboard);
 
+        //set table headings
         TableHeaderAdapter myHeaderAdapter =
                 new SimpleTableHeaderAdapter(this, "Username", "Unlock Progress %");
-        ;
+
         table.setHeaderAdapter(myHeaderAdapter);
-        //table.setHeaderVisible(false);
-       // myDataAdapter.add(new String[]{"test","test"});
-        //tbl = findViewById(R.id.leaderboard);
+        //get database reference for scores section of database
         scoresRef = FirebaseDatabase.getInstance().getReference().child("Scores");
+        //orderby value returns the scores from lowest to highest
         scoresRef.orderByValue().addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                //add the username (the key) and the score (the value) to the table
                 MakeTable(dataSnapshot.getKey(), dataSnapshot.getValue(Integer.class));
             }
 
@@ -109,14 +107,16 @@ public class LeaderboardsActivity extends AppCompatActivity {
     }
 
     void MakeTable(String username, int score){
-
+        //since scores are stored as total locked POIs,such that the orderByValue
+        //function of the firebase reading will return from high to low, to draw unlock progess in the table from high to low
+        //we must subtract the number of locked locations from the total number of locations.
         int size = POIList.size()+hPOIList.size()+sPOIList.size();
         int poisunlocked = size-score;
         float poisunlockedpercent = ((float)poisunlocked/(float)size)*100;
         int poisint = (int)poisunlockedpercent;
         String poiout = Integer.toString(poisint);
 
-        if (count ==0){
+        if (count ==0){//set initial table value
             String[][] myData = new String[][]{{username,poiout}};
             myDataAdapter =
                     new SimpleTableDataAdapter(this,myData);
@@ -125,7 +125,7 @@ public class LeaderboardsActivity extends AppCompatActivity {
         if(count>0){
             myDataAdapter.add(new String[]{username, poiout});
         }
-        count++;
+        count++;//increment each time function is called
     }
 
 }

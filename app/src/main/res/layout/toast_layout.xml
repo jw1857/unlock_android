@@ -6,8 +6,8 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:padding="8dp"
-              android:background="#DAAA"
->
+              android:background="#DAAA">
+
 <pl.droidsonroids.gif.GifImageView android:src="@drawable/tick"
                                    android:layout_width="wrap_content"
                                    android:layout_height="wrap_content"

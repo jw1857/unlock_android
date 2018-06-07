@@ -1,23 +1,17 @@
 package com.example.jameswinters.unlock_android;
 import android.content.Context;
-import android.content.res.Resources;
+
 
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 
-
+//POIXMLParser parses the xml containing the gps coordinates, the title, and all content strings pointing to firebase storage,
+//and makes a new ArrayList of POIs with the attributes parsed from the xml.
 public class POIXMLParser extends DefaultHandler{
     public POI currentPOI;
     public String currentSubElement;
@@ -26,14 +20,13 @@ public class POIXMLParser extends DefaultHandler{
     public Context context;
     POIXMLParser(Context c){
         this.context = c;
-    }
+    }//pass in the context so android resources can be accessed
 
     public static void main(String[] args) {
 
     }
-    public  ArrayList<POI> getPOIList() {
+    public  ArrayList<POI> getPOIList() {//returns the completed POIList for use in the app
         DefaultHandler handler = new POIXMLParser(context);
-        //System.out.println(context.getResources().get(R.raw.pois));
         try {
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
@@ -112,6 +105,7 @@ public class POIXMLParser extends DefaultHandler{
                     currentPOI.setText(attributeValue);
                     break;
                 case "image":
+                    //check how many images are stored and then add the firebase storage strings to arraylist of strings
                     int number = Integer.parseInt(attributeValue);
                     if(number==0){
                         imagesList=null;
@@ -134,7 +128,7 @@ public class POIXMLParser extends DefaultHandler{
             elementName = qName;
         }
         if (elementName.equals("POI")) {
-
+        //add POI to POIList when at end of element
             POIList.add(currentPOI);
             currentPOI = null;
         }

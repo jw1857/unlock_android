@@ -1,4 +1,5 @@
 package com.example.jameswinters.unlock_android;
+
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -32,10 +32,10 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        getSupportActionBar().hide();//hide actionbar
         setContentView(R.layout.activity_create_account);
         mAuth = FirebaseAuth.getInstance();
-        emailContainer = findViewById(R.id.newEmailContainer);
+        emailContainer = findViewById(R.id.newEmailContainer);//associate layout files with views
         usernameContainer = findViewById(R.id.newUsernameContainer);
         passwordContainer = findViewById(R.id.newPasswordContainer);
         Button buttonCreateAccount = findViewById(R.id.createAccount);
@@ -44,7 +44,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
     }
 
     private void createAccount(String email, String password) {
-        if (!validateForm()) {
+        if (!validateForm()) {//check edittexts have values
             return;
         }
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -56,6 +56,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                             final FirebaseUser user = mAuth.getCurrentUser();
                             String username = usernameContainer.getText().toString();
                             createNewUser(user);
+                            //set username to user
                             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                     .setDisplayName(username)
                                     .build();
@@ -73,6 +74,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
 
                                     }
                                     Intent i = new Intent(createAccount.this, MainActivity.class);
+                                    //get default values of POILists from xml files.
                                     POIXMLParser parser = new POIXMLParser(createAccount.this);
                                     sPOIXMLParser sparser = new sPOIXMLParser(createAccount.this);
                                     hPOIXMLParser hparser = new hPOIXMLParser(createAccount.this);
@@ -81,6 +83,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
                                     ArrayList<sPOI> sPOIList = sparser.getsPOIList();
                                     ArrayList<hPOI> hPOIList = hparser.gethPOIList();
                                     ArrayList<bPOI> bPOIList = bparser.getbPOIList();
+                                    //save new list to sd
                                     MainActivity.savePOIListToSD(POIList,user);
                                     MainActivity.savesPOIListToSD(sPOIList,user);
                                     MainActivity.savehPOIListToSD(hPOIList,user);
@@ -103,15 +106,17 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
 
 
     private void createNewUser(FirebaseUser userFromRegistration) {
+        //authenticate a new user
         String username = usernameContainer.getText().toString();
         Log.d(msg, "Username:"+ username);
         String userId = userFromRegistration.getUid();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference myRef = database.getReference("Usernames");
-        myRef.child(userId).child("Name").setValue(username);
+        myRef.child(userId).child("Name").setValue(username);//add user to database
     }
 
-    private boolean validateForm() {
+
+    private boolean validateForm() {//check edittexts are filled
         boolean valid = true;
 
         String email = emailContainer.getText().toString();
@@ -140,6 +145,7 @@ public class createAccount extends AppCompatActivity implements Button.OnClickLi
         return valid;
     }
     public void onClick(View v) {
+        //create a new account with the credentials from the edittext
         int i = v.getId();
         if (i == R.id.createAccount) {
             createAccount(emailContainer.getText().toString(),passwordContainer.getText().toString());

@@ -25,6 +25,7 @@ import static android.graphics.Color.WHITE;
 
 // hPOIPresentationActivity contains the relevant content for a hPOI,
 // and clickable icons which lead user to activity containing relevant content for that hPOI
+
 public class hPOIPresentationActivity extends AppCompatActivity {
     hPOI hpoi;
     TextToSpeech tts;
@@ -143,15 +144,18 @@ public class hPOIPresentationActivity extends AppCompatActivity {
                 break;
         }
 
+
         // Display text to textView
-        if ((str.length()<30)||(str.equals(null))){
+
+        if ((str.length()<50)||(str.equals(null))){
             textView.setText(str);
             text =str;
-
         }
 
+
         // If text is longer than textView can handle, implement scrolling
-        else if ((str.length()>30)){
+        else if ((str.length()>50)){
+
             StorageReference txtRef =
                     storage.getReferenceFromUrl(str);
             final long ONE_MEGABYTE = 1024 * 1024;

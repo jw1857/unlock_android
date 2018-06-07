@@ -120,12 +120,12 @@ public class sPOIPresentationActivity extends AppCompatActivity {
                 textView.setTextSize(15.0f);
                 break;
         }
-        if ((str.length()<30)||(str.equals(null))){
+        if ((str.length()<50)||(str.equals(null))){
             textView.setText(str);
             text=str;
 
         }
-        else if ((str.length()>30)){
+        else if ((str.length()>50)){
             StorageReference txtRef = storage.getReferenceFromUrl(str);
             final long ONE_MEGABYTE = 1024 * 1024; // or to the maximum size of your text, but careful it crashes if it's too big
             txtRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {

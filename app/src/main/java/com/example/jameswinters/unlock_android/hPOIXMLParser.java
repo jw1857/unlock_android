@@ -1,22 +1,19 @@
 package com.example.jameswinters.unlock_android;
 import android.content.Context;
-import android.content.res.Resources;
 
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
 
-import java.io.File;
-import java.io.FileInputStream;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
+
 import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
-
+//works the same way as POIXMLParser but with extra fields for visibility
 public class hPOIXMLParser extends DefaultHandler {
     public hPOI currenthPOI;
     public String currentSubElement;

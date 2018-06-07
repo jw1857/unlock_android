@@ -23,7 +23,8 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import java.io.IOException;
 import java.util.ArrayList;
 
-
+//QRACtivity uses the phone's camera to detect for QR code and then works out what text is contained in the QR code and
+//passes this text to ScanSucess
 public class QRActivity extends AppCompatActivity {
 
     SurfaceView cameraPreview;
@@ -34,7 +35,7 @@ public class QRActivity extends AppCompatActivity {
     Bundle b = new Bundle();
 
 
-    @Override
+    @Override//camera permission
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case RequestCameraPermissionID:
@@ -62,10 +63,8 @@ public class QRActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getSupportActionBar().hide();
         setContentView(R.layout.activity_qr);
-        //Intent intent = getIntent();
-        //b = intent.getExtras();
 
-        cameraPreview = findViewById(R.id.cameraPreview);
+        cameraPreview = findViewById(R.id.cameraPreview);//associate layout files with views
         txtResult = findViewById(R.id.txtResult);
 
         barcodeDetector = new BarcodeDetector.Builder(this)
@@ -75,10 +74,10 @@ public class QRActivity extends AppCompatActivity {
                 .setAutoFocusEnabled(true)
                 .setRequestedPreviewSize(640, 480)
                 .build();
-        //Add Event
         cameraPreview.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
             public void surfaceCreated(SurfaceHolder surfaceHolder) {
+                //check camera permission has been granted before using camera
                 if (ActivityCompat.checkSelfPermission(getApplicationContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(QRActivity.this,
                             new String[]{android.Manifest.permission.CAMERA},RequestCameraPermissionID);
@@ -103,6 +102,7 @@ public class QRActivity extends AppCompatActivity {
 
             }
         });
+        //add a barcode detector
         barcodeDetector.setProcessor(new Detector.Processor<Barcode>() {
             @Override
             public void release() {
@@ -112,6 +112,8 @@ public class QRActivity extends AppCompatActivity {
             @Override
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> qrcode =detections.getDetectedItems();
+                //detect a QR code and vibrate when disocvered, then get the text and analyse this text.
+                //stop the camera after 1 scan to stop duplicate scans occuring
                 if(qrcode.size() != 0) {
                     txtResult.post(new Runnable() {
                         @Override
@@ -120,7 +122,7 @@ public class QRActivity extends AppCompatActivity {
                             vibrator.vibrate(100);
                             txtResult.setText(qrcode.valueAt(0).displayValue);
                             sendText(txtResult.getText().toString());
-                            cameraSource.stop();
+                            cameraSource.stop();//kill camera
                         }
                     });
                 }
@@ -132,6 +134,7 @@ public class QRActivity extends AppCompatActivity {
 
 
     public void sendText(String text){
+        //send text through intent to next activity
         b.putString("Location",text);
         Intent i = new Intent(this, ScanSuccess.class);
         i.putExtras(b);
@@ -139,12 +142,9 @@ public class QRActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
+    public void onBackPressed(){//return to main
         Intent i = new Intent(this, MainActivity.class);
-       // b.putSerializable("POIList",POIList);
-        //b.putSerializable("sPOIList",sPOIList);
-        //b.putSerializable("hPOIList",hPOIList);
-       // i.putExtras(b);
+
         startActivity(i);
     }
 

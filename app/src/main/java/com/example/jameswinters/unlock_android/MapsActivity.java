@@ -60,8 +60,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LatLngBounds YORK = new LatLngBounds(
             new LatLng (53.926343, -1.156002), new LatLng(53.993656, -1.022793));
 
+
     // This zoom level is the default zoom level that the map loads to
     private static final float DEFAULT_ZOOM = 14.5f;
+
 
     private void initMap() {
         SupportMapFragment mapFragment = (SupportMapFragment)getSupportFragmentManager().findFragmentById(R.id.map);
@@ -174,6 +176,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     s.setVisibility(false);
             }
         }
+
         addsPOIMarkers(POIList,sPOIList);
         addhPOIMarkers(hPOIList);
         addbPOIMarkers(bPOIList);

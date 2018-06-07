@@ -40,8 +40,8 @@
         <text text = "York Museum Gardens"/>
     </POI>
     <POI name = "University of York">
-        <latitude>53.9471</latitude>
-        <longitude>-1.0529</longitude>
+        <latitude>53.9480</latitude>
+        <longitude>-1.0535</longitude>
         <locked value = "true"/>
         <video name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funividcompressed.mp4?alt=media&amp;token=76ae342c-9e82-493f-a3bd-5433ebf23e89"/>
         <mainImage name ="https://firebasestorage.googleapis.com/v0/b/unlock-android-7f947.appspot.com/o/POIs%2FUniversity%20of%20York%2Funimaindark.jpg?alt=media&amp;token=f65d76dc-0931-4fdd-ab3c-74a1781ec597"/>
